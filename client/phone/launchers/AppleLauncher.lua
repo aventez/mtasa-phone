@@ -82,7 +82,14 @@ function phone.AppleLauncher.__constructor (...)
         dxDrawImage(0, 0, this.getPhone().getProperty('screen_width'), this.getPhone().getProperty('screen_height'), 'files/intro.png');
     end
 
-    this.draw = function ()
+    this.draw = function (onlyStatus)
+        onlyStatus = onlyStatus or false;
+
+        if onlyStatus == true then
+            this.drawStatusBar();
+            return;
+        end
+        
         this.drawMainMenu();
         this.drawStatusBar();
     end

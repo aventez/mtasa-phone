@@ -19,8 +19,7 @@ local userphone = phone.Apple();
 userphone.setX(screenX-screenX/9);
 userphone.setY(animation.positions.off);
 userphone.setApps({
-	phone.TestApp,
-	phone.TestApp2
+	phone.Settings
 });
 -- end user phone section
 

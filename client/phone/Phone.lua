@@ -205,12 +205,13 @@ function phone.Phone.__constructor (parent, viewType)
         elseif this.getApplication() then
             dxSetRenderTarget(_screenRenderTarget, true);
             this.getApplication().draw(_screenRenderTarget);
+            _launcher.draw(true); -- draw just statusbar
             dxSetRenderTarget();
             return;
         end
 
         dxSetRenderTarget(_screenRenderTarget, true);
-        _launcher.draw(_screenRenderTarget);
+        _launcher.draw();
         dxSetRenderTarget();
     end
 

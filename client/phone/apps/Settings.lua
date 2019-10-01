@@ -1,17 +1,17 @@
-phone.TestApp = {};
-phone.TestApp.__index = phone.Application();
+phone.Settings = {};
+phone.Settings.__index = phone.Application();
 
-setmetatable(phone.TestApp, {
+setmetatable(phone.Settings, {
 	__call = function (obj, ...)
 		return obj.__constructor(...);
 	end,
 });
 
-function phone.TestApp.getIcon()
+function phone.Settings.getIcon()
 	return 'files/icons/icons0.png';
 end
 
-function phone.TestApp.__constructor (...)
+function phone.Settings.__constructor (...)
 	local this = phone.Application(...);
 
 	local super = {};
