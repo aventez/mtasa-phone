@@ -1,7 +1,8 @@
 phone.AppleLauncher = {};
 phone.AppleLauncher.__index = phone.Launcher();
 
-local font = dxCreateFont("files/SFProText-Regular.ttf", 10)
+local font = dxCreateFont("files/SFProText-Regular.ttf", 10);
+local intro = true;
 
 setmetatable(phone.AppleLauncher, {
 	__call = function (obj, ...)
@@ -41,6 +42,10 @@ function phone.AppleLauncher.__constructor (...)
             'center', 'center',                             -- alignX/alignY orientation
             true,                                           -- clip
             false);                                         -- wordBreak
+    end
+
+    this.drawIntro = function ()
+        dxDrawImage(0, 0, this.getPhone().getProperty('screen_width'), this.getPhone().getProperty('screen_height'), 'files/intro.png');
     end
 
     this.drawMainMenu = function ()

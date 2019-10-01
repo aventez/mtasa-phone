@@ -1,22 +1,29 @@
 <meta>
 	<min_mta_version client="1.5" server="1.5"/>
 
-	<!-- files -->
-	<file src="files/HTCONEM8.png" />
-	<file src="files/wallpaper.png" />
-	<file src="files/statusbar.png" />
-	<file src="files/SFProText-Regular.ttf" />
-
-	<!-- phone -->
+	<!-- sources -->
 	<script src="client/phone/namespace.lua" type="shared" />
 	<script src="client/phone/Phone.lua" type="client" />
 	<script src="client/phone/Launcher.lua" type="client" />  
+	<script src="client/phone/Intro.lua" type="client" />  
+
+	<!-- launcher -->
 	<script src="client/phone/launchers/AppleLauncher.lua" type="client" />  
-	<script src="client/phone/standard.lua" type="client" />  
+
+	<!-- phones -->
+	<script src="client/phone/phones/Apple.lua" type="client" />  
 
 	<!-- main -->
 	<script src="client/client.lua" type="client" />
 	<script src="server/source.lua" type="client" />
 	
+	<!-- files -->
+	<file src="files/Apple.png" />
+	<file src="files/wallpaper.png" />
+	<file src="files/intro.png" />
+	<file src="files/statusbar.png" />
+	<file src="files/SFProText-Regular.ttf" />
+
+	<!-- object oriented programming enabling -->
 	<oop>true</oop>
 </meta>

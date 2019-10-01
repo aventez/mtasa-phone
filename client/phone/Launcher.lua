@@ -83,5 +83,8 @@ function phone.Launcher.__constructor (phoneObject)
     this.drawStatusBar = function () 
     end
 
+    this.drawIntro = function ()
+    end
+
     return this;
 end

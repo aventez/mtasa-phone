@@ -24,6 +24,9 @@ function phone.Phone.__constructor (parent, viewType)
     local _screenRenderTarget = nil;
 
     local _launcher = nil;
+    local _intro = nil;
+
+    local _state = true;
 
     local _attributes = {};
     local _properties = {};
@@ -121,8 +124,40 @@ function phone.Phone.__constructor (parent, viewType)
     end
 --launcher section end
 
+--intro section
+    this.setIntro = function (introClass)
+        _intro = introClass(this);
+    end
+
+    this.getIntro = function ()
+        return _intro;
+    end
+
+    this.setState = function (state)
+        _state = state;
+    end
+
+    this.getState = function ()
+        return _state;
+    end
+--intro section end
+
 --screen section
     this.invalidate = function ()
+        if this.getState() then
+            dxSetRenderTarget(_screenRenderTarget, true);
+            this.getIntro().draw(_screenRenderTarget);
+            dxSetRenderTarget();
+
+            if(this.getIntro().getAlpha() < 175) then
+                this.getIntro().setAlpha(this.getIntro().getAlpha()+1);
+            else
+                this.setState(false);
+            end
+
+            return;
+        end
+
         dxSetRenderTarget(_screenRenderTarget, true);
         _launcher.draw(_screenRenderTarget);
         dxSetRenderTarget();

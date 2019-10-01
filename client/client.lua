@@ -13,11 +13,9 @@ local animation = {
 
 -- user phone section
 
-local userphone = phone.Standard();
+local userphone = phone.Apple();
 
-userphone.setAttribute('wallpaper', './files/wallpaper.png');
-userphone.setAttribute('texture', './files/HTCONEM8.png');
-
+-- default values
 userphone.setX(screenX-screenX/9);
 userphone.setY(animation.positions.off);
 
@@ -34,6 +32,9 @@ function phoneAnimation()
 	local progress = diff / animation.duration;
 
 	if animation.fadeIn == true then
+		userphone.setState(true);
+		userphone.getIntro().setAlpha(0);
+		
     	newY = interpolateBetween(animation.positions.off, 0, 0, animation.positions.on, 0, 0, progress, "Linear")
     else
     	newY = interpolateBetween(animation.positions.on, 0, 0, animation.positions.off, 0, 0, progress, "Linear")
