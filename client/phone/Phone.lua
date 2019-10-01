@@ -25,6 +25,7 @@ function phone.Phone.__constructor (parent, viewType)
 
     local _launcher = nil;
     local _intro = nil;
+    local _app = nil;
 
     local _state = true;
 
@@ -142,6 +143,16 @@ function phone.Phone.__constructor (parent, viewType)
     end
 --intro section end
 
+--application section
+    this.setApplication = function (appClass)
+        _app = appClass(this);
+    end
+
+    this.getApplication = function()
+        return _app;
+    end
+--application section end
+
 --screen section
     this.invalidate = function ()
         if this.getState() then
@@ -155,6 +166,11 @@ function phone.Phone.__constructor (parent, viewType)
                 this.setState(false);
             end
 
+            return;
+        elseif this.getApplication() then
+            dxSetRenderTarget(_screenRenderTarget, true);
+            this.getApplication().draw(_screenRenderTarget);
+            dxSetRenderTarget();
             return;
         end
 

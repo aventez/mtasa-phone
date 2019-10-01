@@ -6,6 +6,7 @@
 	<script src="client/phone/Phone.lua" type="client" />
 	<script src="client/phone/Launcher.lua" type="client" />  
 	<script src="client/phone/Intro.lua" type="client" />  
+	<script src="client/phone/Application.lua" type="client" />  
 
 	<!-- launcher -->
 	<script src="client/phone/launchers/AppleLauncher.lua" type="client" />  

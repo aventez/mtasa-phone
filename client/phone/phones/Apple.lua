@@ -22,7 +22,8 @@ function phone.Apple.__constructor (...)
 
     this.setIntro(phone.Intro);
     this.setLauncher(phone.AppleLauncher);
-    
+    --this.setApplication(phone.Application);
+
     this.createScreenRenderTarget();
     
     --@Override
