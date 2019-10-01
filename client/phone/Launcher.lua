@@ -13,22 +13,8 @@ setmetatable(phone.Launcher, {
     end,
 });
 
---static
-phone.Launcher.lastId = 0;
-function phone.Launcher.getNewId()
-    phone.Launcher.lastId = phone.Launcher.lastId + 1;
-    return 'phone.Launcher_' .. phone.Launcher.lastId;
-end
-
 function phone.Launcher.__constructor (phoneObject)
     local this = setmetatable({}, phone.Launcher);
-
---id section
-    local _id = phone.Launcher.getNewId();
-    this.getId = function ()
-        return _id;
-    end
---id section end
 
 --priavate variables
     local _phone = phoneObject;

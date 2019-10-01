@@ -7,14 +7,6 @@
 	<file src="files/statusbar.png" />
 	<file src="files/SFProText-Regular.ttf" />
 
-	<!-- colors -->
-	<script src="client/fonts/namespace.lua" type="shared" />
-	<script src="client/fonts/FontManager.lua" type="client" />	
-
-	<!-- colors -->
-	<script src="client/colors/namespace.lua" type="shared" />
-	<script src="client/colors/Color.lua" type="client" />	
-
 	<!-- phone -->
 	<script src="client/phone/namespace.lua" type="shared" />
 	<script src="client/phone/Phone.lua" type="client" />
