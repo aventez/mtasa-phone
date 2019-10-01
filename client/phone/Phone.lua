@@ -26,6 +26,7 @@ function phone.Phone.__constructor (parent, viewType)
     local _launcher = nil;
     local _intro = nil;
     local _app = nil;
+    local _apps = {};
 
     local _state = true;
 
@@ -125,6 +126,24 @@ function phone.Phone.__constructor (parent, viewType)
     end
 --launcher section end
 
+--controls section
+    this.controlLeft = function()
+        this.getLauncher().controlLeft();
+    end
+
+    this.controlRight = function()
+        this.getLauncher().controlRight();
+    end
+
+    this.controlEnter = function()
+        this.getLauncher().controlEnter();
+    end
+
+    this.controlBack = function()
+        this.getLauncher().controlBack();
+    end
+--controls section end
+
 --intro section
     this.setIntro = function (introClass)
         _intro = introClass(this);
@@ -144,8 +163,24 @@ function phone.Phone.__constructor (parent, viewType)
 --intro section end
 
 --application section
+    this.setApps = function (apps)
+        _apps = apps;
+    end
+
+    this.getApps = function ()
+        return _apps;
+    end
+
+    this.runApplication = function (appIndex)
+        _app = _apps[appIndex](_launcher);
+    end
+
     this.setApplication = function (appClass)
-        _app = appClass(this);
+        if appClass == nil then 
+            _app = appClass;
+        else
+            _app = appClass(this);
+        end
     end
 
     this.getApplication = function()

@@ -18,7 +18,10 @@ local userphone = phone.Apple();
 -- default values
 userphone.setX(screenX-screenX/9);
 userphone.setY(animation.positions.off);
-
+userphone.setApps({
+	phone.TestApp,
+	phone.TestApp2
+});
 -- end user phone section
 
 addEventHandler('onClientRender', root, function ()
@@ -68,4 +71,24 @@ function showPhone()
 	show = not show;
 end
 
+function controlEnter()
+    userphone.controlEnter();
+end
+
+function controlBack()
+    userphone.controlBack();
+end
+
+function controlRight()
+    userphone.controlRight();
+end
+
+function controlLeft()
+    userphone.controlLeft();
+end
+
 bindKey('end', 'up', showPhone);
+bindKey('arrow_r', 'up', controlRight);
+bindKey('arrow_l', 'up', controlLeft);
+bindKey('enter', 'up', controlEnter);
+bindKey('backspace', 'up', controlBack);

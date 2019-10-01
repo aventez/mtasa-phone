@@ -11,6 +11,10 @@
 	<!-- launcher -->
 	<script src="client/phone/launchers/AppleLauncher.lua" type="client" />  
 
+	<!-- apps -->
+	<script src="client/phone/apps/TestApp.lua" type="client" />
+	<script src="client/phone/apps/TestApp2.lua" type="client" />
+
 	<!-- phones -->
 	<script src="client/phone/phones/Apple.lua" type="client" />  
 
@@ -24,6 +28,11 @@
 	<file src="files/intro.png" />
 	<file src="files/statusbar.png" />
 	<file src="files/SFProText-Regular.ttf" />
+
+	<file src="files/icons/icons0.png" />
+	<file src="files/icons/icons1.png" />
+	<file src="files/icons/icons2.png" />
+	<file src="files/icons/icons3.png" />
 
 	<!-- object oriented programming enabling -->
 	<oop>true</oop>

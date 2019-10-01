@@ -20,6 +20,7 @@ function phone.Launcher.__constructor (phoneObject)
     local _phone = phoneObject;
     local _attributes = {};
     local _properties = {};
+    local _selected = 1;
 --priavate variables end
 
 --attributs section
@@ -48,6 +49,23 @@ function phone.Launcher.__constructor (phoneObject)
         end
     end
 --attributs section end
+
+--control section
+    this.controlEnter = function () end;
+    this.controlBack = function () end;
+    this.controlRight = function () end;
+    this.controlLeft = function () end;
+--control section end
+
+-- selected section
+    this.getSelected = function ()
+        return _selected;
+    end
+
+    this.setSelected = function (selected)
+        _selected = selected;
+    end
+-- selected section end
 
 --property section
     this.setProperty = function (name, value)
@@ -81,9 +99,6 @@ function phone.Launcher.__constructor (phoneObject)
     end
 
     this.drawStatusBar = function () 
-    end
-
-    this.drawIntro = function ()
     end
 
     return this;
