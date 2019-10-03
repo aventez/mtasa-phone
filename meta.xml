@@ -6,6 +6,7 @@
 	<script src="client/phone/Phone.lua" type="client" />
 	<script src="client/phone/Launcher.lua" type="client" />  
 	<script src="client/phone/Application.lua" type="client" />  
+	<script src="client/phone/Fonts.lua" type="client" />
 
 	<!-- events -->
 	<script src="client/phone/server/serverEvents.lua" type="client" />
@@ -16,6 +17,7 @@
 
 	<!-- apps -->
 	<script src="client/phone/apps/Settings.lua" type="client" />
+	<script src="client/phone/apps/Contacts.lua" type="client" />
 
 	<!-- phones -->
 	<script src="client/phone/phones/Apple.lua" type="client" />  

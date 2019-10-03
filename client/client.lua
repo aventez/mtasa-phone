@@ -20,15 +20,17 @@ userphone.setX(screenX-screenX/9);
 userphone.setY(animation.positions.off);
 userphone.loadConfig();
 userphone.setApps({
-	phone.Settings
+	phone.Settings,
+	phone.Contacts
 });
 -- end user phone section
 
-addEventHandler('onClientRender', root, function ()
+
+function drawPhone()
     if userphone.getY() ~= animation.positions.off then
     	userphone.draw();
     end
-end);
+end
 
 function phoneAnimation()
 	local diff = getTickCount() - animation.startTime;
@@ -47,6 +49,10 @@ function phoneAnimation()
 		animation.progress = 0;
 
 		removeEventHandler('onClientPreRender', root, phoneAnimation);
+
+		if not animation.fadeIn then
+			removeEventHandler('onClientRender', root, drawPhone);
+		end
 	end
 end
 
@@ -57,6 +63,9 @@ function showPhone()
 		animation.startTime = getTickCount();
 		animation.fadeIn = true;
 
+		bindControlKeys();
+		addEventHandler('onClientRender', root, drawPhone);
+
 		if userphone.getConfig('intro') and not userphone.getApplication() then
 			userphone.setLauncher(phone.IntroLauncher);
 		end
@@ -65,6 +74,8 @@ function showPhone()
 	else
 		animation.startTime = getTickCount();
 		animation.fadeIn = false;
+
+		unbindControlKeys();
 
 	    addEventHandler('onClientPreRender', root, phoneAnimation);
 	end
@@ -97,14 +108,26 @@ end
 		userphone.controlDown();
 	end
 
-	bindKey('end', 'up', showPhone);
-	bindKey('arrow_u', 'up', controlUp);
-	bindKey('arrow_d', 'up', controlDown);
-	bindKey('arrow_r', 'up', controlRight);
-	bindKey('arrow_l', 'up', controlLeft);
-	bindKey('enter', 'up', controlEnter);
-	bindKey('backspace', 'up', controlBack);
+	function bindControlKeys()
+		bindKey('arrow_u', 'up', controlUp);
+		bindKey('arrow_d', 'up', controlDown);
+		bindKey('arrow_r', 'up', controlRight);
+		bindKey('arrow_l', 'up', controlLeft);
+		bindKey('enter', 'up', controlEnter);
+		bindKey('backspace', 'up', controlBack);
+	end
+
+	function unbindControlKeys()
+		unbindKey('arrow_u', 'up', controlUp);
+		unbindKey('arrow_d', 'up', controlDown);
+		unbindKey('arrow_r', 'up', controlRight);
+		unbindKey('arrow_l', 'up', controlLeft);
+		unbindKey('enter', 'up', controlEnter);
+		unbindKey('backspace', 'up', controlBack);
+	end
 --control section end
+
+bindKey('end', 'up', showPhone);
 
 --server section
 function onResponsePhoneData(array)

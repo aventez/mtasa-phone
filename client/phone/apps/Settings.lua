@@ -1,9 +1,6 @@
 phone.Settings = {};
 phone.Settings.__index = phone.Application();
 
-local font = dxCreateFont('files/SFProText-Regular.ttf', 9);
-local smallFont = dxCreateFont('files/SFProText-Regular.ttf', 8);
-
 setmetatable(phone.Settings, {
 	__call = function (obj, ...)
 		return obj.__constructor(...);
@@ -71,7 +68,7 @@ function phone.Settings.__constructor (...)
             height-5,
             0xFF000000,
             1,
-            font or 'default',
+            Fonts.font or 'default',
             'center',
             'bottom',
             true, 
@@ -127,7 +124,7 @@ function phone.Settings.__constructor (...)
 			height, 
 			0xFF000000, 
 			1,
-			font or 'default',
+			Fonts.font or 'default',
 			'left',
 			'top');
 

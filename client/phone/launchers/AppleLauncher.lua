@@ -1,8 +1,6 @@
 phone.AppleLauncher = {};
 phone.AppleLauncher.__index = phone.Launcher();
 
-local font = dxCreateFont("files/SFProText-Regular.ttf", 10);
-
 setmetatable(phone.AppleLauncher, {
 	__call = function (obj, ...)
 		return obj.__constructor(...);
@@ -20,15 +18,7 @@ function phone.AppleLauncher.__constructor (...)
     end
     
     this.setAttribute('color', tocolor(0, 0, 0, 0.4));
-    this.setAttribute('font', font);
     this.setAttribute('icon-margin-top', 30);
-
-    local appMargin = 10;
-    local appPadding = 0;
-    local appSize = 32;
-    local appsInRow = 3;
-
-    local bgPadding = 3;
 
     local getStringRealTime = function ()
         local time = getRealTime();
@@ -43,21 +33,31 @@ function phone.AppleLauncher.__constructor (...)
 
         local apps = this.getPhone().getApps();
 
+        local appMargin = 8;
+        local appPadding = 2;
+        local appSize = 32;
+        local appsInRow = 3;
+
+        local bgPadding = 3;
+
+
         for k, v in ipairs(apps) do
             local col = (k-1) % appsInRow;
             local row = math.floor((k-1) / appsInRow);
 
             local x = col * (appSize + appMargin * 2) + appMargin;
+            local y = row * (appSize + appMargin * 2) + appMargin;
+
 
             if this.getSelected() == k then
-                dxDrawRectangle(x + appMargin - bgPadding, this.getAttribute('icon-margin-top') - bgPadding, appSize + (bgPadding * 2), appSize + (bgPadding * 2), 0x33FAFAFA);
+                dxDrawRectangle(x + appMargin, y + appMargin + 10, appSize, appSize, 0x33000000);
             end
 
             dxDrawImage(
                 x + appPadding + appMargin,
-                this.getAttribute('icon-margin-top'),
-                appSize, 
-                appSize,
+                y + appPadding + appMargin + 10,
+                appSize - appPadding * 2, 
+                appSize - appPadding * 2,
                 v.getIcon());
         end
     end
@@ -72,7 +72,7 @@ function phone.AppleLauncher.__constructor (...)
             20,                                             -- Height
             color,                                          -- Color
             0.9,                                            -- Scale
-            font,                                           -- Font (SF Pro Text - 10)
+            Fonts.font,                                     -- Font
             'center', 'center',                             -- alignX/alignY orientation
             true,                                           -- clip
             false);                                         -- wordBreak
