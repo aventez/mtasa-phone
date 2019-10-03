@@ -18,6 +18,7 @@ local userphone = phone.Apple();
 -- default values
 userphone.setX(screenX-screenX/9);
 userphone.setY(animation.positions.off);
+userphone.loadConfig();
 userphone.setApps({
 	phone.Settings
 });
@@ -34,9 +35,6 @@ function phoneAnimation()
 	local progress = diff / animation.duration;
 
 	if animation.fadeIn == true then
-		userphone.setState(true);
-		userphone.getIntro().setAlpha(0);
-		
     	newY = interpolateBetween(animation.positions.off, 0, 0, animation.positions.on, 0, 0, progress, "Linear")
     else
     	newY = interpolateBetween(animation.positions.on, 0, 0, animation.positions.off, 0, 0, progress, "Linear")
@@ -59,6 +57,10 @@ function showPhone()
 		animation.startTime = getTickCount();
 		animation.fadeIn = true;
 
+		if userphone.getConfig('intro') and not userphone.getApplication() then
+			userphone.setLauncher(phone.IntroLauncher);
+		end
+
 	    addEventHandler('onClientPreRender', root, phoneAnimation);
 	else
 		animation.startTime = getTickCount();
@@ -70,24 +72,48 @@ function showPhone()
 	show = not show;
 end
 
-function controlEnter()
-    userphone.controlEnter();
+--control section
+	function controlEnter()
+	    userphone.controlEnter();
+	end
+
+	function controlBack()
+	    userphone.controlBack();
+	end
+
+	function controlRight()
+	    userphone.controlRight();
+	end
+
+	function controlLeft()
+	    userphone.controlLeft();
+	end
+
+	function controlUp()
+		userphone.controlUp();
+	end
+
+	function controlDown()
+		userphone.controlDown();
+	end
+
+	bindKey('end', 'up', showPhone);
+	bindKey('arrow_u', 'up', controlUp);
+	bindKey('arrow_d', 'up', controlDown);
+	bindKey('arrow_r', 'up', controlRight);
+	bindKey('arrow_l', 'up', controlLeft);
+	bindKey('enter', 'up', controlEnter);
+	bindKey('backspace', 'up', controlBack);
+--control section end
+
+--server section
+function onResponsePhoneData(array)
+    for k, v in pairs(array) do
+        userphone.setConfig(k, v);
+    end
+
 end
 
-function controlBack()
-    userphone.controlBack();
-end
-
-function controlRight()
-    userphone.controlRight();
-end
-
-function controlLeft()
-    userphone.controlLeft();
-end
-
-bindKey('end', 'up', showPhone);
-bindKey('arrow_r', 'up', controlRight);
-bindKey('arrow_l', 'up', controlLeft);
-bindKey('enter', 'up', controlEnter);
-bindKey('backspace', 'up', controlBack);
+addEvent('onResponsePhoneData', true);
+addEventHandler('onResponsePhoneData', getLocalPlayer(), onResponsePhoneData);
+--server section end

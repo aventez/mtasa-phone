@@ -24,11 +24,8 @@ function phone.Phone.__constructor (parent, viewType)
     local _screenRenderTarget = nil;
 
     local _launcher = nil;
-    local _intro = nil;
     local _app = nil;
     local _apps = {};
-
-    local _state = true;
 
     local _attributes = {};
     local _properties = {};
@@ -126,41 +123,86 @@ function phone.Phone.__constructor (parent, viewType)
     end
 --launcher section end
 
---controls section
-    this.controlLeft = function()
-        this.getLauncher().controlLeft();
+--config section
+    local _config = {};
+
+    this.loadConfig = function (file)
+        triggerServerEvent("getPhoneConfig", resourceRoot);
     end
 
-    this.controlRight = function()
-        this.getLauncher().controlRight();
+    this.saveConfig = function (file)
+        triggerServerEvent("savePhoneConfig", resourceRoot, _config);
     end
 
-    this.controlEnter = function()
-        this.getLauncher().controlEnter();
+    this.setConfig = function (name, value)
+        _config[name] = value;
     end
 
-    this.controlBack = function()
-        this.getLauncher().controlBack();
-    end
---controls section end
-
---intro section
-    this.setIntro = function (introClass)
-        _intro = introClass(this);
+    this.getConfig = function (name)
+        return _config[name];
     end
 
-    this.getIntro = function ()
-        return _intro;
+--config section end
+
+-- control section
+    this.controlLeft = function ()
+        if this.getApplication() then
+            this.getApplication().controlLeft();
+        else
+            this.changeSelected(-1);
+        end
+    end    
+
+    this.controlRight = function ()
+        if this.getApplication() then
+            this.getApplication().controlRight();
+        else
+            this.changeSelected(1);
+        end
     end
 
-    this.setState = function (state)
-        _state = state;
+    this.controlBack = function ()
+        this.setApplication(nil);
     end
 
-    this.getState = function ()
-        return _state;
+    this.controlEnter = function ()
+        if this.getApplication() then
+            this.getApplication().controlEnter();
+        else
+            this.runApplication(this.getLauncher().getSelected());
+        end
     end
---intro section end
+
+    this.controlUp = function ()
+        if this.getApplication() then
+            this.getApplication().controlUp();
+        else
+            this.runApplication(this.getLauncher().getSelected());
+        end
+    end
+
+    this.controlDown = function ()
+        if this.getApplication() then
+            this.getApplication().controlDown();
+        else
+            this.runApplication(this.getLauncher().getSelected());
+        end
+    end
+
+    this.changeSelected = function (value)
+        local new = this.getLauncher().getSelected() + value;
+
+        if this.getLauncher().getSelected() == 1 and value < 0 then
+            this.getLauncher().setSelected(#this.getApps());
+            return;
+        elseif new > #this.getApps() then
+            this.getLauncher().setSelected(1);
+            return;
+        end
+
+        this.getLauncher().setSelected(new);
+    end
+-- control section end
 
 --application section
     this.setApps = function (apps)
@@ -190,22 +232,10 @@ function phone.Phone.__constructor (parent, viewType)
 
 --screen section
     this.invalidate = function ()
-        if this.getState() then
-            dxSetRenderTarget(_screenRenderTarget, true);
-            this.getIntro().draw(_screenRenderTarget);
-            dxSetRenderTarget();
-
-            if(this.getIntro().getAlpha() < 175) then
-                this.getIntro().setAlpha(this.getIntro().getAlpha()+1);
-            else
-                this.setState(false);
-            end
-
-            return;
-        elseif this.getApplication() then
+        if this.getApplication() then
             dxSetRenderTarget(_screenRenderTarget, true);
             this.getApplication().draw(_screenRenderTarget);
-            _launcher.draw(true); -- draw just statusbar
+            _launcher.draw(true, tocolor(0, 0, 0, 255)); -- draw just statusbar
             dxSetRenderTarget();
             return;
         end

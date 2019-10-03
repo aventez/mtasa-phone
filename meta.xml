@@ -5,11 +5,14 @@
 	<script src="client/phone/namespace.lua" type="shared" />
 	<script src="client/phone/Phone.lua" type="client" />
 	<script src="client/phone/Launcher.lua" type="client" />  
-	<script src="client/phone/Intro.lua" type="client" />  
 	<script src="client/phone/Application.lua" type="client" />  
+
+	<!-- events -->
+	<script src="client/phone/server/serverEvents.lua" type="client" />
 
 	<!-- launcher -->
 	<script src="client/phone/launchers/AppleLauncher.lua" type="client" />  
+	<script src="client/phone/launchers/IntroLauncher.lua" type="client" />  
 
 	<!-- apps -->
 	<script src="client/phone/apps/Settings.lua" type="client" />
@@ -19,7 +22,7 @@
 
 	<!-- main -->
 	<script src="client/client.lua" type="client" />
-	<script src="server/source.lua" type="client" />
+	<script src="server/source.lua" type="server" />
 	
 	<!-- files -->
 	<file src="files/Apple.png" />
@@ -27,6 +30,9 @@
 	<file src="files/intro.png" />
 	<file src="files/statusbar.png" />
 	<file src="files/SFProText-Regular.ttf" />
+
+	<file src="files/enabled.png" />
+	<file src="files/disabled.png" />
 
 	<file src="files/icons/icons0.png" />
 	<file src="files/icons/icons1.png" />

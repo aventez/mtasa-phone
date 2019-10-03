@@ -1,6 +1,8 @@
 phone.TestApp2 = {};
 phone.TestApp2.__index = phone.Application();
 
+local font = dxCreateFont("files/SFProText-Regular.ttf", 10);
+
 setmetatable(phone.TestApp2, {
     __call = function (obj, ...)
         return obj.__constructor(...);
@@ -34,7 +36,7 @@ function phone.TestApp2.__constructor (...)
             height,
             0xFF000000,
             1,
-            'default',
+            font,
             'center',
             'center',
             true, 
