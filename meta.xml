@@ -32,6 +32,7 @@
 	<file src="files/intro.png" />
 	<file src="files/statusbar.png" />
 	<file src="files/SFProText-Regular.ttf" />
+	<file src="files/avatar.png" />
 
 	<file src="files/enabled.png" />
 	<file src="files/disabled.png" />
