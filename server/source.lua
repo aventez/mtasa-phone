@@ -87,16 +87,23 @@ function getPhoneConfig()
 		}
 	};
 
-	triggerClientEvent(client, "onResponsePhoneData", client, data);
+	triggerClientEvent(client, 'onResponsePhoneData', client, data);
 end
 
-addEvent("getPhoneConfig", true);
-addEventHandler("getPhoneConfig", resourceRoot, getPhoneConfig);
+addEvent('getPhoneConfig', true);
+addEventHandler('getPhoneConfig', resourceRoot, getPhoneConfig);
 
 function savePhoneConfig(config)
 	-- save data to db
 	print(toJSON(config));
 end
 
-addEvent("savePhoneConfig", true);
-addEventHandler("savePhoneConfig", resourceRoot, savePhoneConfig);
+addEvent('savePhoneConfig', true);
+addEventHandler('savePhoneConfig', resourceRoot, savePhoneConfig);
+
+function onClientPhoneCall(data)
+	print(toJSON(data));
+end
+
+addEvent('onClientPhoneCall', true);
+addEventHandler('onClientPhoneCall', resourceRoot, onClientPhoneCall);

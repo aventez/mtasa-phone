@@ -27,10 +27,9 @@ function phone.Contacts.__constructor (...)
 	this.setAttribute('contentMarginRight', 10);
 	this.setAttribute('contentMarginTop', 5);
 
-	local phone = this.getLauncher().getPhone();
-	local contacts = phone.getConfig('contacts');
+	local _phone = this.getLauncher().getPhone();
+	local contacts = _phone.getConfig('contacts');
 	local selected = 1;
-	local pickedContact = nil;
 	local maxContacts = 8;
 	local section = {
 		first = 1,
@@ -38,7 +37,7 @@ function phone.Contacts.__constructor (...)
 	};
 
 	this.drawHeader = function ()
-		local width = phone.getProperty('screen_width') or 0;
+		local width = _phone.getProperty('screen_width') or 0;
 		local height = this.getAttribute('headerHeight');
 
 		dxDrawRectangle(0, 0, width, height, 0xFFEEFBF2);
@@ -63,20 +62,16 @@ function phone.Contacts.__constructor (...)
 	end
 
 	this.draw = function (renderTarget)
-		local width = phone.getProperty('screen_width') or 0;
-		local height = phone.getProperty('screen_height') or 0;
+		local width = _phone.getProperty('screen_width') or 0;
+		local height = _phone.getProperty('screen_height') or 0;
 
 		-- drawing background
         dxDrawRectangle(0, 0, width, height, (0xFFE3E3E6));
 
         -- draw app content
-        if pickedContact ~= nil then
-        	local data = contacts[pickedContact];
-			this.drawContactPage(data);
-        else
-        	this.drawHeader();
-        	this.drawContent();
-    	end
+
+    	this.drawHeader();
+    	this.drawContent();
     end
 
 	this.drawContent = function ()
@@ -89,44 +84,8 @@ function phone.Contacts.__constructor (...)
 		end
 	end
 
-	this.drawContactPage = function (data)
-		local width = phone.getProperty('screen_width') or 0;
-		local height = phone.getProperty('screen_height') or 0;
-
-		local marginTop = this.getAttribute('contentMarginTop') + 15;
-		local marginLeft = 10;
-
-		local imageSize = 48;
-
-		dxDrawImage(width/2 - imageSize/2, marginTop, imageSize, imageSize, 'files/avatar.png');
-
-		dxDrawText(data.name,
-			0, 
-			marginTop + imageSize,
-			width, 
-			height, 
-			0xFF000000, 
-			1,
-			Fonts.fontBig or 'default',
-			'center',
-			'top',
-			false,
-			true);
-
-		dxDrawText(data.number,
-			marginLeft, 
-			marginTop + imageSize + 15, 
-			width - 5, 
-			height, 
-			0xFF000000, 
-			1,
-			Fonts.miniFont or 'default',
-			'center',
-			'top');
-	end
-
 	this.drawContact = function (index, data)
-		local width = phone.getProperty('screen_width') or 0;
+		local width = _phone.getProperty('screen_width') or 0;
 
 		local marginTop = this.getAttribute('headerHeight') + this.getAttribute('contentMarginTop');
 		local optSize = this.getAttribute('optionSize');
@@ -170,10 +129,9 @@ function phone.Contacts.__constructor (...)
 	    this.controlEnter = function () 
 	    	local index = (section.first + selected) - 1;
 
-			pickedContact = index;
+			_phone.setAttribute('contactData', contacts[index]);
 
-	    	outputChatBox('interaction with: ' .. index);
-	    	-- contact management
+			_phone.setApplication(phone.Contact);
 		end
 
 	    this.controlBack = function () 

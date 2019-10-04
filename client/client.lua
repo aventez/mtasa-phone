@@ -20,10 +20,17 @@ userphone.setX(screenX-screenX/9);
 userphone.setY(animation.positions.off);
 userphone.loadConfig();
 userphone.setApps({
-	phone.Settings,
-	phone.Contacts
+	phone.PhoneApp,
+	phone.Contacts,
+	phone.Settings
 });
 -- end user phone section
+
+-- interaction section
+userphone.onClosePhone = function ()
+	showPhone();
+end
+-- interaction section end
 
 
 function drawPhone()
@@ -108,6 +115,10 @@ end
 		userphone.controlDown();
 	end
 
+	function controlNumber(value)
+		userphone.controlNumber(value);
+	end
+
 	function bindControlKeys()
 		bindKey('arrow_u', 'up', controlUp);
 		bindKey('arrow_d', 'up', controlDown);
@@ -115,6 +126,10 @@ end
 		bindKey('arrow_l', 'up', controlLeft);
 		bindKey('enter', 'up', controlEnter);
 		bindKey('backspace', 'up', controlBack);
+
+		for i=0,9 do
+			bindKey(i, 'up', controlNumber);
+		end
 	end
 
 	function unbindControlKeys()
@@ -124,6 +139,10 @@ end
 		unbindKey('arrow_l', 'up', controlLeft);
 		unbindKey('enter', 'up', controlEnter);
 		unbindKey('backspace', 'up', controlBack);
+
+		for i=0,9 do
+			unbindKey(i, 'up', controlNumber);
+		end
 	end
 --control section end
 

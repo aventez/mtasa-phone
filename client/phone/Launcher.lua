@@ -54,6 +54,7 @@ function phone.Launcher.__constructor (phoneObject)
     this.controlEnter = function () end;
     this.controlBack = function () end;
     this.controlRight = function () end;
+    this.controlNumber = function (value) end;
     this.controlLeft = function () end;
     this.controlUp = function () end;
     this.controlDown = function () end;
@@ -84,14 +85,6 @@ function phone.Launcher.__constructor (phoneObject)
             this.setProperty(k, v);
 
             k, v = next(properties, k);
-        end
-    end
-
-    this.prop = function (name, value)
-        if value == nil then
-            return this.getProperty(name);
-        else
-            return this.setProperty(name, value);
         end
     end
 --property section end

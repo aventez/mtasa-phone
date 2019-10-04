@@ -49,6 +49,7 @@ function phone.Application.__constructor (launcher)
     --control section
     this.controlEnter = function () end;
     this.controlBack = function () end;
+    this.controlNumber = function (value) end;
     this.controlRight = function () end;
     this.controlLeft = function () end;
     this.controlUp = function () end;

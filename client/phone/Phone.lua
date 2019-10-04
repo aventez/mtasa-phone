@@ -31,6 +31,16 @@ function phone.Phone.__constructor (parent, viewType)
     local _properties = {};
 --private variables section end
 
+--interaction section
+this.onClosePhone = function ()
+end
+
+this.closePhone = function ()
+    this.setApplication(nil);
+    this.onClosePhone();
+end
+--interactoin section end
+
 --position section
     this.getX = function ()
         return _x;
@@ -66,14 +76,6 @@ function phone.Phone.__constructor (parent, viewType)
             k, v = next(attributes, k);
         end
     end
-
-    this.attr = function (name, value)
-        if value == nil then
-            return this.getAttribute(name);
-        else
-            return this.setAttribute(name, value);
-        end
-    end
 --attributs section end
 
 --property section
@@ -91,14 +93,6 @@ function phone.Phone.__constructor (parent, viewType)
             this.setProperty(k, v);
 
             k, v = next(properties, k);
-        end
-    end
-
-    this.prop = function (name, value)
-        if value == nil then
-            return this.getProperty(name);
-        else
-            return this.setProperty(name, value);
         end
     end
 
@@ -151,7 +145,13 @@ function phone.Phone.__constructor (parent, viewType)
         else
             this.changeSelected(-1);
         end
-    end    
+    end
+
+    this.controlNumber = function (value)
+        if this.getApplication() then
+            this.getApplication().controlNumber(value);
+        end
+    end
 
     this.controlRight = function ()
         if this.getApplication() then
@@ -162,7 +162,11 @@ function phone.Phone.__constructor (parent, viewType)
     end
 
     this.controlBack = function ()
-        this.setApplication(nil);
+        if this.getApplication() then
+            this.getApplication().controlBack();
+        end
+        -- TODO: Send key to app
+        --this.setApplication(nil);
     end
 
     this.controlEnter = function ()
@@ -176,16 +180,12 @@ function phone.Phone.__constructor (parent, viewType)
     this.controlUp = function ()
         if this.getApplication() then
             this.getApplication().controlUp();
-        else
-            this.runApplication(this.getLauncher().getSelected());
         end
     end
 
     this.controlDown = function ()
         if this.getApplication() then
             this.getApplication().controlDown();
-        else
-            this.runApplication(this.getLauncher().getSelected());
         end
     end
 
