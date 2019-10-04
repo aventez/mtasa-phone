@@ -72,7 +72,7 @@ function phone.PhoneApp.__constructor (...)
     
     this.drawContent = function ()
 		local number = data.number;
-		
+
 		if number == nil or number == '' then
 			number = 'Wprowadź numer';
 		end
@@ -123,6 +123,8 @@ function phone.PhoneApp.__constructor (...)
     			else
     				data.number = string.sub(data.number, 1, strLength-1);
     			end
+    		else
+    			p.setApplication(nil);
     		end
     	end
 

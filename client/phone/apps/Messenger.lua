@@ -1,17 +1,17 @@
-phone.Contacts = {};
-phone.Contacts.__index = phone.Application();
+phone.Messenger = {};
+phone.Messenger.__index = phone.Application();
 
-setmetatable(phone.Contacts, {
+setmetatable(phone.Messenger, {
 	__call = function (obj, ...)
 		return obj.__constructor(...);
 	end,
 });
 
-function phone.Contacts.getIcon()
-	return 'files/icons/icons3.png';
+function phone.Messenger.getIcon()
+	return 'files/icons/icons2.png';
 end
 
-function phone.Contacts.__constructor (...)
+function phone.Messenger.__constructor (...)
 	local this = phone.Application(...);
 
 	local super = {};
@@ -28,7 +28,8 @@ function phone.Contacts.__constructor (...)
 	this.setAttribute('contentMarginTop', 5);
 
 	local _phone = this.getLauncher().getPhone();
-	local contacts = _phone.getConfig('contacts');
+	local contacts = _phone.getConfig('messages');
+	local contactsList = _phone.getConfig('messagesList');
 	local selected = 1;
 	local maxContacts = 8;
 	local section = {
@@ -43,7 +44,7 @@ function phone.Contacts.__constructor (...)
 		dxDrawRectangle(0, 0, width, height, 0xFFEEFBF2);
 		dxDrawLine(0, height, width, height, 0xFFB2B2B2);
 		
-		dxDrawText('Kontakty',
+		dxDrawText('Wiadomości',
             0, 
             0, 
             width, 
@@ -75,16 +76,29 @@ function phone.Contacts.__constructor (...)
     end
 
 	this.drawContent = function ()
+		--outputChatBox(toJSON(contacts));
+
+		--outputChatBox(contacts['123']);
+
+		--for k, v in pairs(contacts) do
+			--outputChatBox(k);
+		--end
+
+
 		for i = 1, maxContacts do
 			newIndex = (section.first + i) - 1;
 
-			if contacts[newIndex] then
-				this.drawContact(i, contacts[newIndex]);
+			--outputChatBox(array);
+
+			if contactsList[newIndex] then
+				this.drawContact(i, contacts[contactsList[newIndex]]);
 			end
 		end
 	end
 
 	this.drawContact = function (index, data)
+		outputChatBox(toJSON(data[1].sender));
+
 		local width = _phone.getProperty('screen_width') or 0;
 
 		local marginTop = this.getAttribute('headerHeight') + this.getAttribute('contentMarginTop');
@@ -102,7 +116,9 @@ function phone.Contacts.__constructor (...)
 
 		dxDrawLine(0, height + optSize, width, height + optSize, 0xFFc6c6c8);
 
-		dxDrawText(data.name,
+		local contactName = data[1].sender;
+
+		dxDrawText(contactName,
 			marginLeft, 
 			marginTop + ((index-1)*optSize), 
 			width, 
@@ -111,21 +127,12 @@ function phone.Contacts.__constructor (...)
 			1,
 			Fonts.font or 'default',
 			'left',
-			'top');
-
-		dxDrawText(data.number,
-			marginLeft, 
-			marginTop + ((index-1)*optSize) + 12, 
-			width - 5, 
-			height, 
-			0xFF000000, 
-			1,
-			Fonts.miniFont or 'default',
-			'right',
-			'top');
+			'top');		
 	end
 
 	-- control section
+	    --[[
+
 	    this.controlEnter = function () 
 	    	local index = (section.first + selected) - 1;
 
@@ -185,6 +192,9 @@ function phone.Contacts.__constructor (...)
 			section.first = section.first + value;
 			section.last = section.last + value;
 		end
+
+		--]]
+
     -- control section end
 
     return this;

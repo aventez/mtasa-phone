@@ -217,9 +217,16 @@ end
         _app = _apps[appIndex](_launcher);
     end
 
-    this.setApplication = function (appClass)
-        if appClass == nil then 
-            _app = appClass;
+    this.setApplication = function (appClass, subApp)
+        subApp = subApp or false;
+
+        if appClass == nil then
+            _app = nil;
+            return;
+        end
+
+        if subApp then
+            _app = appClass(this.getLauncher());
         else
             _app = appClass(this);
         end
@@ -237,12 +244,11 @@ end
             this.getApplication().draw(_screenRenderTarget);
             _launcher.draw(true, tocolor(0, 0, 0, 255)); -- draw just statusbar
             dxSetRenderTarget();
-            return;
+        else
+            dxSetRenderTarget(_screenRenderTarget, true);
+            _launcher.draw();
+            dxSetRenderTarget();
         end
-
-        dxSetRenderTarget(_screenRenderTarget, true);
-        _launcher.draw();
-        dxSetRenderTarget();
     end
 
     this.createScreenRenderTarget = function ()
@@ -282,14 +288,15 @@ end
     end
 --dimension section end
 
-    this.onDraw = function ()
-    end
+--drawing section
+    this.onDraw = function () end
 
     this.draw = function ()
         this.invalidate();
 
         this.onDraw();
     end
+--drawing section
 
     return this;
 end

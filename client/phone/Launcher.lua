@@ -16,12 +16,12 @@ setmetatable(phone.Launcher, {
 function phone.Launcher.__constructor (phoneObject)
     local this = setmetatable({}, phone.Launcher);
 
---priavate variables
+--variables section
     local _phone = phoneObject;
     local _attributes = {};
     local _properties = {};
     local _selected = 1;
---priavate variables end
+--variables section end
 
 --attributs section
     this.setAttribute = function (name, value)
@@ -30,23 +30,6 @@ function phone.Launcher.__constructor (phoneObject)
 
     this.getAttribute = function (name)
         return _attributes[name];
-    end
-
-    this.setAttributes = function (attributes)
-        local k, v = next(attributes);
-        while k do
-            this.setAttribute(k, v);
-
-            k, v = next(attributes, k);
-        end
-    end
-
-    this.attr = function (name, value)
-        if value == nil then
-            return this.getAttribute(name);
-        else
-            return this.setAttribute(name, value);
-        end
     end
 --attributs section end
 
@@ -93,8 +76,7 @@ function phone.Launcher.__constructor (phoneObject)
         return _phone;
     end
 
-    this.drawStatusBar = function () 
-    end
+    this.drawStatusBar = function () end
 
     return this;
 end

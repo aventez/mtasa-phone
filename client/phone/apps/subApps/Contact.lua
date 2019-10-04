@@ -13,32 +13,34 @@ function phone.Contact.__constructor (...)
 	local super = {};
 	for k, v in pairs(this) do
 		if type(v) == 'function' then
-			--outputDebugString(k);
 			super[k] = v;
 		end
 	end
 
+	-- default attributes section
 	this.setAttribute('headerHeight', 27);
 	this.setAttribute('contentMargin', 10);
 	this.setAttribute('contentMarginTop', 5);
 	this.setAttribute('imageSize', 48);
-	
+	-- default attributes section end
+
+	-- variables section
 	local p = this.getLauncher();
+
 	local _elements = {};
 	local _selected = 0;
 	local _data = nil;
+
+	local width = p.getProperty('screen_width') or 0;
+	local height = p.getProperty('screen_height') or 0;
 
 	local events = {
 		callEvent = function () 
 			triggerServerEvent('onClientPhoneCall', resourceRoot, _data);
 			p.closePhone();
 		end,
-		messageEvent = function ()
-			outputChatBox('messaging' .. _data.number);
-		end,
-		deleteEvent = function ()
-			outputChatBox('deleting' .. _data.number);
-		end
+		messageEvent = function () end,
+		deleteEvent = function () end
 	};
 
 	local _options = {
@@ -59,19 +61,17 @@ function phone.Contact.__constructor (...)
 		}
 	};
 
+	-- variables section end
+
 	local getOptions = function ()
 		return _options;
 	end
 
-	local createView = function ()
-		local back = ui.BackIcon();
-		back.setAttributes({
-			text = 'Kontakty'
-		});
-		table.insert(_elements, back);
-	end
-
-	createView();
+	-- elements section
+	local back = ui.BackIcon();
+	back.setAttribute('text', 'Kontakty');
+	table.insert(_elements, back);
+	-- elements section end
 
 	this.draw = function (renderTarget)
 		local width = p.getProperty('screen_width') or 0;
@@ -157,8 +157,7 @@ function phone.Contact.__constructor (...)
 		end
 
 	    this.controlBack = function () 
-	    	outputChatBox('ustawianie');
-	    	p.setApplication(phone.Settings);
+	    	p.setApplication(phone.Contacts, true);
 		end
 
 	    this.controlUp = function ()

@@ -27,23 +27,6 @@ function phone.Application.__constructor (launcher)
         this.getAttribute = function (name)
             return _attributes[name];
         end
-
-        this.setAttributes = function (attributes)
-            local k, v = next(attributes);
-            while k do
-                this.setAttribute(k, v);
-
-                k, v = next(attributes, k);
-            end
-        end
-
-        this.attr = function (name, value)
-            if value == nil then
-                return this.getAttribute(name);
-            else
-                return this.setAttribute(name, value);
-            end
-        end
     --attributs section end
 
     --control section

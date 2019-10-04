@@ -81,8 +81,18 @@ function getPhoneConfig()
 		messages = {
 			{
 				id = 1,
-				sender = 987654321,
-				content = 'test message'
+				sender = 123,
+				content = 'test123'
+			},
+			{
+				id = 2,
+				sender = 123,
+				content = 'test1234'
+			},
+			{
+				id = 3,
+				sender = 321,
+				content = 'test321'
 			}
 		}
 	};

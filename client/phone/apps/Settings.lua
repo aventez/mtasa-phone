@@ -54,7 +54,6 @@ function phone.Settings.__constructor (...)
 	-- options section end
 
 	this.drawHeader = function ()
-        local p = this.getLauncher().getPhone();
 		local width = p.getProperty('screen_width') or 0;
 		local height = this.getAttribute('headerHeight');
 
@@ -80,7 +79,6 @@ function phone.Settings.__constructor (...)
 	end
 
 	this.drawContent = function ()
-		local p = this.getLauncher().getPhone();
 		local width = p.getProperty('screen_width') or 0;
 
 		local marginTop = this.getAttribute('headerHeight') + this.getAttribute('contentMarginTop');
@@ -94,7 +92,6 @@ function phone.Settings.__constructor (...)
 	end
 
 	this.drawOption = function (index, name, data)
-		local p = this.getLauncher().getPhone();
 		local width = p.getProperty('screen_width') or 0;
 
 		local marginTop = this.getAttribute('headerHeight') + this.getAttribute('contentMarginTop');
@@ -142,7 +139,6 @@ function phone.Settings.__constructor (...)
 	end
 
 	this.draw = function (renderTarget)
-        local p = this.getLauncher().getPhone();
 		local width = p.getProperty('screen_width') or 0;
 		local height = p.getProperty('screen_height') or 0;
 
@@ -156,7 +152,6 @@ function phone.Settings.__constructor (...)
     
     -- control section
 	    this.controlEnter = function () 
-	    	local p = this.getLauncher().getPhone();
 	    	local enabled = not this.getOptions()[selectedOption].data.enabled;
 
 	    	this.getOptions()[selectedOption].data.enabled = enabled;
@@ -167,6 +162,7 @@ function phone.Settings.__constructor (...)
 		end
 
 	    this.controlBack = function () 
+	    	p.setApplication(nil);
 		end
 
 	    this.controlUp = function ()

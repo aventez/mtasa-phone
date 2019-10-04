@@ -28,10 +28,9 @@ userphone.setApps({
 
 -- interaction section
 userphone.onClosePhone = function ()
-	showPhone();
+	changePhoneState();
 end
 -- interaction section end
-
 
 function drawPhone()
     if userphone.getY() ~= animation.positions.off then
@@ -63,7 +62,7 @@ function phoneAnimation()
 	end
 end
 
-function showPhone()
+function changePhoneState()
 	if animation.startTime ~= 0 then return end; -- antispam
 
 	if not show then
@@ -127,7 +126,7 @@ end
 		bindKey('enter', 'up', controlEnter);
 		bindKey('backspace', 'up', controlBack);
 
-		for i=0,9 do
+		for i = 0, 9 do
 			bindKey(i, 'up', controlNumber);
 		end
 	end
@@ -146,12 +145,13 @@ end
 	end
 --control section end
 
-bindKey('end', 'up', showPhone);
+bindKey('end', 'up', changePhoneState);
 
 --server section
+
 function onResponsePhoneData(array)
     for k, v in pairs(array) do
-        userphone.setConfig(k, v);
+		userphone.setConfig(k, v);
     end
 
 end

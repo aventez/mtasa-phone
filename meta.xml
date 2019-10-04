@@ -8,9 +8,6 @@
 	<script src="client/phone/Application.lua" type="client" />  
 	<script src="client/phone/Fonts.lua" type="client" />
 
-	<!-- events -->
-	<script src="client/phone/server/serverEvents.lua" type="client" />
-
 	<!-- launcher -->
 	<script src="client/phone/launchers/AppleLauncher.lua" type="client" />  
 	<script src="client/phone/launchers/IntroLauncher.lua" type="client" />  
