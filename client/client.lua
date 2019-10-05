@@ -77,6 +77,8 @@ function changePhoneState()
 		end
 
 	    addEventHandler('onClientPreRender', root, phoneAnimation);
+
+	    toggleControl('fire', false);
 	else
 		animation.startTime = getTickCount();
 		animation.fadeIn = false;
@@ -84,6 +86,8 @@ function changePhoneState()
 		unbindControlKeys();
 
 	    addEventHandler('onClientPreRender', root, phoneAnimation);
+
+	    toggleControl('fire', true);
 	end
 
 	show = not show;
@@ -96,14 +100,6 @@ end
 
 	function controlBack()
 	    userphone.controlBack();
-	end
-
-	function controlRight()
-	    userphone.controlRight();
-	end
-
-	function controlLeft()
-	    userphone.controlLeft();
 	end
 
 	function controlUp()
@@ -119,12 +115,10 @@ end
 	end
 
 	function bindControlKeys()
-		bindKey('arrow_u', 'up', controlUp);
-		bindKey('arrow_d', 'up', controlDown);
-		bindKey('arrow_r', 'up', controlRight);
-		bindKey('arrow_l', 'up', controlLeft);
-		bindKey('enter', 'up', controlEnter);
-		bindKey('backspace', 'up', controlBack);
+		bindKey('mouse_wheel_up', 'down', controlUp);
+		bindKey('mouse_wheel_down', 'down', controlDown);
+		bindKey('mouse1', 'up', controlEnter);
+		bindKey('mouse2', 'up', controlBack);
 
 		for i = 0, 9 do
 			bindKey(i, 'up', controlNumber);
@@ -132,12 +126,10 @@ end
 	end
 
 	function unbindControlKeys()
-		unbindKey('arrow_u', 'up', controlUp);
-		unbindKey('arrow_d', 'up', controlDown);
-		unbindKey('arrow_r', 'up', controlRight);
-		unbindKey('arrow_l', 'up', controlLeft);
-		unbindKey('enter', 'up', controlEnter);
-		unbindKey('backspace', 'up', controlBack);
+		unbindKey('mouse_wheel_up', 'down', controlUp);
+		unbindKey('mouse_wheel_down', 'down', controlDown);
+		unbindKey('mouse1', 'up', controlEnter);
+		unbindKey('mouse2', 'up', controlBack);
 
 		for i=0,9 do
 			unbindKey(i, 'up', controlNumber);

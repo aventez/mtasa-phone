@@ -22,134 +22,120 @@ function phone.Settings.__constructor (...)
 		end
 	end
 	
-	this.setAttribute('headerHeight', 50);
-	this.setAttribute('optionSize', 30);
-	this.setAttribute('contentMarginLeft', 10);
-	this.setAttribute('contentMarginRight', 10);
-	this.setAttribute('contentMarginTop', 5);
-
 	-- options section
-	local selectedOption = 1;
-	local _options = {};
+		local selectedOption = 1;
+		local _options = {};
 
-	this.addOption = function (optID, optName, value)
-		table.insert(_options, {
-			id = optID,
-			name = optName,
-			data = {
-				enabled = value
-			}
-		});
-	end
+		this.addOption = function (optID, optName, value)
+			table.insert(_options, {
+				id = optID,
+				name = optName,
+				data = {
+					enabled = value
+				}
+			});
+		end
 
-	local p = this.getLauncher().getPhone();
-
-	this.addOption('intro', 'Ekran startowy', p.getConfig('intro'));
-	this.addOption('muted', 'Wyciszenie', p.getConfig('muted'));
-
-	this.getOptions = function ()
-		return _options;
-	end
-
+		this.getOptions = function ()
+			return _options;
+		end
 	-- options section end
 
-	this.drawHeader = function ()
-		local width = p.getProperty('screen_width') or 0;
-		local height = this.getAttribute('headerHeight');
+	-- variables section
+		local p = this.getLauncher().getPhone();
+		local _elements = {};
 
-		dxDrawRectangle(0, 0, width, height, 0xFFEEFBF2);
-		dxDrawLine(0, height, width, height, 0xFFB2B2B2);
-		
-		dxDrawText('Ustawienia',
-            0, 
-            0, 
-            width, 
-            height-5,
-            0xFF000000,
-            1,
-            Fonts.font or 'default',
-            'center',
-            'bottom',
-            true, 
-            true,
-            false, --postGUI
-            false, 
-            true,
-            0, 0, 0);
-	end
+		this.setAttribute('headerHeight', 50);
+		this.setAttribute('optionSize', 30);
+		this.setAttribute('contentMarginLeft', 10);
+		this.setAttribute('contentMarginRight', 10);
+		this.setAttribute('contentMarginTop', 5);
 
-	this.drawContent = function ()
-		local width = p.getProperty('screen_width') or 0;
+		this.addOption('intro', 'Ekran startowy', p.getConfig('intro'));
+		this.addOption('muted', 'Wyciszenie', p.getConfig('muted'));
 
-		local marginTop = this.getAttribute('headerHeight') + this.getAttribute('contentMarginTop');
-		local optSize = this.getAttribute('optionSize');
-		local marginLeft = this.getAttribute('contentMarginLeft');
-		local marginRight = this.getAttribute('contentMarginRight');
+		local header = ui.Header();
+		header.setAttribute('text', 'Ustawienia');
+		table.insert(_elements, header);
+	-- variables section end
 
-		for k, v in ipairs(_options) do
-			this.drawOption(k, v.name, v.data);
-		end
-	end
+	-- drawing section
+		this.draw = function (renderTarget)
+			local width = p.getProperty('screen_width') or 0;
+			local height = p.getProperty('screen_height') or 0;
 
-	this.drawOption = function (index, name, data)
-		local width = p.getProperty('screen_width') or 0;
+			-- drawing background
+	        dxDrawRectangle(0, 0, width, height, (0xFFE3E3E6));
 
-		local marginTop = this.getAttribute('headerHeight') + this.getAttribute('contentMarginTop');
-		local optSize = this.getAttribute('optionSize');
-		local marginLeft = this.getAttribute('contentMarginLeft');
-		local marginRight = this.getAttribute('contentMarginRight');
+	        -- draw app content
+	        this.drawContent();
 
-		local imageSizes = {
-			width = 21,
-			height = 13.5
-		};
+	        for k, v in ipairs(_elements) do
+				v.draw();
+			end
+	    end
 
-		local height = marginTop + ((index-1)*optSize) - this.getAttribute('contentMarginTop');
+		this.drawContent = function ()
+			local width = p.getProperty('screen_width') or 0;
 
-		if index == selectedOption then
-			dxDrawRectangle(0, height + 1, width, optSize - 1, 0xFFB8B8B8);
-		else
-			dxDrawRectangle(0, height + 1, width, optSize - 1, 0xFFFFFFFF);
+			local marginTop = this.getAttribute('headerHeight') + this.getAttribute('contentMarginTop');
+			local optSize = this.getAttribute('optionSize');
+			local marginLeft = this.getAttribute('contentMarginLeft');
+			local marginRight = this.getAttribute('contentMarginRight');
+
+			for k, v in ipairs(_options) do
+				this.drawOption(k, v.name, v.data);
+			end
 		end
 
-		dxDrawLine(0, height + optSize, width, height + optSize, 0xFFc6c6c8);
+		this.drawOption = function (index, name, data)
+			local width = p.getProperty('screen_width') or 0;
 
-		dxDrawText(name, 
-			marginLeft, 
-			marginTop + ((index-1)*optSize), 
-			width, 
-			height, 
-			0xFF000000, 
-			1,
-			Fonts.font or 'default',
-			'left',
-			'top');
+			local marginTop = this.getAttribute('headerHeight') + this.getAttribute('contentMarginTop');
+			local optSize = this.getAttribute('optionSize');
+			local marginLeft = this.getAttribute('contentMarginLeft');
+			local marginRight = this.getAttribute('contentMarginRight');
 
-		local name = 'files/disabled.png';
+			local imageSizes = {
+				width = 21,
+				height = 13.5
+			};
 
-		if(data.enabled) then
-			name = 'files/enabled.png';
+			local height = marginTop + ((index-1)*optSize) - this.getAttribute('contentMarginTop');
+
+			if index == selectedOption then
+				dxDrawRectangle(0, height + 1, width, optSize - 1, 0xFFB8B8B8);
+			else
+				dxDrawRectangle(0, height + 1, width, optSize - 1, 0xFFFFFFFF);
+			end
+
+			dxDrawLine(0, height + optSize, width, height + optSize, 0xFFc6c6c8);
+
+			dxDrawText(name, 
+				marginLeft, 
+				marginTop + ((index-1)*optSize), 
+				width, 
+				height, 
+				0xFF000000, 
+				1,
+				Fonts.font or 'default',
+				'left',
+				'top');
+
+			local name = 'files/disabled.png';
+
+			if(data.enabled) then
+				name = 'files/enabled.png';
+			end
+
+			dxDrawImage(width - imageSizes.width - marginRight,
+				marginTop + ((index-1)*optSize),
+				imageSizes.width,
+				imageSizes.height,
+				name);
 		end
+    -- drawing section end
 
-		dxDrawImage(width - imageSizes.width - marginRight,
-			marginTop + ((index-1)*optSize),
-			imageSizes.width,
-			imageSizes.height,
-			name);
-	end
-
-	this.draw = function (renderTarget)
-		local width = p.getProperty('screen_width') or 0;
-		local height = p.getProperty('screen_height') or 0;
-
-		-- drawing background
-        dxDrawRectangle(0, 0, width, height, (0xFFE3E3E6));
-
-        -- draw app content
-        this.drawHeader();
-        this.drawContent();
-    end
-    
     -- control section
 	    this.controlEnter = function () 
 	    	local enabled = not this.getOptions()[selectedOption].data.enabled;
@@ -157,7 +143,6 @@ function phone.Settings.__constructor (...)
 	    	this.getOptions()[selectedOption].data.enabled = enabled;
 
     		p.setConfig(this.getOptions()[selectedOption].id, enabled);
-
 	    	p.saveConfig();
 		end
 

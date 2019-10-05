@@ -139,25 +139,9 @@ end
 --config section end
 
 -- control section
-    this.controlLeft = function ()
-        if this.getApplication() then
-            this.getApplication().controlLeft();
-        else
-            this.changeSelected(-1);
-        end
-    end
-
     this.controlNumber = function (value)
         if this.getApplication() then
             this.getApplication().controlNumber(value);
-        end
-    end
-
-    this.controlRight = function ()
-        if this.getApplication() then
-            this.getApplication().controlRight();
-        else
-            this.changeSelected(1);
         end
     end
 
@@ -165,8 +149,6 @@ end
         if this.getApplication() then
             this.getApplication().controlBack();
         end
-        -- TODO: Send key to app
-        --this.setApplication(nil);
     end
 
     this.controlEnter = function ()
@@ -180,12 +162,16 @@ end
     this.controlUp = function ()
         if this.getApplication() then
             this.getApplication().controlUp();
+        else
+            this.changeSelected(1);
         end
     end
 
     this.controlDown = function ()
         if this.getApplication() then
             this.getApplication().controlDown();
+        else
+            this.changeSelected(-1);
         end
     end
 

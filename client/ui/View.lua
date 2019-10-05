@@ -36,17 +36,10 @@ function ui.View.__constructor(parent, viewType)
                 k, v = next(attributes, k);
             end
         end
-
-        this.attr = function (name, value)
-            if value == nil then
-                return this.getAttribute(name);
-            else
-                return this.setAttribute(name, value);
-            end
-        end
     --attributs section end
 
     this.getLauncher = function ()
+        outputChatBox('returning launcher');
         return _launcher;
     end
 

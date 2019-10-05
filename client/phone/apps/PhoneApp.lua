@@ -22,86 +22,71 @@ function phone.PhoneApp.__constructor (...)
 		end
 	end
 	
-	this.setAttribute('headerHeight', 50);
-	this.setAttribute('contentMargin', 10);
-	this.setAttribute('contentMarginTop', 10);
+    -- default variables section
+        local p = this.getLauncher().getPhone();
+        local data = {
+            number = nil,
+            elements = {}
+        };
 
-	local p = this.getLauncher().getPhone();
+    	this.setAttribute('headerHeight', 50);
+    	this.setAttribute('contentMargin', 10);
+    	this.setAttribute('contentMarginTop', 10);
 
-	local data = {
-		number = nil
-	};
+        local header = ui.Header();
+        header.setAttribute('text', 'Telefon');
+        table.insert(data.elements, header);
+    -- default variables section end
 
-	this.drawHeader = function ()
-		local width = p.getProperty('screen_width') or 0;
-		local height = this.getAttribute('headerHeight');
+    -- drawing section
+    	this.draw = function (renderTarget)
+    		local width = p.getProperty('screen_width') or 0;
+    		local height = p.getProperty('screen_height') or 0;
 
-		dxDrawRectangle(0, 0, width, height, 0xFFEEFBF2);
-		dxDrawLine(0, height, width, height, 0xFFB2B2B2);
-		
-		dxDrawText('Telefon',
-            0, 
-            0, 
-            width, 
-            height-5,
-            0xFF000000,
-            1,
-            Fonts.font or 'default',
-            'center',
-            'bottom',
-            true, 
-            true,
-            false, --postGUI
-            false, 
-            true,
-            0, 0, 0);
-	end
+    		-- drawing background
+            dxDrawRectangle(0, 0, width, height, (0xFFE3E3E6));
 
+            -- draw app content
+            this.drawContent();
 
-	this.draw = function (renderTarget)
-		local width = p.getProperty('screen_width') or 0;
-		local height = p.getProperty('screen_height') or 0;
+            for k, v in ipairs(data.elements) do
+                v.draw();
+            end
+        end
+        
+        this.drawContent = function ()
+    		local number = data.number;
 
-		-- drawing background
-        dxDrawRectangle(0, 0, width, height, (0xFFE3E3E6));
+    		if number == nil or number == '' then
+    			number = 'Wprowadź numer';
+    		end
 
-        -- draw app content
-        this.drawHeader();
-        this.drawContent();
-    end
-    
-    this.drawContent = function ()
-		local number = data.number;
+    		local width = p.getProperty('screen_width') or 0;
+    		local height = p.getProperty('screen_height') or 0;
 
-		if number == nil or number == '' then
-			number = 'Wprowadź numer';
-		end
+    		local headerHeight = this.getAttribute('headerHeight');
+    		local marginTop = this.getAttribute('contentMarginTop');
 
-		local width = p.getProperty('screen_width') or 0;
-		local height = p.getProperty('screen_height') or 0;
+    		dxDrawText(number,
+                0, 
+                headerHeight + marginTop, 
+                width, 
+                height,
+                0xFF000000,
+                1,
+                Fonts.fontBig or 'default',
+                'center',
+                'top',
+                true, 
+                true,
+                false, --postGUI
+                false, 
+                true,
+                0, 0, 0);
 
-		local headerHeight = this.getAttribute('headerHeight');
-		local marginTop = this.getAttribute('contentMarginTop');
-
-		dxDrawText(number,
-            0, 
-            headerHeight + marginTop, 
-            width, 
-            height,
-            0xFF000000,
-            1,
-            Fonts.fontBig or 'default',
-            'center',
-            'top',
-            true, 
-            true,
-            false, --postGUI
-            false, 
-            true,
-            0, 0, 0);
-
-		dxDrawImage(0, 0, width, height, 'files/keyboard.png');
-	end
+    		dxDrawImage(0, 0, width, height, 'files/keyboard.png');
+    	end
+    -- drawing section end
 
     -- control section
     	this.controlNumber = function (value)

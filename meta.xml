@@ -16,6 +16,7 @@
 	<script src="client/ui/namespace.lua" type="client" />
 	<script src="client/ui/View.lua" type="client" />
 	<script src="client/ui/BackIcon.lua" type="client" />
+	<script src="client/ui/Header.lua" type="client" />
 
 	<!-- apps -->
 	<script src="client/phone/apps/Settings.lua" type="client" />
