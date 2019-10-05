@@ -6,6 +6,8 @@ function getPhoneConfig()
 	local data = {
 		intro = true,
 		muted = false,
+		phoneNumber = 665217234,
+		phoneModel = 'devPhone Standard - v0.1',
 		contacts = {
 			{
 				id = 1,

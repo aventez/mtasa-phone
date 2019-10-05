@@ -116,8 +116,10 @@ function phone.PhoneApp.__constructor (...)
     	end
 
     	this.controlEnter = function ()
-    		p.phoneCall(data.number);
-			p.closePhone();
+    		if data.number then 
+                p.phoneCall(data.number);
+			    p.closePhone();
+            end
     	end
     -- control section end
 

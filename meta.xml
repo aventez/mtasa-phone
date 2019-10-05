@@ -26,6 +26,7 @@
 	<!-- subApps -->
 	<script src="client/phone/apps/subApps/Contact.lua" type="client" />
 	<script src="client/phone/apps/subApps/NewContact.lua" type="client" />
+	<script src="client/phone/apps/subApps/PhoneInfo.lua" type="client" />
 
 	<!-- phones -->
 	<script src="client/phone/phones/Apple.lua" type="client" />  

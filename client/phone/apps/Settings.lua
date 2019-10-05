@@ -26,13 +26,12 @@ function phone.Settings.__constructor (...)
 		local selectedOption = 1;
 		local _options = {};
 
-		this.addOption = function (optID, optName, value)
+		this.addOption = function (optType, optID, optName, value, app)
 			table.insert(_options, {
 				id = optID,
+				type = optType,
 				name = optName,
-				data = {
-					enabled = value
-				}
+				value = value or nil
 			});
 		end
 
@@ -52,8 +51,9 @@ function phone.Settings.__constructor (...)
 		this.setAttribute('contentMarginRight', 10);
 		this.setAttribute('contentMarginTop', 5);
 
-		this.addOption('intro', 'Ekran startowy', p.getConfig('intro'));
-		this.addOption('muted', 'Wyciszenie', p.getConfig('muted'));
+		this.addOption('switch', 'intro', 'Ekran startowy', p.getConfig('intro'));
+		this.addOption('switch', 'muted', 'Wyciszenie', p.getConfig('muted'));
+		this.addOption('click', 'info', 'Informacje o telefonie', phone.PhoneInfo);
 
 		header.setAttribute('text', 'Ustawienia');
 		header.setAttribute('width', p.getProperty('screen_width'));
@@ -86,11 +86,11 @@ function phone.Settings.__constructor (...)
 			local marginRight = this.getAttribute('contentMarginRight');
 
 			for k, v in ipairs(_options) do
-				this.drawOption(k, v.name, v.data);
+				this.drawOption(k, v);
 			end
 		end
 
-		this.drawOption = function (index, name, data)
+		this.drawOption = function (index, data)
 			local width = p.getProperty('screen_width') or 0;
 
 			local marginTop = this.getAttribute('headerHeight') + this.getAttribute('contentMarginTop');
@@ -113,7 +113,7 @@ function phone.Settings.__constructor (...)
 
 			dxDrawLine(0, height + optSize, width, height + optSize, 0xFFc6c6c8);
 
-			dxDrawText(name, 
+			dxDrawText(data.name, 
 				marginLeft, 
 				marginTop + ((index-1)*optSize), 
 				width, 
@@ -124,28 +124,35 @@ function phone.Settings.__constructor (...)
 				'left',
 				'top');
 
-			local name = 'files/disabled.png';
+			if data.type == 'switch' then
+				local name = 'files/disabled.png';
 
-			if(data.enabled) then
-				name = 'files/enabled.png';
+				if(data.value) then
+					name = 'files/enabled.png';
+				end
+
+				dxDrawImage(width - imageSizes.width - marginRight,
+					marginTop + ((index-1)*optSize),
+					imageSizes.width,
+					imageSizes.height,
+					name);
 			end
-
-			dxDrawImage(width - imageSizes.width - marginRight,
-				marginTop + ((index-1)*optSize),
-				imageSizes.width,
-				imageSizes.height,
-				name);
 		end
     -- drawing section end
 
     -- control section
 	    this.controlEnter = function () 
-	    	local enabled = not this.getOptions()[selectedOption].data.enabled;
+	    	local option = this.getOptions()[selectedOption];
 
-	    	this.getOptions()[selectedOption].data.enabled = enabled;
+	    	if option.type == 'switch' then
+		    	option.value = not option.value;
 
-    		p.setConfig(this.getOptions()[selectedOption].id, enabled);
-	    	p.saveConfig();
+	    		p.setConfig(option.id, option.value);
+		    	p.saveConfig();	    		
+		    elseif option.type == 'click' then
+		    	p.setApplication(option.value, true);
+		    	outputChatBox('opening');
+		    end
 		end
 
 	    this.controlBack = function () 
