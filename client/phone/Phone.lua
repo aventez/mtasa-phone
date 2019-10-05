@@ -31,258 +31,299 @@ function phone.Phone.__constructor (parent, viewType)
     local _properties = {};
 --private variables section end
 
---interaction section
-this.onClosePhone = function ()
-end
-
-this.closePhone = function ()
-    this.setApplication(nil);
-    this.onClosePhone();
-end
---interactoin section end
-
---position section
-    this.getX = function ()
-        return _x;
+    --interaction section
+    this.onClosePhone = function ()
     end
 
-    this.getY = function ()
-        return _y;
+    this.closePhone = function ()
+        this.setApplication(nil);
+        this.onClosePhone();
     end
+    --interactoin section end
 
-    this.setX = function (x)
-        _x = x;
-    end
-
-    this.setY = function (y)
-        _y = y;
-    end
---position section end
-
---attributs section
-    this.setAttribute = function (name, value)
-        _attributes[name] = value;
-    end
-
-    this.getAttribute = function (name)
-        return _attributes[name];
-    end
-
-    this.setAttributes = function (attributes)
-        local k, v = next(attributes);
-        while k do
-            this.setAttribute(k, v);
-
-            k, v = next(attributes, k);
-        end
-    end
---attributs section end
-
---property section
-    this.setProperty = function (name, value)
-        _properties[name] = value;
-    end
-
-    this.getProperty = function (name)
-        return _properties[name];
-    end
-
-    this.setProperties = function (properties)
-        local k, v = next(properties);
-        while k do
-            this.setProperty(k, v);
-
-            k, v = next(properties, k);
-        end
-    end
-
-    --default properties
-    this.setProperties({
-        width = 190,
-        height = 394,
-        screen_offset_x = 12,
-        screen_offset_y = 54,
-        screen_width = 165,
-        screen_height = 292,
-    });
---property section end
-
---launcher section
-    this.setLauncher = function (launcherClass)
-        _launcher = launcherClass(this);
-    end
-
-    this.getLauncher = function ()
-        return _launcher;
-    end
---launcher section end
-
---config section
-    local _config = {};
-
-    this.loadConfig = function (file)
-        triggerServerEvent("getPhoneConfig", resourceRoot);
-    end
-
-    this.saveConfig = function (file)
-        triggerServerEvent("savePhoneConfig", resourceRoot, _config);
-    end
-
-    this.setConfig = function (name, value)
-        _config[name] = value;
-    end
-
-    this.getConfig = function (name)
-        return _config[name];
-    end
-
---config section end
-
--- control section
-    this.controlNumber = function (value)
-        if this.getApplication() then
-            this.getApplication().controlNumber(value);
-        end
-    end
-
-    this.controlBack = function ()
-        if this.getApplication() then
-            this.getApplication().controlBack();
-        end
-    end
-
-    this.controlEnter = function ()
-        if this.getApplication() then
-            this.getApplication().controlEnter();
-        else
-            this.runApplication(this.getLauncher().getSelected());
-        end
-    end
-
-    this.controlUp = function ()
-        if this.getApplication() then
-            this.getApplication().controlUp();
-        else
-            this.changeSelected(1);
-        end
-    end
-
-    this.controlDown = function ()
-        if this.getApplication() then
-            this.getApplication().controlDown();
-        else
-            this.changeSelected(-1);
-        end
-    end
-
-    this.changeSelected = function (value)
-        local new = this.getLauncher().getSelected() + value;
-
-        if this.getLauncher().getSelected() == 1 and value < 0 then
-            this.getLauncher().setSelected(#this.getApps());
-            return;
-        elseif new > #this.getApps() then
-            this.getLauncher().setSelected(1);
-            return;
+    --position section
+        this.getX = function ()
+            return _x;
         end
 
-        this.getLauncher().setSelected(new);
-    end
--- control section end
-
---application section
-    this.setApps = function (apps)
-        _apps = apps;
-    end
-
-    this.getApps = function ()
-        return _apps;
-    end
-
-    this.runApplication = function (appIndex)
-        _app = _apps[appIndex](_launcher);
-    end
-
-    this.setApplication = function (appClass, subApp)
-        subApp = subApp or false;
-
-        if appClass == nil then
-            _app = nil;
-            return;
+        this.getY = function ()
+            return _y;
         end
 
-        if subApp then
-            _app = appClass(this.getLauncher());
-        else
-            _app = appClass(this);
+        this.setX = function (x)
+            _x = x;
         end
-    end
 
-    this.getApplication = function()
-        return _app;
-    end
---application section end
-
---screen section
-    this.invalidate = function ()
-        if this.getApplication() then
-            dxSetRenderTarget(_screenRenderTarget, true);
-            this.getApplication().draw(_screenRenderTarget);
-            _launcher.draw(true, tocolor(0, 0, 0, 255)); -- draw just statusbar
-            dxSetRenderTarget();
-        else
-            dxSetRenderTarget(_screenRenderTarget, true);
-            _launcher.draw();
-            dxSetRenderTarget();
+        this.setY = function (y)
+            _y = y;
         end
-    end
+    --position section end
 
-    this.createScreenRenderTarget = function ()
-        if _screenRenderTarget then
-            if isElement(_screenRenderTarget) then
-                destroyElement(_screenRenderTarget);
+    --attributs section
+        this.setAttribute = function (name, value)
+            _attributes[name] = value;
+        end
+
+        this.getAttribute = function (name)
+            return _attributes[name];
+        end
+
+        this.setAttributes = function (attributes)
+            local k, v = next(attributes);
+            while k do
+                this.setAttribute(k, v);
+
+                k, v = next(attributes, k);
             end
-            _screenRenderTarget = nil;
         end
-        _screenRenderTarget = dxCreateRenderTarget(this.getProperty('screen_width') or 0, this.getProperty('screen_height') or 0, false);
-        this.invalidate();
-    end
+    --attributs section end
 
-    this.getScreenRenderTarget = function ()
-        return _screenRenderTarget;
-    end
---screen section end
+    --property section
+        this.setProperty = function (name, value)
+            _properties[name] = value;
+        end
 
---dimension section
-    this.getBoundingBox = function ()
-        local box = {};
-        box.x = _x;
-        box.y = _y;
-        box.width = this.getProperty('width');
-        box.height = this.getProperty('height');
-        return box;
-    end
+        this.getProperty = function (name)
+            return _properties[name];
+        end
 
-    this.getScreenBoundingBox = function ()
-        local box = this.getBoundingBox();
-        local screenBox = {};
-        screenBox.x = box.x + (this.getProperty('screen_offset_x') or 0);
-        screenBox.y = box.y + (this.getProperty('screen_offset_y') or 0);
-        screenBox.width = this.getProperty('screen_width') or 0;
-        screenBox.height = this.getProperty('screen_height') or 0;
-        return screenBox;
-    end
---dimension section end
+        this.setProperties = function (properties)
+            local k, v = next(properties);
+            while k do
+                this.setProperty(k, v);
 
---drawing section
-    this.onDraw = function () end
+                k, v = next(properties, k);
+            end
+        end
 
-    this.draw = function ()
-        this.invalidate();
+        --default properties
+        this.setProperties({
+            width = 190,
+            height = 394,
+            screen_offset_x = 12,
+            screen_offset_y = 54,
+            screen_width = 165,
+            screen_height = 292,
+        });
+    --property section end
 
-        this.onDraw();
-    end
---drawing section
+    --launcher section
+        this.setLauncher = function (launcherClass)
+            _launcher = launcherClass(this);
+        end
+
+        this.getLauncher = function ()
+            return _launcher;
+        end
+    --launcher section end
+
+    --config section
+        local _config = {};
+
+        this.loadConfig = function (file)
+            triggerServerEvent("getPhoneConfig", resourceRoot);
+        end
+
+        this.saveConfig = function (file)
+            triggerServerEvent("savePhoneConfig", resourceRoot, _config);
+        end
+
+        this.setConfig = function (name, value)
+            _config[name] = value;
+        end
+
+        this.getConfig = function (name)
+            return _config[name];
+        end
+
+    --config section end
+
+    -- server section
+        this.phoneCall = function (data)
+            triggerServerEvent('onClientPhoneCall', resourceRoot, data);
+        end
+
+        this.addContactServer = function (data)
+            triggerServerEvent('onClientAddContact', resourceRoot, data);
+        end
+    -- server section end
+
+    -- contacts section
+        this.getContacts = function ()
+            local array = {};
+            table.insert(array, {
+                id = 0,
+                name = 'Dodaj nowy kontakt'
+            });
+
+            for k, v in ipairs(this.getConfig('contacts')) do
+                table.insert(array, v);
+            end
+
+            return array;
+        end
+
+        this.addContact = function (data)
+            local contacts = this.getConfig('contacts');
+
+            this.addContactServer(data);
+            table.insert(contacts, data);
+
+            this.setConfig('contacts', contacts);
+        end
+    -- contacts section end
+
+    -- control section
+        this.controlNumber = function (value)
+            if this.getApplication() then
+                this.getApplication().controlNumber(value);
+            end
+        end
+
+        this.controlLetter = function (value)
+            if this.getApplication() then
+                this.getApplication().controlLetter(value);
+            end
+        end
+
+        this.controlBack = function ()
+            if this.getApplication() then
+                this.getApplication().controlBack();
+            end
+        end
+
+        this.controlEnter = function ()
+            if this.getApplication() then
+                this.getApplication().controlEnter();
+            else
+                this.runApplication(this.getLauncher().getSelected());
+            end
+        end
+
+        this.controlUp = function ()
+            if this.getApplication() then
+                this.getApplication().controlUp();
+            else
+                this.changeSelected(1);
+            end
+        end
+
+        this.controlDown = function ()
+            if this.getApplication() then
+                this.getApplication().controlDown();
+            else
+                this.changeSelected(-1);
+            end
+        end
+
+        this.changeSelected = function (value)
+            local new = this.getLauncher().getSelected() + value;
+
+            if this.getLauncher().getSelected() == 1 and value < 0 then
+                this.getLauncher().setSelected(#this.getApps());
+                return;
+            elseif new > #this.getApps() then
+                this.getLauncher().setSelected(1);
+                return;
+            end
+
+            this.getLauncher().setSelected(new);
+        end
+    -- control section end
+
+    --application section
+        this.setApps = function (apps)
+            _apps = apps;
+        end
+
+        this.getApps = function ()
+            return _apps;
+        end
+
+        this.runApplication = function (appIndex)
+            _app = _apps[appIndex](_launcher);
+        end
+
+        this.setApplication = function (appClass, subApp)
+            subApp = subApp or false;
+
+            if appClass == nil then
+                _app = nil;
+                return;
+            end
+
+            if subApp then
+                _app = appClass(this.getLauncher());
+            else
+                _app = appClass(this);
+            end
+        end
+
+        this.getApplication = function()
+            return _app;
+        end
+    --application section end
+
+    --screen section
+        this.invalidate = function ()
+            if this.getApplication() then
+                dxSetRenderTarget(_screenRenderTarget, true);
+                this.getApplication().draw(_screenRenderTarget);
+                _launcher.draw(true, tocolor(0, 0, 0, 255)); -- draw just statusbar
+                dxSetRenderTarget();
+            else
+                dxSetRenderTarget(_screenRenderTarget, true);
+                _launcher.draw();
+                dxSetRenderTarget();
+            end
+        end
+
+        this.createScreenRenderTarget = function ()
+            if _screenRenderTarget then
+                if isElement(_screenRenderTarget) then
+                    destroyElement(_screenRenderTarget);
+                end
+                _screenRenderTarget = nil;
+            end
+            _screenRenderTarget = dxCreateRenderTarget(this.getProperty('screen_width') or 0, this.getProperty('screen_height') or 0, false);
+            this.invalidate();
+        end
+
+        this.getScreenRenderTarget = function ()
+            return _screenRenderTarget;
+        end
+    --screen section end
+
+    --dimension section
+        this.getBoundingBox = function ()
+            local box = {};
+            box.x = _x;
+            box.y = _y;
+            box.width = this.getProperty('width');
+            box.height = this.getProperty('height');
+            return box;
+        end
+
+        this.getScreenBoundingBox = function ()
+            local box = this.getBoundingBox();
+            local screenBox = {};
+            screenBox.x = box.x + (this.getProperty('screen_offset_x') or 0);
+            screenBox.y = box.y + (this.getProperty('screen_offset_y') or 0);
+            screenBox.width = this.getProperty('screen_width') or 0;
+            screenBox.height = this.getProperty('screen_height') or 0;
+            return screenBox;
+        end
+    --dimension section end
+
+    --drawing section
+        this.onDraw = function () end
+
+        this.draw = function ()
+            this.invalidate();
+
+            this.onDraw();
+        end
+    --drawing section
 
     return this;
 end

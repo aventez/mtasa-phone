@@ -20,8 +20,8 @@ function ui.Header.__constructor(...)
 	this.onDraw = function ()
 		super.onDraw();
 
-		local width = 167;
-		local height = 50;
+		local width = this.getAttribute('width') or 0;
+		local height = this.getAttribute('height') or 0;
 
 		dxDrawRectangle(0, 0, width, height, 0xFFEEFBF2);
 		dxDrawLine(0, height, width, height, 0xFFB2B2B2);

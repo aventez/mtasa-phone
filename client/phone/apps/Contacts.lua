@@ -29,7 +29,7 @@ function phone.Contacts.__constructor (...)
 		this.setAttribute('contentMarginTop', 5);
 
 		local _phone = this.getLauncher().getPhone();
-		local contacts = _phone.getConfig('contacts');
+		local contacts = _phone.getContacts();
 		local selected = 1;
 		local maxContacts = 8;
 		local elements = {};
@@ -37,8 +37,11 @@ function phone.Contacts.__constructor (...)
 			first = 1,
 			last = 8
 		};
+
 		local header = ui.Header();
         header.setAttribute('text', 'Kontakty');
+        header.setAttribute('width', _phone.getProperty('screen_width'));
+        header.setAttribute('height', 50);
         table.insert(elements, header);
 	-- variables section end
 
@@ -86,27 +89,40 @@ function phone.Contacts.__constructor (...)
 
 			dxDrawLine(0, height + optSize, width, height + optSize, 0xFFc6c6c8);
 
-			dxDrawText(data.name,
-				marginLeft, 
-				marginTop + ((index-1)*optSize), 
-				width, 
-				height, 
-				0xFF000000, 
-				1,
-				Fonts.font or 'default',
-				'left',
-				'top');
+			if data.number then
+				dxDrawText(data.name,
+					marginLeft, 
+					marginTop + ((index-1)*optSize), 
+					width, 
+					height, 
+					0xFF000000, 
+					1,
+					Fonts.font or 'default',
+					'left',
+					'top');
 
-			dxDrawText(data.number,
-				marginLeft, 
-				marginTop + ((index-1)*optSize) + 12, 
-				width - 5, 
-				height, 
-				0xFF000000, 
-				1,
-				Fonts.miniFont or 'default',
-				'right',
-				'top');
+				dxDrawText(data.number,
+					marginLeft, 
+					marginTop + ((index-1)*optSize) + 12, 
+					width - 5, 
+					height, 
+					0xFF000000, 
+					1,
+					Fonts.miniFont or 'default',
+					'right',
+					'top');
+			else
+				dxDrawText(data.name,
+					marginLeft, 
+					marginTop + ((index-1)*optSize), 
+					width, 
+					height, 
+					0xFF0a84ff, 
+					1,
+					Fonts.font or 'default',
+					'left',
+					'top');				
+			end
 		end
 	-- drawing section end
 
@@ -114,9 +130,12 @@ function phone.Contacts.__constructor (...)
 	    this.controlEnter = function () 
 	    	local index = (section.first + selected) - 1;
 
-			_phone.setAttribute('contactData', contacts[index]);
-
-			_phone.setApplication(phone.Contact);
+	    	if index == 1 then
+	    		_phone.setApplication(phone.NewContact);
+	    	else
+				_phone.setAttribute('contactData', contacts[index]);
+				_phone.setApplication(phone.Contact);
+			end
 		end
 
 	    this.controlBack = function () 
@@ -135,34 +154,43 @@ function phone.Contacts.__constructor (...)
 			local new = selected + value;
 			local newIndex = (section.first + new) - 1;
 
-			if new > maxContacts then
-				if newIndex > #contacts then
-					-- back to down
-					section = {
-						first = 1,
-						last = 8
-					};
+			if #contacts > maxContacts then
+				if new > maxContacts then
+					if newIndex > #contacts then
+						section = {
+							first = 1,
+							last = 8
+						};
 
-					selected = 1;
-				else
-					this.changeSectionValues(1);
-					selected = maxContacts;
-				end
-			elseif new <= 0 then
-				-- back to up
-				if newIndex <= 0 then
-					section = {
-						first = #contacts-maxContacts+1,
-						last = #contacts
-					};
+						selected = 1;
+					else
+						this.changeSectionValues(1);
+						selected = maxContacts;
+					end
+				elseif new <= 0 then
+					if newIndex <= 0 then
+						section = {
+							first = #contacts-maxContacts+1,
+							last = #contacts
+						};
 
-					selected = maxContacts;
+						selected = maxContacts;
+					else
+						this.changeSectionValues(-1);
+						selected = 1;
+					end
 				else
-					this.changeSectionValues(-1);
-					selected = 1;
+					-- no section changes
+					selected = new;
 				end
 			else
-				selected = new;
+				if new <= 0 then
+					selected = #contacts;
+				elseif new > #contacts then
+					selected = 1;
+				else
+					selected = new;
+				end
 			end
 		end
 

@@ -37,6 +37,7 @@ function phone.Launcher.__constructor (phoneObject)
     this.controlEnter = function () end;
     this.controlBack = function () end;
     this.controlNumber = function (value) end;
+    this.controlLetter = function (value) end;
     this.controlUp = function () end;
     this.controlDown = function () end;
 --control section end

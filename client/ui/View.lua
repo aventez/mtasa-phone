@@ -39,7 +39,6 @@ function ui.View.__constructor(parent, viewType)
     --attributs section end
 
     this.getLauncher = function ()
-        outputChatBox('returning launcher');
         return _launcher;
     end
 

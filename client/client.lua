@@ -10,6 +10,9 @@ local animation = {
 	startTime = 0,
 	progress = 0
 };
+local letters = {
+	'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'space'
+};
 
 -- user phone section
 
@@ -114,15 +117,30 @@ end
 		userphone.controlNumber(value);
 	end
 
+	function controlLetter(value)
+		if value == 'space' then
+			value = ' ';
+		end
+
+		userphone.controlLetter(value);
+	end
+
 	function bindControlKeys()
 		bindKey('mouse_wheel_up', 'down', controlUp);
 		bindKey('mouse_wheel_down', 'down', controlDown);
 		bindKey('mouse1', 'up', controlEnter);
 		bindKey('mouse2', 'up', controlBack);
+		bindKey('backspace', 'up', controlBack);
+
+		for k, v in pairs(letters) do
+			bindKey(letters[k], 'up', controlLetter);
+		end
 
 		for i = 0, 9 do
 			bindKey(i, 'up', controlNumber);
 		end
+
+		-- bind letters
 	end
 
 	function unbindControlKeys()
@@ -130,10 +148,17 @@ end
 		unbindKey('mouse_wheel_down', 'down', controlDown);
 		unbindKey('mouse1', 'up', controlEnter);
 		unbindKey('mouse2', 'up', controlBack);
+		unbindKey('backspace', 'up', controlBack);
+
+		for k, v in pairs(letters) do
+			unbindKey(letters[k], 'up', controlLetter);
+		end
 
 		for i=0,9 do
 			unbindKey(i, 'up', controlNumber);
 		end
+
+		-- bind letters
 	end
 --control section end
 

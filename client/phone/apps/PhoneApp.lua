@@ -35,6 +35,8 @@ function phone.PhoneApp.__constructor (...)
 
         local header = ui.Header();
         header.setAttribute('text', 'Telefon');
+        header.setAttribute('width', p.getProperty('screen_width'));
+        header.setAttribute('height', 50);
         table.insert(data.elements, header);
     -- default variables section end
 
@@ -114,7 +116,7 @@ function phone.PhoneApp.__constructor (...)
     	end
 
     	this.controlEnter = function ()
-    		triggerServerEvent('onClientPhoneCall', resourceRoot, data);
+    		p.phoneCall(data.number);
 			p.closePhone();
     	end
     -- control section end

@@ -43,7 +43,8 @@ function phone.Settings.__constructor (...)
 
 	-- variables section
 		local p = this.getLauncher().getPhone();
-		local _elements = {};
+		local elements = {};
+		local header = ui.Header();
 
 		this.setAttribute('headerHeight', 50);
 		this.setAttribute('optionSize', 30);
@@ -54,9 +55,10 @@ function phone.Settings.__constructor (...)
 		this.addOption('intro', 'Ekran startowy', p.getConfig('intro'));
 		this.addOption('muted', 'Wyciszenie', p.getConfig('muted'));
 
-		local header = ui.Header();
 		header.setAttribute('text', 'Ustawienia');
-		table.insert(_elements, header);
+		header.setAttribute('width', p.getProperty('screen_width'));
+		header.setAttribute('height', 50);
+		table.insert(elements, header);
 	-- variables section end
 
 	-- drawing section
@@ -70,7 +72,7 @@ function phone.Settings.__constructor (...)
 	        -- draw app content
 	        this.drawContent();
 
-	        for k, v in ipairs(_elements) do
+	        for k, v in ipairs(elements) do
 				v.draw();
 			end
 	    end

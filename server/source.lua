@@ -12,71 +12,6 @@ function getPhoneConfig()
 				name = 'Testowy kontakt',
 				number = 123456789
 			},
-			{
-				id = 2,
-				name = "Test2",
-				number = 987654321
-			},
-			{
-				id = 2,
-				name = "Test3",
-				number = 987654321
-			},
-			{
-				id = 2,
-				name = "Test4",
-				number = 987654321
-			},
-			{
-				id = 2,
-				name = "Test5",
-				number = 987654321
-			},
-			{
-				id = 2,
-				name = "Test6",
-				number = 987654321
-			},
-			{
-				id = 2,
-				name = "Test7",
-				number = 987654321
-			},
-			{
-				id = 2,
-				name = "Test8",
-				number = 987654321
-			},
-			{
-				id = 2,
-				name = "Test9",
-				number = 987654321
-			},
-			{
-				id = 2,
-				name = "Test10",
-				number = 987654321
-			},
-			{
-				id = 2,
-				name = "Test11",
-				number = 987654321
-			},
-			{
-				id = 2,
-				name = "Test12",
-				number = 987654321
-			},
-			{
-				id = 2,
-				name = "Test13",
-				number = 987654321
-			},
-			{
-				id = 2,
-				name = "Test14",
-				number = 987654321
-			},
 		},
 		messages = {
 			{
@@ -117,3 +52,10 @@ end
 
 addEvent('onClientPhoneCall', true);
 addEventHandler('onClientPhoneCall', resourceRoot, onClientPhoneCall);
+
+function onClientAddContact(data)
+	print(toJSON(data));
+end
+
+addEvent('onClientAddContact', true);
+addEventHandler('onClientAddContact', resourceRoot, onClientAddContact);

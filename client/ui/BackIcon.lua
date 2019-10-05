@@ -20,8 +20,6 @@ function ui.BackIcon.__constructor(...)
 	this.onDraw = function ()
 		super.onDraw();
 
-		--local text = this.getAttribute('text');
-
 		local marginLeft = 7;
 		local marginTop = 25;
 		local imageSize = 16;
