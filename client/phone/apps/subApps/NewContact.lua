@@ -55,7 +55,7 @@ function phone.NewContact.__constructor (...)
 	this.draw = function (renderTarget)
 		local width = p.getProperty('screen_width') or 0;
 		local height = p.getProperty('screen_height') or 0;
-	
+
 		-- drawing background
         dxDrawRectangle(0, 0, width, height, (0xFFE3E3E6));
 
@@ -64,6 +64,7 @@ function phone.NewContact.__constructor (...)
     end
 
     this.drawContent = function ()
+    	local width = p.getProperty('screen_width') or 0;
 		local marginTop = this.getAttribute('contentMarginTop') + this.getAttribute('headerHeight') + 15;
 		local marginContent = this.getAttribute('contentMargin');
 		local optSize = this.getAttribute('optSize');

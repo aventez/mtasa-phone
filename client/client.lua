@@ -2,7 +2,7 @@ local screenX, screenY = guiGetScreenSize();
 local show = false;
 local animation = {
 	positions = {
-		on = screenY-screenY/3-45,
+		on = screenY-screenY/1.80,
 		off = screenY
 	},
 	fadeIn = false,
@@ -19,11 +19,12 @@ local letters = {
 local userphone = phone.Apple();
 
 -- default values
-userphone.setX(screenX-screenX/9);
+userphone.setX(screenX-screenX/6);
 userphone.setY(animation.positions.off);
 userphone.loadConfig();
 userphone.setApps({
 	phone.PhoneApp,
+	phone.Messenger,
 	phone.Contacts,
 	phone.Settings
 });

@@ -98,12 +98,12 @@ function phone.Phone.__constructor (parent, viewType)
 
         --default properties
         this.setProperties({
-            width = 190,
-            height = 394,
-            screen_offset_x = 12,
-            screen_offset_y = 54,
-            screen_width = 165,
-            screen_height = 292,
+            width = 285,
+            height = 591,
+            screen_offset_x = 20,
+            screen_offset_y = 25,
+            screen_width = 244,
+            screen_height = 529,
         });
     --property section end
 
@@ -149,18 +149,24 @@ function phone.Phone.__constructor (parent, viewType)
     -- server section end
 
     -- contacts section
-        this.getContacts = function ()
-            local array = {};
-            table.insert(array, {
-                id = 0,
-                name = 'Dodaj nowy kontakt'
-            });
+        this.getContacts = function (newContactRow)
+            newContactRow = newContactRow or false;
 
-            for k, v in ipairs(this.getConfig('contacts')) do
-                table.insert(array, v);
+            if not newContactRow then
+                return this.getConfig('contacts');
+            else
+                local array = {};
+                table.insert(array, {
+                    id = 0,
+                    name = 'Dodaj nowy kontakt'
+                });
+
+                for k, v in ipairs(this.getConfig('contacts')) do
+                    table.insert(array, v);
+                end
+
+                return array;
             end
-
-            return array;
         end
 
         this.addContact = function (data)
@@ -204,7 +210,7 @@ function phone.Phone.__constructor (parent, viewType)
             if this.getApplication() then
                 this.getApplication().controlUp();
             else
-                this.changeSelected(1);
+                this.changeSelected(-1);
             end
         end
 
@@ -212,7 +218,7 @@ function phone.Phone.__constructor (parent, viewType)
             if this.getApplication() then
                 this.getApplication().controlDown();
             else
-                this.changeSelected(-1);
+                this.changeSelected(1);
             end
         end
 
@@ -269,7 +275,7 @@ function phone.Phone.__constructor (parent, viewType)
             if this.getApplication() then
                 dxSetRenderTarget(_screenRenderTarget, true);
                 this.getApplication().draw(_screenRenderTarget);
-                _launcher.draw(true, tocolor(0, 0, 0, 255)); -- draw just statusbar
+                _launcher.draw(true, tocolor(255, 255, 255, 255)); -- draw just statusbar
                 dxSetRenderTarget();
             else
                 dxSetRenderTarget(_screenRenderTarget, true);

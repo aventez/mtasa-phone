@@ -21,124 +21,116 @@ function phone.Messenger.__constructor (...)
 		end
 	end
 
-	this.setAttribute('headerHeight', 50);
-	this.setAttribute('optionSize', 30);
-	this.setAttribute('contentMarginLeft', 10);
-	this.setAttribute('contentMarginRight', 10);
-	this.setAttribute('contentMarginTop', 5);
+	-- variables section
+		this.setAttribute('headerHeight', 50);
+		this.setAttribute('optionSize', 30);
+		this.setAttribute('contentMarginLeft', 10);
+		this.setAttribute('contentMarginRight', 10);
+		this.setAttribute('contentMarginTop', 5);
 
-	local _phone = this.getLauncher().getPhone();
-	local contacts = _phone.getConfig('messages');
-	local contactsList = _phone.getConfig('messagesList');
-	local selected = 1;
-	local maxContacts = 8;
-	local section = {
-		first = 1,
-		last = 8
-	};
+		local _phone = this.getLauncher().getPhone();
+		local contacts = _phone.getContacts();
+		local selected = 1;
+		local maxContacts = 8;
+		local elements = {};
+		local section = {
+			first = 1,
+			last = 8
+		};
 
-	this.drawHeader = function ()
-		local width = _phone.getProperty('screen_width') or 0;
-		local height = this.getAttribute('headerHeight');
+		local header = ui.Header();
+        header.setAttribute('text', 'Wiadomości');
+        header.setAttribute('width', _phone.getProperty('screen_width'));
+        header.setAttribute('height', 50);
+        table.insert(elements, header);
+	-- variables section end
 
-		dxDrawRectangle(0, 0, width, height, 0xFFEEFBF2);
-		dxDrawLine(0, height, width, height, 0xFFB2B2B2);
-		
-		dxDrawText('Wiadomości',
-            0, 
-            0, 
-            width, 
-            height-5,
-            0xFF000000,
-            1,
-            Fonts.font or 'default',
-            'center',
-            'bottom',
-            true, 
-            true,
-            false, --postGUI
-            false, 
-            true,
-            0, 0, 0);
-	end
+	-- drawing section
+		this.draw = function (renderTarget)
+			local width = _phone.getProperty('screen_width') or 0;
+			local height = _phone.getProperty('screen_height') or 0;
 
-	this.draw = function (renderTarget)
-		local width = _phone.getProperty('screen_width') or 0;
-		local height = _phone.getProperty('screen_height') or 0;
+			-- drawing background
+	        dxDrawRectangle(0, 0, width, height, (0xFFE3E3E6));
 
-		-- drawing background
-        dxDrawRectangle(0, 0, width, height, (0xFFE3E3E6));
+	        -- draw app content
+	    	this.drawContent();
 
-        -- draw app content
+	    	for k, v in ipairs(elements) do
+	            v.draw();
+	        end
+	    end
 
-    	this.drawHeader();
-    	this.drawContent();
-    end
+		this.drawContent = function ()
+			for i = 1, maxContacts do
+				newIndex = (section.first + i) - 1;
 
-	this.drawContent = function ()
-		--outputChatBox(toJSON(contacts));
-
-		--outputChatBox(contacts['123']);
-
-		--for k, v in pairs(contacts) do
-			--outputChatBox(k);
-		--end
-
-
-		for i = 1, maxContacts do
-			newIndex = (section.first + i) - 1;
-
-			--outputChatBox(array);
-
-			if contactsList[newIndex] then
-				this.drawContact(i, contacts[contactsList[newIndex]]);
+				if contacts[newIndex] then
+					this.drawContact(i, contacts[newIndex]);
+				end
 			end
 		end
-	end
 
-	this.drawContact = function (index, data)
-		outputChatBox(toJSON(data[1].sender));
+		this.drawContact = function (index, data)
+			local width = _phone.getProperty('screen_width') or 0;
 
-		local width = _phone.getProperty('screen_width') or 0;
+			local marginTop = this.getAttribute('headerHeight') + this.getAttribute('contentMarginTop');
+			local optSize = this.getAttribute('optionSize');
+			local marginLeft = this.getAttribute('contentMarginLeft');
+			local marginRight = this.getAttribute('contentMarginRight');
 
-		local marginTop = this.getAttribute('headerHeight') + this.getAttribute('contentMarginTop');
-		local optSize = this.getAttribute('optionSize');
-		local marginLeft = this.getAttribute('contentMarginLeft');
-		local marginRight = this.getAttribute('contentMarginRight');
+			local height = marginTop + ((index-1)*optSize) - this.getAttribute('contentMarginTop');
 
-		local height = marginTop + ((index-1)*optSize) - this.getAttribute('contentMarginTop');
+			if index == selected then
+				dxDrawRectangle(0, height + 1, width, optSize - 1, 0xFFB8B8B8);
+			else
+				dxDrawRectangle(0, height + 1, width, optSize - 1, 0xFFFFFFFF);
+			end
 
-		if index == selected then
-			dxDrawRectangle(0, height + 1, width, optSize - 1, 0xFFB8B8B8);
-		else
-			dxDrawRectangle(0, height + 1, width, optSize - 1, 0xFFFFFFFF);
+			dxDrawLine(0, height + optSize, width, height + optSize, 0xFFc6c6c8);
+
+			dxDrawText(data.name,
+				marginLeft, 
+				marginTop + ((index-1)*optSize), 
+				width, 
+				height, 
+				0xFF000000, 
+				1,
+				Fonts.font or 'default',
+				'left',
+				'top');
+
+			dxDrawText(data.number,
+				marginLeft, 
+				marginTop + ((index-1)*optSize) + 12, 
+				width - 5, 
+				height, 
+				0xFF000000, 
+				1,
+				Fonts.miniFont or 'default',
+				'right',
+				'top');			
 		end
-
-		dxDrawLine(0, height + optSize, width, height + optSize, 0xFFc6c6c8);
-
-		local contactName = data[1].sender;
-
-		dxDrawText(contactName,
-			marginLeft, 
-			marginTop + ((index-1)*optSize), 
-			width, 
-			height, 
-			0xFF000000, 
-			1,
-			Fonts.font or 'default',
-			'left',
-			'top');		
-	end
+	-- drawing section end
 
 	-- control section
-	    --[[
-
 	    this.controlEnter = function () 
 	    	local index = (section.first + selected) - 1;
 
-			_phone.setAttribute('contactData', contacts[index]);
+	    	local messages = _phone.getConfig('messages');
 
-			_phone.setApplication(phone.Contact);
+	    	for k, v in ipairs(messages) do
+	    		if v.sender ~= contacts[index].number and v.sender ~= _phone.getConfig('phoneNumber') then
+	    			table.remove(messages, k);
+	    		end
+	    	end
+
+	    	_phone.setAttribute('messengerData', {
+	    		contact = contacts[index],
+	    		messages = messages
+	    	});
+
+	    	_phone.setApplication(phone.Messages);
 		end
 
 	    this.controlBack = function () 
@@ -157,34 +149,43 @@ function phone.Messenger.__constructor (...)
 			local new = selected + value;
 			local newIndex = (section.first + new) - 1;
 
-			if new > maxContacts then
-				if newIndex > #contacts then
-					-- back to down
-					section = {
-						first = 1,
-						last = 8
-					};
+			if #contacts > maxContacts then
+				if new > maxContacts then
+					if newIndex > #contacts then
+						section = {
+							first = 1,
+							last = 8
+						};
 
-					selected = 1;
-				else
-					this.changeSectionValues(1);
-					selected = maxContacts;
-				end
-			elseif new <= 0 then
-				-- back to up
-				if newIndex <= 0 then
-					section = {
-						first = #contacts-maxContacts+1,
-						last = #contacts
-					};
+						selected = 1;
+					else
+						this.changeSectionValues(1);
+						selected = maxContacts;
+					end
+				elseif new <= 0 then
+					if newIndex <= 0 then
+						section = {
+							first = #contacts-maxContacts+1,
+							last = #contacts
+						};
 
-					selected = maxContacts;
+						selected = maxContacts;
+					else
+						this.changeSectionValues(-1);
+						selected = 1;
+					end
 				else
-					this.changeSectionValues(-1);
-					selected = 1;
+					-- no section changes
+					selected = new;
 				end
 			else
-				selected = new;
+				if new <= 0 then
+					selected = #contacts;
+				elseif new > #contacts then
+					selected = 1;
+				else
+					selected = new;
+				end
 			end
 		end
 
@@ -192,9 +193,6 @@ function phone.Messenger.__constructor (...)
 			section.first = section.first + value;
 			section.last = section.last + value;
 		end
-
-		--]]
-
     -- control section end
 
     return this;

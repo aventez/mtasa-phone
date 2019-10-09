@@ -18,21 +18,72 @@ function getPhoneConfig()
 		messages = {
 			{
 				id = 1,
-				sender = 123,
-				content = 'test123'
+				sender = 123456789,
+				receiver = 665217234,
+				content = 'Siema asfasfasf'
 			},
 			{
 				id = 2,
-				sender = 123,
-				content = 'test1234'
+				sender = 123456789,
+				receiver = 665217234,
+				content = 'co tam'
 			},
 			{
 				id = 3,
 				sender = 321,
+				receiver = 665217234,
 				content = 'test321'
+			},
+			{
+				id = 4,
+				sender = 123456789,
+				receiver = 665217234,
+				content = 'testset'
+			},
+			{
+				id = 5,
+				sender = 123456789,
+				receiver = 665217234,
+				content = 'asdasd'
+			},
+			{
+				id = 6,
+				sender = 665217234,
+				receiver = 123456789,
+				content = 'ok'
+			},
+			{
+				id = 7,
+				sender = 665217234,
+				receiver = 123456789,
+				content = 'asfasfa'
+			},
+			{
+				id = 8,
+				sender = 123456789,
+				receiver = 665217234,
+				content = 'test'
+			},
+			{
+				id = 9,
+				sender = 123456789,
+				receiver = 665217234,
+				content = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit'
+			},
+			{
+				id = 10,
+				sender = 665217234,
+				receiver = 123456789,
+				content = 'zxc'
+			},
+			{
+				id = 11,
+				sender = 665217234,
+				receiver = 123456789,
+				content = 'siema co tam powiem ze mlodszy pacha to jebany dzban'
 			}
 		}
-	};
+	}
 
 	triggerClientEvent(client, 'onResponsePhoneData', client, data);
 end

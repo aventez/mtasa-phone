@@ -29,7 +29,7 @@ function phone.Contacts.__constructor (...)
 		this.setAttribute('contentMarginTop', 5);
 
 		local _phone = this.getLauncher().getPhone();
-		local contacts = _phone.getContacts();
+		local contacts = _phone.getContacts(true);
 		local selected = 1;
 		local maxContacts = 8;
 		local elements = {};

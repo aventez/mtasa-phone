@@ -31,11 +31,11 @@ function phone.Apple.__constructor (...)
     this.onDraw = function ()
         super.onDraw();
 
-        local box = this.getBoundingBox();
-        dxDrawImage(box.x, box.y, box.width, box.height, this.getAttribute('texture'));
-
         local screenBox = this.getScreenBoundingBox();
         dxDrawImage(screenBox.x, screenBox.y, screenBox.width, screenBox.height, this.getScreenRenderTarget());
+
+        local box = this.getBoundingBox();
+        dxDrawImage(box.x, box.y, box.width, box.height, this.getAttribute('texture'));
     end
     
     return this;

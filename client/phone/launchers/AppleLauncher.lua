@@ -17,8 +17,16 @@ function phone.AppleLauncher.__constructor (...)
 		end
     end
     
+    local appMargin = 5;
+    local appPadding = 2;
+    local appSize = 48;
+    local appsInRow = 4;
+
+    local bgPadding = 3;
+
+
     this.setAttribute('color', tocolor(0, 0, 0, 0.4));
-    this.setAttribute('icon-margin-top', 30);
+    this.setAttribute('iconsMargin', 20);
 
     local getStringRealTime = function ()
         local time = getRealTime();
@@ -33,43 +41,49 @@ function phone.AppleLauncher.__constructor (...)
 
         local apps = this.getPhone().getApps();
 
-        local appMargin = 8;
-        local appPadding = 2;
-        local appSize = 32;
-        local appsInRow = 3;
-
-        local bgPadding = 3;
-
+        local iconsMargin = this.getAttribute('iconsMargin');
 
         for k, v in ipairs(apps) do
             local col = (k-1) % appsInRow;
             local row = math.floor((k-1) / appsInRow);
 
             local x = col * (appSize + appMargin * 2) + appMargin;
-            local y = row * (appSize + appMargin * 2) + appMargin;
+            local y = iconsMargin + row * (appSize + appMargin * 2) + appMargin;
 
-
-            if this.getSelected() == k then
-                dxDrawRectangle(x + appMargin, y + appMargin + 10, appSize, appSize, 0x33000000);
+            if(this.getSelectedSize() < appSize + 5) then
+                this.iconAnimation(0.13);
             end
 
-            dxDrawImage(
-                x + appPadding + appMargin,
-                y + appPadding + appMargin + 10,
-                appSize - appPadding * 2, 
-                appSize - appPadding * 2,
-                v.getIcon());
+            if this.getSelected() == k then
+                dxDrawImage(
+                    x + appPadding + appMargin,
+                    y + appPadding + appMargin + 10,
+                    this.getSelectedSize() - appPadding * 2, 
+                    this.getSelectedSize() - appPadding * 2,
+                    v.getIcon());
+            else
+                dxDrawImage(
+                    x + appPadding + appMargin,
+                    y + appPadding + appMargin + 10,
+                    appSize - appPadding * 2, 
+                    appSize - appPadding * 2,
+                    v.getIcon());
+            end
         end
+    end
+
+    this.iconAnimation = function (progress)
+        this.setSelectedSize(this.getSelectedSize() + progress);
     end
 
     this.drawStatusBar = function (color)
         local time = getRealTime();
-        dxDrawImage(5, 2, this.getPhone().getProperty('screen_width')-10, 17, 'files/statusbar.png', 0, 0, 0, color);
+        dxDrawImage(0, 0, this.getPhone().getProperty('screen_width'), 38, 'files/statusbar.png', 0, 0, 0, color);
         dxDrawText(getStringRealTime(),
             0,                                              -- X
-            2,                                              -- Y
+            0,                                              -- Y
             this.getPhone().getProperty('screen_width'),    -- Width
-            20,                                             -- Height
+            38,                                             -- Height
             color,                                          -- Color
             0.9,                                            -- Scale
             Fonts.font,                                     -- Font
@@ -90,6 +104,6 @@ function phone.AppleLauncher.__constructor (...)
         this.drawMainMenu();
         this.drawStatusBar(color);
     end
-    
+
     return this;
 end

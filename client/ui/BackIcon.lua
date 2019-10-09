@@ -25,17 +25,6 @@ function ui.BackIcon.__constructor(...)
 		local imageSize = 16;
 
 		dxDrawImage(marginLeft, marginTop, imageSize, imageSize, 'files/arrow.png')
-
-		dxDrawText(this.getAttribute('text'),
-			marginLeft * 3.5, 
-			marginTop, 
-			100, 
-			20, 
-			0xFF0060d5, 
-			1,
-			Fonts.font or 'default',
-			'left',
-			'top');
 	end
 
 	return this;
