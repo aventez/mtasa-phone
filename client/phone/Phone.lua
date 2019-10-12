@@ -120,11 +120,11 @@ function phone.Phone.__constructor (parent, viewType)
     --config section
         local _config = {};
 
-        this.loadConfig = function (file)
+        this.loadConfig = function ()
             triggerServerEvent("getPhoneConfig", resourceRoot);
         end
 
-        this.saveConfig = function (file)
+        this.saveConfig = function ()
             triggerServerEvent("savePhoneConfig", resourceRoot, _config);
         end
 
@@ -169,6 +169,21 @@ function phone.Phone.__constructor (parent, viewType)
             end
         end
 
+        this.getMessengerContacts = function ()
+            local array = {};
+            
+            table.insert(array, {
+                id = 0,
+                name = 'Dodaj nowy kontakt'
+            });
+
+            for k, v in ipairs(this.getConfig('contacts')) do
+                table.insert(array, v);
+            end
+
+            return array;
+        end
+
         this.addContact = function (data)
             local contacts = this.getConfig('contacts');
 
@@ -176,6 +191,20 @@ function phone.Phone.__constructor (parent, viewType)
             table.insert(contacts, data);
 
             this.setConfig('contacts', contacts);
+        end
+
+        this.findContact = function (number)
+            local contacts = this.getConfig('contacts');
+
+            if contacts then
+                for k, v in pairs(contacts) do
+                    if v.number == number then
+                        return v;
+                    end
+                end
+
+                return false;
+            end
         end
     -- contacts section end
 

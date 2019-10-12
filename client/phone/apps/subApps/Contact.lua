@@ -157,7 +157,7 @@ function phone.Contact.__constructor (...)
 	    	_options[_selected + 1].action();
 		end
 
-	    this.controlBack = function () 
+	    this.controlBack = function ()
 	    	p.setApplication(phone.Contacts, true);
 		end
 

@@ -31,7 +31,20 @@ function phone.Messages.__constructor (...)
 		local p = this.getLauncher();
 
 		local _elements = {};
-		local _data = p.getAttribute('messengerData');
+		
+		local messages = p.getAttribute('messengerMessages');
+		local contact = p.getAttribute('messengerContact');
+
+		if contact.first == p.getConfig('phoneNumber') then
+			number = contact.second;
+		else
+			number = contact.first;			
+		end
+
+		local found = p.findContact(number);
+		if found then
+			number = found.name;
+		end
 
 		local width = p.getProperty('screen_width') or 0;
 		local height = p.getProperty('screen_height') or 0;
@@ -65,13 +78,14 @@ function phone.Messages.__constructor (...)
 			dxDrawImage(0, 10, width, height, 'files/msgbg.png');
 
 			-- drawing messages
-	        this.drawContent(_data);
+	        this.drawContent(messages);
 
 			-- drawing header
 			dxDrawRectangle(0, statusbarHeight, width, headerHeight, 0xFF444444);
 			dxDrawImage(margin, statusbarHeight + 17, 13, 18, 'files/contactsArrow.png');
 			dxDrawImage(margin + 28, statusbarHeight + 12, 28, 28, 'files/avatar.png');
-			dxDrawText('rudy menel',
+			
+			dxDrawText(number,
 				margin + 70, 
 				statusbarHeight + 18,
 				width,
@@ -96,7 +110,7 @@ function phone.Messages.__constructor (...)
 			else
 				_content = content;
 			end
-			
+
 			dxDrawText(_content,
 				0,
 				height - 33,
@@ -122,9 +136,11 @@ function phone.Messages.__constructor (...)
 			lastY = height - marginBottom;
 			size = 0;
 
-			for i = #data.messages, 1, -1 do
-				local value = data.messages[i];
-				this.drawMessage(i, value)
+			if data.messages then
+				for i = #data.messages, 1, -1 do
+					local value = data.messages[i];
+					this.drawMessage(i, value);
+				end
 			end
 		end
 
@@ -175,7 +191,7 @@ function phone.Messages.__constructor (...)
 			-- setting position
 				y = lastY;
 
-				if data.sender == p.getConfig('phoneNumber') then
+				if data.number == p.getConfig('phoneNumber') then
 					x = width - margin - rowLen;
 				else
 					x = margin;
@@ -208,24 +224,7 @@ function phone.Messages.__constructor (...)
 					'center',
 					false,
 					true);
-
-				local previousMessage = _data.messages[index - 1];
-
-				if previousMessage.sender == data.sender then
-					dxDrawText('17:31',
-						x,
-						y + optSize,
-						x + rowLen,
-						y + optSize + 10,
-						textColor,
-						1,
-						Fonts.font,
-						'right',
-						'top',
-						false,
-						true);
-				-- drawing section end
-			end
+			-- drawing section end
 		end
 	-- drawing section end
 

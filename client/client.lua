@@ -26,6 +26,7 @@ userphone.setApps({
 	phone.PhoneApp,
 	phone.Messenger,
 	phone.Contacts,
+	phone.Weather,
 	phone.Settings
 });
 -- end user phone section
@@ -171,9 +172,18 @@ function onResponsePhoneData(array)
     for k, v in pairs(array) do
 		userphone.setConfig(k, v);
     end
-
 end
-
 addEvent('onResponsePhoneData', true);
 addEventHandler('onResponsePhoneData', getLocalPlayer(), onResponsePhoneData);
+
+function onResponseTopicMessages(array)
+	userphone.setAttribute('messengerMessages', {
+		messages = array
+	});
+
+	userphone.setApplication(phone.Messages);
+end
+
+addEvent('onResponseTopicMessages', true);
+addEventHandler('onResponseTopicMessages', getLocalPlayer(), onResponseTopicMessages);
 --server section end

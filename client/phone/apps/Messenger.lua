@@ -22,14 +22,18 @@ function phone.Messenger.__constructor (...)
 	end
 
 	-- variables section
-		this.setAttribute('headerHeight', 50);
+		this.setAttribute('headerHeight', 37);
 		this.setAttribute('optionSize', 30);
 		this.setAttribute('contentMarginLeft', 10);
 		this.setAttribute('contentMarginRight', 10);
 		this.setAttribute('contentMarginTop', 5);
 
 		local _phone = this.getLauncher().getPhone();
-		local contacts = _phone.getContacts();
+
+		local topics = _phone.getConfig('topics');
+
+		_phone.setAttribute('messengerContact', topics[1]);
+
 		local selected = 1;
 		local maxContacts = 8;
 		local elements = {};
@@ -37,12 +41,6 @@ function phone.Messenger.__constructor (...)
 			first = 1,
 			last = 8
 		};
-
-		local header = ui.Header();
-        header.setAttribute('text', 'Wiadomości');
-        header.setAttribute('width', _phone.getProperty('screen_width'));
-        header.setAttribute('height', 50);
-        table.insert(elements, header);
 	-- variables section end
 
 	-- drawing section
@@ -62,11 +60,13 @@ function phone.Messenger.__constructor (...)
 	    end
 
 		this.drawContent = function ()
+			local index = 1;
+
 			for i = 1, maxContacts do
 				newIndex = (section.first + i) - 1;
 
-				if contacts[newIndex] then
-					this.drawContact(i, contacts[newIndex]);
+				if topics[newIndex] then
+					this.drawContact(i, topics[newIndex]);
 				end
 			end
 		end
@@ -81,6 +81,8 @@ function phone.Messenger.__constructor (...)
 
 			local height = marginTop + ((index-1)*optSize) - this.getAttribute('contentMarginTop');
 
+			local number = nil;
+
 			if index == selected then
 				dxDrawRectangle(0, height + 1, width, optSize - 1, 0xFFB8B8B8);
 			else
@@ -89,7 +91,18 @@ function phone.Messenger.__constructor (...)
 
 			dxDrawLine(0, height + optSize, width, height + optSize, 0xFFc6c6c8);
 
-			dxDrawText(data.name,
+			if data.first == _phone.getConfig('phoneNumber') then
+				number = data.second;
+			else
+				number = data.first;			
+			end
+
+			local contact = _phone.findContact(number);
+			if contact then
+				number = contact.name;
+			end
+
+			dxDrawText(number,
 				marginLeft, 
 				marginTop + ((index-1)*optSize), 
 				width, 
@@ -99,17 +112,6 @@ function phone.Messenger.__constructor (...)
 				Fonts.font or 'default',
 				'left',
 				'top');
-
-			dxDrawText(data.number,
-				marginLeft, 
-				marginTop + ((index-1)*optSize) + 12, 
-				width - 5, 
-				height, 
-				0xFF000000, 
-				1,
-				Fonts.miniFont or 'default',
-				'right',
-				'top');			
 		end
 	-- drawing section end
 
@@ -117,20 +119,7 @@ function phone.Messenger.__constructor (...)
 	    this.controlEnter = function () 
 	    	local index = (section.first + selected) - 1;
 
-	    	local messages = _phone.getConfig('messages');
-
-	    	for k, v in ipairs(messages) do
-	    		if v.sender ~= contacts[index].number and v.sender ~= _phone.getConfig('phoneNumber') then
-	    			table.remove(messages, k);
-	    		end
-	    	end
-
-	    	_phone.setAttribute('messengerData', {
-	    		contact = contacts[index],
-	    		messages = messages
-	    	});
-
-	    	_phone.setApplication(phone.Messages);
+	    	triggerServerEvent('getTopicMessages', resourceRoot, topics[index].id);
 		end
 
 	    this.controlBack = function () 
@@ -149,9 +138,9 @@ function phone.Messenger.__constructor (...)
 			local new = selected + value;
 			local newIndex = (section.first + new) - 1;
 
-			if #contacts > maxContacts then
+			if #topics > maxContacts then
 				if new > maxContacts then
-					if newIndex > #contacts then
+					if newIndex > #topics then
 						section = {
 							first = 1,
 							last = 8
@@ -165,8 +154,8 @@ function phone.Messenger.__constructor (...)
 				elseif new <= 0 then
 					if newIndex <= 0 then
 						section = {
-							first = #contacts-maxContacts+1,
-							last = #contacts
+							first = #topics-maxContacts+1,
+							last = #topics
 						};
 
 						selected = maxContacts;
@@ -180,13 +169,17 @@ function phone.Messenger.__constructor (...)
 				end
 			else
 				if new <= 0 then
-					selected = #contacts;
-				elseif new > #contacts then
+					selected = #topics;
+				elseif new > #topics then
 					selected = 1;
 				else
 					selected = new;
 				end
 			end
+
+			local index = (section.first + selected) - 1;
+
+			_phone.setAttribute('messengerContact', topics[index]);
 		end
 
 		this.changeSectionValues = function (value)

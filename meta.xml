@@ -21,6 +21,7 @@
 	<!-- apps -->
 	<script src="client/phone/apps/Settings.lua" type="client" />
 	<script src="client/phone/apps/Contacts.lua" type="client" />
+	<script src="client/phone/apps/Weather.lua" type="client" />
 	<script src="client/phone/apps/PhoneApp.lua" type="client" />
 	<script src="client/phone/apps/Messenger.lua" type="client" />
 
@@ -50,6 +51,7 @@
 	<file src="files/msgbg.png" />
 	<file src="files/reply.png" />
 	<file src="files/bottom.png" />
+	<file src="files/weatherbg.png" />
 
 	<file src="files/enabled.png" />
 	<file src="files/disabled.png" />
@@ -58,6 +60,7 @@
 	<file src="files/icons/icons1.png" />
 	<file src="files/icons/icons2.png" />
 	<file src="files/icons/icons3.png" />
+	<file src="files/icons/icons4.png" />
 
 	<!-- object oriented programming enabling -->
 	<oop>true</oop>
