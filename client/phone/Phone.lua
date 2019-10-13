@@ -208,6 +208,12 @@ function phone.Phone.__constructor (parent, viewType)
         end
     -- contacts section end
 
+    -- messages section
+        this.addMessage = function (topic, number, content)
+            
+        end
+    -- messages section end
+
     -- control section
         this.controlNumber = function (value)
             if this.getApplication() then

@@ -39,6 +39,9 @@
 	<script src="server/source.lua" type="server" />
 	
 	<!-- files -->
+	<file src="files/button.mp3" />
+	<file src="files/tock.mp3" />
+
 	<file src="files/Apple.png" />
 	<file src="files/wallpaper.png" />
 	<file src="files/intro.png" />

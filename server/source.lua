@@ -25,7 +25,6 @@ end
 addEvent('getPhoneConfig', true);
 addEventHandler('getPhoneConfig', resourceRoot, getPhoneConfig);
 
-
 -- GETTERS
 
 function getPhoneData(id)
@@ -66,10 +65,6 @@ end
 addEvent('savePhoneConfig', true);
 addEventHandler('savePhoneConfig', resourceRoot, savePhoneConfig);
 
-
-
-
-
 function onClientPhoneCall(data)
 	print(toJSON(data));
 end
@@ -77,9 +72,27 @@ end
 addEvent('onClientPhoneCall', true);
 addEventHandler('onClientPhoneCall', resourceRoot, onClientPhoneCall);
 
-function onClientAddContact(data)
+function onClientAddContact(phone, data)
 	print(toJSON(data));
 end
 
 addEvent('onClientAddContact', true);
 addEventHandler('onClientAddContact', resourceRoot, onClientAddContact);
+
+
+
+
+
+--[[function createPhone(playerSource, commandName)
+	triggerClientEvent(playerSource, 'givePhone', playerSource, 'apple');
+end
+addCommandHandler('phone', createPhone);
+
+function removePhone(playerSource, commandName)
+	triggerClientEvent(playerSource, 'removePhone', playerSource);
+end
+addCommandHandler('rphone', removePhone);
+
+addEventHandler('onPlayerJoin', getRootElement(), function () 
+	createPhone(source, nil);
+end)]]

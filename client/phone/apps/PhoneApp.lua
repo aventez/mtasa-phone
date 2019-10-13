@@ -25,19 +25,8 @@ function phone.PhoneApp.__constructor (...)
     -- default variables section
         local p = this.getLauncher().getPhone();
         local data = {
-            number = nil,
-            elements = {}
+            number = ''
         };
-
-    	this.setAttribute('headerHeight', 50);
-    	this.setAttribute('contentMargin', 10);
-    	this.setAttribute('contentMarginTop', 10);
-
-        local header = ui.Header();
-        header.setAttribute('text', 'Telefon');
-        header.setAttribute('width', p.getProperty('screen_width'));
-        header.setAttribute('height', 50);
-        table.insert(data.elements, header);
     -- default variables section end
 
     -- drawing section
@@ -50,33 +39,28 @@ function phone.PhoneApp.__constructor (...)
 
             -- draw app content
             this.drawContent();
-
-            for k, v in ipairs(data.elements) do
-                v.draw();
-            end
         end
         
         this.drawContent = function ()
     		local number = data.number;
 
-    		if number == nil or number == '' then
+    		if number == '' then
     			number = 'Wprowadź numer';
     		end
 
     		local width = p.getProperty('screen_width') or 0;
     		local height = p.getProperty('screen_height') or 0;
 
-    		local headerHeight = this.getAttribute('headerHeight');
-    		local marginTop = this.getAttribute('contentMarginTop');
+            dxDrawImage(0, 0, width, height, 'files/keyboard.png');
 
     		dxDrawText(number,
                 0, 
-                headerHeight + marginTop, 
+                70, 
                 width, 
                 height,
-                0xFF000000,
+                0xFFFFFFFF,
                 1,
-                Fonts.fontBig or 'default',
+                Fonts.bigFont or 'default',
                 'center',
                 'top',
                 true, 
@@ -85,8 +69,6 @@ function phone.PhoneApp.__constructor (...)
                 false, 
                 true,
                 0, 0, 0);
-
-    		dxDrawImage(0, 0, width, height, 'files/keyboard.png');
     	end
     -- drawing section end
 
@@ -99,26 +81,26 @@ function phone.PhoneApp.__constructor (...)
     		end
     		
     		data.number = string.format('%s%s', data.number or '', value);
+
+            playSound("files/button.mp3");
     	end
 
     	this.controlBack = function (value)
-    		if data.number then
-    			local strLength = string.len(data.number);
+			local strLength = string.len(data.number);
 
-    			if strLength <= 0 then
-    				p.setApplication(nil);
-    			else
-    				data.number = string.sub(data.number, 1, strLength-1);
-    			end
-    		else
-    			p.setApplication(nil);
-    		end
+			if strLength <= 0 then
+				p.setApplication(nil);
+			else
+				data.number = string.sub(data.number, 1, strLength-1);
+			end
     	end
 
     	this.controlEnter = function ()
-    		if data.number then 
-                p.phoneCall(data.number);
-			    p.closePhone();
+    		if data.number then
+                if string.len(data.number) > 0 then 
+                    p.phoneCall(data.number);
+    			    p.closePhone();
+                end
             end
     	end
     -- control section end
