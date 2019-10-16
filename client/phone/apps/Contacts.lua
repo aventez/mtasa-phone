@@ -29,20 +29,13 @@ function phone.Contacts.__constructor (...)
 		this.setAttribute('contentMarginTop', 5);
 
 		local _phone = this.getLauncher().getPhone();
-		local contacts = _phone.getContacts(true);
+		local contacts = _phone.getContacts();
 		local selected = 1;
 		local maxContacts = 8;
-		local elements = {};
 		local section = {
 			first = 1,
 			last = 8
 		};
-
-		local header = ui.Header();
-        header.setAttribute('text', 'Kontakty');
-        header.setAttribute('width', _phone.getProperty('screen_width'));
-        header.setAttribute('height', 50);
-        table.insert(elements, header);
 	-- variables section end
 
 	-- drawing section
@@ -55,10 +48,6 @@ function phone.Contacts.__constructor (...)
 
 	        -- draw app content
 	    	this.drawContent();
-
-	    	for k, v in ipairs(elements) do
-	            v.draw();
-	        end
 	    end
 
 		this.drawContent = function ()

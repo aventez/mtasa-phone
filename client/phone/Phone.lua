@@ -98,11 +98,11 @@ function phone.Phone.__constructor (parent, viewType)
 
         --default properties
         this.setProperties({
-            width = 285,
-            height = 591,
-            screen_offset_x = 20,
-            screen_offset_y = 25,
-            screen_width = 244,
+            width = 280,
+            height = 559,
+            screen_offset_x = 17,
+            screen_offset_y = 15,
+            screen_width = 245,
             screen_height = 529,
         });
     --property section end
@@ -149,24 +149,8 @@ function phone.Phone.__constructor (parent, viewType)
     -- server section end
 
     -- contacts section
-        this.getContacts = function (newContactRow)
-            newContactRow = newContactRow or false;
-
-            if not newContactRow then
-                return this.getConfig('contacts');
-            else
-                local array = {};
-                table.insert(array, {
-                    id = 0,
-                    name = 'Dodaj nowy kontakt'
-                });
-
-                for k, v in ipairs(this.getConfig('contacts')) do
-                    table.insert(array, v);
-                end
-
-                return array;
-            end
+        this.getContacts = function ()
+            return this.getConfig('contacts');
         end
 
         this.getMessengerContacts = function ()
@@ -210,7 +194,7 @@ function phone.Phone.__constructor (parent, viewType)
 
     -- messages section
         this.addMessage = function (topic, number, content)
-            
+
         end
     -- messages section end
 

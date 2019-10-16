@@ -24,7 +24,7 @@ function phone.Messages.__constructor (...)
 		this.setAttribute('margin', 25);
 		this.setAttribute('distance', 10);
 		this.setAttribute('marginBottom', 70);
-		this.setAttribute('maxLength', 123);
+		this.setAttribute('maxLength', 143);
 	-- default attributes section end
 
 	-- variables section
@@ -75,62 +75,59 @@ function phone.Messages.__constructor (...)
 			dxDrawRectangle(0, 0, width, height, 0xFF111111);
 
 			-- drawing background
-			dxDrawImage(0, 10, width, height, 'files/msgbg.png');
+			dxDrawImage(0, 0, width, height, 'files/messenger/background.png');
 
-			-- drawing messages
-	        this.drawContent(messages);
-
-			-- drawing header
-			dxDrawRectangle(0, statusbarHeight, width, headerHeight, 0xFF444444);
-			dxDrawImage(margin, statusbarHeight + 17, 13, 18, 'files/contactsArrow.png');
-			dxDrawImage(margin + 28, statusbarHeight + 12, 28, 28, 'files/avatar.png');
-			
 			dxDrawText(number,
-				margin + 70, 
-				statusbarHeight + 18,
+				0, 
+				0,
 				width,
-				statusbarHeight + 12 + 10,
+				95,
 				textColor,
 				1,
 				1,
 				Fonts.font,
-				'left',
-				'top',
+				'center',
+				'bottom',
 				false,
 				true);
 
-			-- drawing bottom
-			dxDrawImage(0, height-48, width, 48, 'files/bottom.png');
-
 			-- drawing label
-			local _content = nil;
-
 			if content == '' then
-				_content = 'Wiadomość';
+				dxDrawText('Wiadomość',
+					0,
+					height-51,
+					155,
+					height-51+40,
+					tocolor(255, 255, 255, 133),
+					1,
+					1,
+					Fonts.font,
+					'right',
+					'center',
+					false,
+					false);
 			else
-				_content = content;
+				dxDrawText(content,
+					0,
+					height-51,
+					155,
+					height-51+40,
+					textColor,
+					1,
+					1,
+					Fonts.font,
+					'right',
+					'center',
+					false,
+					false);
 			end
 
-			dxDrawText(_content,
-				0,
-				height - 33,
-				0+155,
-				height - 33,
-				textColor,
-				1,
-				1,
-				Fonts.font,
-				'right',
-				'top',
-				false,
-				false);
+			-- drawing messages
+	        this.drawContent(messages);
 	    end
 
 	    this.drawContent = function (data)
-	   		local width = p.getProperty('screen_width') or 0;
 			local height = p.getProperty('screen_height') or 0;
-
-			local optSize = this.getAttribute('optSize');
 			local marginBottom = this.getAttribute('marginBottom');
 
 			lastY = height - marginBottom;
@@ -138,13 +135,12 @@ function phone.Messages.__constructor (...)
 
 			if data.messages then
 				for i = #data.messages, 1, -1 do
-					local value = data.messages[i];
-					this.drawMessage(i, value);
+					this.drawMessage(data.messages[i]);
 				end
 			end
 		end
 
-		this.drawMessage = function (index, data)
+		this.drawMessage = function (data)
 			-- variables section
 				-- attributes
 					local width = p.getProperty('screen_width') or 0;
@@ -157,7 +153,7 @@ function phone.Messages.__constructor (...)
 				-- attributes end
 
 				-- default colors
-					local color = 0xFF444444;
+					local color = tocolor(255, 255, 255, 28);
 					local textColor = 0xFFC4C4C4;
 				-- default colors end
 
@@ -167,7 +163,7 @@ function phone.Messages.__constructor (...)
 				-- positions vars end
 
 				-- text length
-					local rowLen = dxGetTextWidth(data.content, 1, Fonts.font)+margin;
+					local rowLen = dxGetTextWidth(data.content, 1, Fonts.font)+20;
 				-- text length end
 			-- variables section end
 
@@ -195,7 +191,7 @@ function phone.Messages.__constructor (...)
 					x = width - margin - rowLen;
 				else
 					x = margin;
-					color = 0xFF0077FF;
+					color = tocolor(255, 255, 255, 47);
 				end
 			-- setting position end
 
@@ -236,6 +232,7 @@ function phone.Messages.__constructor (...)
 				p.setApplication(phone.Messenger, true);
 			else
 				content = string.sub(content, 1, strLength-1);
+				playSound("files/tock.mp3");
 			end
 		end
 
@@ -244,6 +241,8 @@ function phone.Messages.__constructor (...)
 				return;
 			end
 
+			playSound("files/tock.mp3");
+
 			content = string.format('%s%s', content, value);
 		end
 
@@ -251,6 +250,8 @@ function phone.Messages.__constructor (...)
 			if string.len(content) > 150 then
 				return;
 			end
+
+			playSound("files/tock.mp3");
 
 			content = string.format('%s%s', content, value);		
 		end

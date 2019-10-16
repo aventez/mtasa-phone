@@ -51,7 +51,7 @@ function phone.PhoneApp.__constructor (...)
     		local width = p.getProperty('screen_width') or 0;
     		local height = p.getProperty('screen_height') or 0;
 
-            dxDrawImage(0, 0, width, height, 'files/keyboard.png');
+            dxDrawImage(0, 0, width, height, 'files/dialing/background.png');
 
     		dxDrawText(number,
                 0, 
@@ -92,6 +92,7 @@ function phone.PhoneApp.__constructor (...)
 				p.setApplication(nil);
 			else
 				data.number = string.sub(data.number, 1, strLength-1);
+                playSound("files/tock.mp3");
 			end
     	end
 

@@ -42,10 +42,16 @@
 	<file src="files/button.mp3" />
 	<file src="files/tock.mp3" />
 
+	<file src="files/topics/background.png" />
+	<file src="files/topics/row.png" />
+
+	<file src="files/dialing/background.png" />
+
+	<file src="files/messenger/background.png" />
+
 	<file src="files/Apple.png" />
 	<file src="files/wallpaper.png" />
 	<file src="files/intro.png" />
-	<file src="files/keyboard.png" />
 	<file src="files/statusbar.png" />
 	<file src="files/SFProText-Regular.ttf" />
 	<file src="files/avatar.png" />

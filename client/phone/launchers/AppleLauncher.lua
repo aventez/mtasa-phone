@@ -78,7 +78,6 @@ function phone.AppleLauncher.__constructor (...)
 
     this.drawStatusBar = function (color)
         local time = getRealTime();
-        dxDrawImage(0, 0, this.getPhone().getProperty('screen_width'), 38, 'files/statusbar.png', 0, 0, 0, color);
         dxDrawText(getStringRealTime(),
             0,                                              -- X
             0,                                              -- Y

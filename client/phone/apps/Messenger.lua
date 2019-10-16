@@ -22,11 +22,11 @@ function phone.Messenger.__constructor (...)
 	end
 
 	-- variables section
-		this.setAttribute('headerHeight', 37);
-		this.setAttribute('optionSize', 30);
-		this.setAttribute('contentMarginLeft', 10);
+		this.setAttribute('headerHeight', 90);
+		this.setAttribute('optionSize', 72);
+		this.setAttribute('contentMarginLeft', 87);
 		this.setAttribute('contentMarginRight', 10);
-		this.setAttribute('contentMarginTop', 5);
+		this.setAttribute('contentMarginTop', 15);
 
 		local _phone = this.getLauncher().getPhone();
 
@@ -35,8 +35,7 @@ function phone.Messenger.__constructor (...)
 		_phone.setAttribute('messengerContact', topics[1]);
 
 		local selected = 1;
-		local maxContacts = 8;
-		local elements = {};
+		local maxContacts = 4;
 		local section = {
 			first = 1,
 			last = 8
@@ -49,20 +48,14 @@ function phone.Messenger.__constructor (...)
 			local height = _phone.getProperty('screen_height') or 0;
 
 			-- drawing background
-	        dxDrawRectangle(0, 0, width, height, (0xFFE3E3E6));
+	        dxDrawImage(0, 0, width, height, 'files/topics/background.png');
 
 	        -- draw app content
 	    	this.drawContent();
-
-	    	for k, v in ipairs(elements) do
-	            v.draw();
-	        end
 	    end
 
 		this.drawContent = function ()
-			local index = 1;
-
-			for i = 1, maxContacts do
+			for i = 1, 4 do
 				newIndex = (section.first + i) - 1;
 
 				if topics[newIndex] then
@@ -79,17 +72,15 @@ function phone.Messenger.__constructor (...)
 			local marginLeft = this.getAttribute('contentMarginLeft');
 			local marginRight = this.getAttribute('contentMarginRight');
 
-			local height = marginTop + ((index-1)*optSize) - this.getAttribute('contentMarginTop');
+			local height = marginTop + ((index-1)*optSize) + (index-1)*20;
 
 			local number = nil;
 
 			if index == selected then
-				dxDrawRectangle(0, height + 1, width, optSize - 1, 0xFFB8B8B8);
+				dxDrawImage(20, height, 239, optSize, 'files/topics/row.png');
 			else
-				dxDrawRectangle(0, height + 1, width, optSize - 1, 0xFFFFFFFF);
+				dxDrawImage(20, height, 239, optSize, 'files/topics/row.png', 0, 0, 0, tocolor(255, 255, 255, 99));
 			end
-
-			dxDrawLine(0, height + optSize, width, height + optSize, 0xFFc6c6c8);
 
 			if data.first == _phone.getConfig('phoneNumber') then
 				number = data.second;
@@ -104,12 +95,34 @@ function phone.Messenger.__constructor (...)
 
 			dxDrawText(number,
 				marginLeft, 
-				marginTop + ((index-1)*optSize), 
+				height + 20, 
 				width, 
-				height, 
-				0xFF000000, 
+				height+optSize, 
+				0xFFFFFFFF, 
 				1,
-				Fonts.font or 'default',
+				Fonts.getFont('ProximaNova-Regular', 11) or 'default',
+				'left',
+				'top');
+
+			dxDrawText('12:31',
+				0, 
+				height + 20, 
+				width - 20, 
+				height+optSize, 
+				0xFFFFFFFF, 
+				1,
+				Fonts.getFont('ProximaNova-Regular', 10) or 'default',
+				'right',
+				'top');
+
+			dxDrawText(data.content,
+				marginLeft, 
+				height + 43, 
+				width, 
+				height+optSize, 
+				0xFFFFFFFF, 
+				1,
+				Fonts.getFont('ProximaNova-Regular', 7) or 'default',
 				'left',
 				'top');
 		end

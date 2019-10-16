@@ -11,3 +11,7 @@ Fonts.font = exports.rp_fontmanager:getFont('ProximaNova-Regular', 10);
 Fonts.bigFont = exports.rp_fontmanager:getFont('ProximaNova-Regular', 12);
 Fonts.vbigFont = exports.rp_fontmanager:getFont('ProximaNova-Regular', 16);
 Fonts.mbigFont = exports.rp_fontmanager:getFont('ProximaNova-Regular', 36);
+
+Fonts.getFont = function (name, size)
+	return exports.rp_fontmanager:getFont(name, size);
+end

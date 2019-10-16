@@ -35,7 +35,7 @@ end
 
 
 function getTopics(phoneNumber)
-	local result = exports.rp_database:queryResult(string.format('SELECT * FROM topics WHERE first = %d OR second = %d', phoneNumber, phoneNumber));
+	local result = exports.rp_database:queryResult(string.format('SELECT topics.*, messages.content FROM `topics` JOIN `messages` ON messages.id=(SELECT messages.id FROM `messages` WHERE messages.topic=topics.id ORDER BY messages.id DESC LIMIT 1) WHERE topics.first = %d OR topics.second = %d', phoneNumber, phoneNumber));
 
 	return result;
 end
@@ -48,7 +48,9 @@ end
 
 
 function getTopicMessages(topic)
-	local result = exports.rp_database:queryResult(string.format('SELECT * FROM messages WHERE topic = %d LIMIT 10', topic));
+	local result = exports.rp_database:queryResult(string.format('SELECT * FROM messages WHERE topic = %d', topic));
+
+	outputDebugString(topic);
 
 	triggerClientEvent(client, 'onResponseTopicMessages', client, result);
 end

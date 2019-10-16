@@ -26,21 +26,11 @@ function phone.Weather.__constructor (...)
         local p = this.getLauncher().getPhone();
         local data = {
             number = nil,
-            labels = {
-            	{
-            		key = 'Numer telefonu',
-            		value = p.getConfig('phoneNumber') or 1
-            	},
-            	{
-            		key = 'Model i wersja telefonu',
-            		value = p.getConfig('phoneModel') or 'devPhone'
-            	}
+            weather = {
+            	temperature = 15,
+            	type = 'sun'	
             }
         };
-
-    	this.setAttribute('headerHeight', 50);
-    	this.setAttribute('contentMargin', 10);
-    	this.setAttribute('contentMarginTop', 30);
     -- default variables section end
 
     -- drawing section
@@ -48,45 +38,23 @@ function phone.Weather.__constructor (...)
     		local width = p.getProperty('screen_width') or 0;
     		local height = p.getProperty('screen_height') or 0;
 
-    		-- drawing background
-    		dxDrawImage(0, 0, width, height, 'files/weatherbg.png');
-
             -- draw app content
             this.drawContent();
+
+            dxDrawRectangle(0, 0, width, 37, 0xFF444444);
         end
         
         this.drawContent = function ()
     		local width = p.getProperty('screen_width') or 0;
     		local height = p.getProperty('screen_height') or 0;
 
-    		local headerHeight = this.getAttribute('headerHeight');
-    		local marginTop = this.getAttribute('contentMarginTop');
+    		if data.weather.type == 'sun' then
+				dxDrawImage(0, 0, width, height, 'files/weatherbg.png');
+    		end
 
-    		dxDrawText('Los Santos', 
+    		dxDrawText(data.weather.temperature .. '°', 
     			0, 
-    			headerHeight + marginTop + 10, 
-    			width, 
-    			height, 
-    			0xFFFFFFFF,
-    			1,
-    			1,
-    			Fonts.vbigFont,
-    			'center');
-
-    		dxDrawText('Duże zachmurzenie', 
-    			0, 
-    			headerHeight + (2 * marginTop) + 10, 
-    			width, 
-    			height, 
-    			0xFFFFFFFF,
-    			1,
-    			1,
-    			Fonts.bigFont,
-    			'center');
-
-    		dxDrawText('24°', 
-    			0, 
-    			headerHeight + (3 * marginTop) + 10, 
+    			150, 
     			width, 
     			height, 
     			0xFFFFFFFF,
