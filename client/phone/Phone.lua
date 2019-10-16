@@ -202,18 +202,24 @@ function phone.Phone.__constructor (parent, viewType)
         this.controlNumber = function (value)
             if this.getApplication() then
                 this.getApplication().controlNumber(value);
+            else
+                this.getLauncher().controlNumber(value);
             end
         end
 
         this.controlLetter = function (value)
             if this.getApplication() then
                 this.getApplication().controlLetter(value);
+            else
+                this.getLauncher().controlLetter(value);
             end
         end
 
         this.controlBack = function ()
             if this.getApplication() then
                 this.getApplication().controlBack();
+            else
+                this.getLauncher().controlBack();
             end
         end
 

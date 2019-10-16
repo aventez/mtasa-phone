@@ -95,7 +95,9 @@ function changePhoneState()
 		bindControlKeys();
 		addEventHandler('onClientRender', root, drawPhone);
 
-		if userphone.getConfig('intro') and not userphone.getApplication() then
+		if userphone.getConfig('pin') and not userphone.getApplication() then
+			userphone.setLauncher(phone.PinLauncher);
+		elseif userphone.getConfig('intro') and not userphone.getApplication() then
 			userphone.setLauncher(phone.IntroLauncher);
 		end
 
@@ -199,6 +201,9 @@ bindKey('end', 'up', changePhoneState);
 	function onResponsePhoneData(array)
 		if userphone then
 		    for k, v in pairs(array) do
+		    	if k == 'pin' then
+		    		outputChatBox('setting');
+		    	end
 				userphone.setConfig(k, v);
 		    end
 		end

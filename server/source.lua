@@ -11,6 +11,7 @@ function getPhoneConfig()
 	local data = {
 		phoneNumber = number,
 		phoneModel = model,
+		pin = options.pin,
 		intro = options.intro,
 		muted = options.muted,
 		contacts = nil,

@@ -20,6 +20,7 @@ function phone.Apple.__constructor (...)
     this.setAttribute('wallpaper', './files/wallpaper.png');
     this.setAttribute('texture', './files/Apple.png');
 
+
     if this.getConfig('intro') then
         this.setLauncher(phone.IntroLauncher);
     else

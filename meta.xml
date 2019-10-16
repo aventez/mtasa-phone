@@ -11,6 +11,7 @@
 	<!-- launcher -->
 	<script src="client/phone/launchers/AppleLauncher.lua" type="client" />  
 	<script src="client/phone/launchers/IntroLauncher.lua" type="client" />  
+	<script src="client/phone/launchers/PinLauncher.lua" type="client" />  
 
 	<!-- phone UI -->
 	<script src="client/ui/namespace.lua" type="client" />
@@ -61,6 +62,8 @@
 	<file src="files/reply.png" />
 	<file src="files/bottom.png" />
 	<file src="files/weatherbg.png" />
+
+	<file src="files/success.jpg" />
 
 	<file src="files/enabled.png" />
 	<file src="files/disabled.png" />
