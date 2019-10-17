@@ -26,7 +26,6 @@ function phone.PhoneInfo.__constructor (...)
         local p = this.getLauncher().getPhone();
         local data = {
             number = nil,
-            elements = {},
             labels = {
             	{
             		key = 'Numer telefonu',
@@ -42,12 +41,6 @@ function phone.PhoneInfo.__constructor (...)
     	this.setAttribute('headerHeight', 50);
     	this.setAttribute('contentMargin', 10);
     	this.setAttribute('contentMarginTop', 30);
-
-        local header = ui.Header();
-        header.setAttribute('text', 'Informacje o telefonie');
-        header.setAttribute('width', p.getProperty('screen_width'));
-        header.setAttribute('height', 50);
-        table.insert(data.elements, header);
     -- default variables section end
 
     -- drawing section
@@ -60,10 +53,6 @@ function phone.PhoneInfo.__constructor (...)
 
             -- draw app content
             this.drawContent();
-
-            for k, v in ipairs(data.elements) do
-                v.draw();
-            end
         end
         
         this.drawContent = function ()

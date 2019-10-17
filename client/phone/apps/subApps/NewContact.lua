@@ -27,7 +27,6 @@ function phone.NewContact.__constructor (...)
 	-- variables section
 		local p = this.getLauncher();
 
-		local elements = {};
 		local options = {
 			{
 				id = 1,
@@ -46,12 +45,6 @@ function phone.NewContact.__constructor (...)
 
 	-- variables section end
 
-	-- elements section
-		local back = ui.BackIcon();
-		back.setAttribute('text', 'Kontakty');
-		table.insert(elements, back);
-	-- elements section end
-
 	this.draw = function (renderTarget)
 		local width = p.getProperty('screen_width') or 0;
 		local height = p.getProperty('screen_height') or 0;
@@ -68,10 +61,6 @@ function phone.NewContact.__constructor (...)
 		local marginTop = this.getAttribute('contentMarginTop') + this.getAttribute('headerHeight') + 15;
 		local marginContent = this.getAttribute('contentMargin');
 		local optSize = this.getAttribute('optSize');
-
-		for k, v in ipairs(elements) do
-			v.draw();
-		end
 
 		dxDrawText('Nowy kontakt',
 			0, 

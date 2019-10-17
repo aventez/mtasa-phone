@@ -29,8 +29,6 @@ function phone.Messages.__constructor (...)
 
 	-- variables section
 		local p = this.getLauncher();
-
-		local _elements = {};
 		
 		local messages = p.getAttribute('messengerMessages');
 		local contact = p.getAttribute('messengerContact');
@@ -58,10 +56,6 @@ function phone.Messages.__constructor (...)
 	local getOptions = function ()
 		return _options;
 	end
-
-	-- elements section
-
-	-- elements section end
 
 	-- drawing section
 		this.draw = function (renderTarget)

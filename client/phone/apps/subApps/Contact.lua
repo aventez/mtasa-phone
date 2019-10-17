@@ -27,7 +27,6 @@ function phone.Contact.__constructor (...)
 	-- variables section
 		local p = this.getLauncher();
 
-		local _elements = {};
 		local _selected = 0;
 		local _data = nil;
 
@@ -66,12 +65,6 @@ function phone.Contact.__constructor (...)
 		return _options;
 	end
 
-	-- elements section
-		local back = ui.BackIcon();
-		back.setAttribute('text', 'Kontakty');
-		table.insert(_elements, back);
-	-- elements section end
-
 	-- drawing section
 		this.draw = function (renderTarget)
 			local width = p.getProperty('screen_width') or 0;
@@ -100,10 +93,6 @@ function phone.Contact.__constructor (...)
 			local imageSize = this.getAttribute('imageSize');
 
 			dxDrawImage(width/2 - imageSize/2, marginTop, imageSize, imageSize, 'files/avatar.png');
-
-			for k, v in ipairs(_elements) do
-				v.draw();
-			end
 
 			dxDrawText(data.name,
 				0, 

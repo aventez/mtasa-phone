@@ -13,12 +13,6 @@
 	<script src="client/phone/launchers/IntroLauncher.lua" type="client" />  
 	<script src="client/phone/launchers/PinLauncher.lua" type="client" />  
 
-	<!-- phone UI -->
-	<script src="client/ui/namespace.lua" type="client" />
-	<script src="client/ui/View.lua" type="client" />
-	<script src="client/ui/BackIcon.lua" type="client" />
-	<script src="client/ui/Header.lua" type="client" />
-
 	<!-- apps -->
 	<script src="client/phone/apps/Settings.lua" type="client" />
 	<script src="client/phone/apps/Contacts.lua" type="client" />
@@ -39,41 +33,43 @@
 	<script src="client/client.lua" type="client" />
 	<script src="server/source.lua" type="server" />
 	
-	<!-- files -->
-	<file src="files/button.mp3" />
-	<file src="files/tock.mp3" />
+	<!-- files section -->
+		<!-- sounds -->
+		<file src="files/button.mp3" />
+		<file src="files/tock.mp3" />
 
-	<file src="files/topics/background.png" />
-	<file src="files/topics/row.png" />
+		<!-- topics -->
+		<file src="files/topics/background.png" />
+		<file src="files/topics/row.png" />
 
-	<file src="files/dialing/background.png" />
+		<!-- dialing -->
+		<file src="files/dialing/background.png" />
 
-	<file src="files/messenger/background.png" />
+		<!-- messenger -->
+		<file src="files/messenger/background.png" />
 
-	<file src="files/Apple.png" />
-	<file src="files/wallpaper.png" />
-	<file src="files/intro.png" />
-	<file src="files/statusbar.png" />
-	<file src="files/SFProText-Regular.ttf" />
-	<file src="files/avatar.png" />
-	<file src="files/arrow.png" />
-	<file src="files/contactsArrow.png" />
-	<file src="files/msgbg.png" />
-	<file src="files/reply.png" />
-	<file src="files/bottom.png" />
-	<file src="files/weatherbg.png" />
+		<!-- wallpapers -->
+		<file src="files/wallpapers/wallpaper.png" />
+		<file src="files/wallpapers/wallpaper2.png" />
 
-	<file src="files/success.jpg" />
+		<!-- icons -->
+		<file src="files/icons/icons0.png" />
+		<file src="files/icons/icons1.png" />
+		<file src="files/icons/icons2.png" />
+		<file src="files/icons/icons3.png" />
+		<file src="files/icons/icons4.png" />
 
-	<file src="files/enabled.png" />
-	<file src="files/disabled.png" />
 
-	<file src="files/icons/icons0.png" />
-	<file src="files/icons/icons1.png" />
-	<file src="files/icons/icons2.png" />
-	<file src="files/icons/icons3.png" />
-	<file src="files/icons/icons4.png" />
+		<file src="files/border.png" />
+		<file src="files/intro.png" />
+		<file src="files/weatherbg.png" />
 
-	<!-- object oriented programming enabling -->
+		<file src="files/success.jpg" />
+
+		<file src="files/enabled.png" />
+		<file src="files/disabled.png" />
+	<!-- files section end -->
+
+	<!-- object oriented programming -->
 	<oop>true</oop>
 </meta>

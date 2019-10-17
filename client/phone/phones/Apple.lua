@@ -17,15 +17,10 @@ function phone.Apple.__constructor (...)
 		end
     end
 
-    this.setAttribute('wallpaper', './files/wallpaper.png');
-    this.setAttribute('texture', './files/Apple.png');
+    this.setAttribute('wallpaper', './files/wallpapers/wallpaper.png');
+    this.setAttribute('texture', './files/border.png');
 
-
-    if this.getConfig('intro') then
-        this.setLauncher(phone.IntroLauncher);
-    else
-        this.setLauncher(phone.AppleLauncher);
-    end
+    this.setLauncher(phone.AppleLauncher);
 
     this.createScreenRenderTarget();
 
