@@ -136,7 +136,7 @@ function phone.Messenger.__constructor (...)
 		end
 
 	    this.controlBack = function () 
-	    	_phone.setApplication(nil);
+	    	this.onClose(_phone);
 		end
 
 	    this.controlUp = function ()
@@ -145,6 +145,12 @@ function phone.Messenger.__constructor (...)
 
 	    this.controlDown = function ()
 	    	this.switchSelected(1);
+		end
+
+		this.controlLetter = function (value)
+			if value == ' ' then
+				_phone.setApplication(phone.NewTopic);
+			end
 		end
 
 		this.switchSelected = function (value)

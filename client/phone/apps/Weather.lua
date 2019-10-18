@@ -11,7 +11,6 @@ function phone.Weather.getIcon()
 	return 'files/icons/icons4.png';
 end
 
-
 function phone.Weather.__constructor (...)
 	local this = phone.Application(...);
 
@@ -67,7 +66,7 @@ function phone.Weather.__constructor (...)
 
     -- control section
     	this.controlBack = function (value)
-    		p.setApplication(nil);
+    		this.onClose(p);
     	end
     -- control section end
 

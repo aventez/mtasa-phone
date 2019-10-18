@@ -42,6 +42,10 @@ function phone.Application.__constructor (launcher)
         return _launcher;
     end
 
+    this.onClose = function (phone)
+        phone.setApplication(nil);
+    end
+
     this.draw = function (renderTarget)
         local p = this.getLauncher();
 		local width = p.getProperty('screen_width') or 0;

@@ -11,7 +11,6 @@ function phone.Settings.getIcon()
 	return 'files/icons/icons0.png';
 end
 
-
 function phone.Settings.__constructor (...)
 	local this = phone.Application(...);
 
@@ -145,7 +144,7 @@ function phone.Settings.__constructor (...)
 		end
 
 	    this.controlBack = function () 
-	    	p.setApplication(nil);
+	    	this.onClose(p);
 		end
 
 	    this.controlUp = function ()

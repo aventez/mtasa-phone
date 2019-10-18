@@ -11,7 +11,6 @@ function phone.PhoneApp.getIcon()
 	return 'files/icons/icons1.png';
 end
 
-
 function phone.PhoneApp.__constructor (...)
 	local this = phone.Application(...);
 
@@ -89,7 +88,7 @@ function phone.PhoneApp.__constructor (...)
 			local strLength = string.len(data.number);
 
 			if strLength <= 0 then
-				p.setApplication(nil);
+                this.onClose(p);
 			else
 				data.number = string.sub(data.number, 1, strLength-1);
                 playSound("files/tock.mp3");

@@ -128,7 +128,7 @@ function phone.Contacts.__constructor (...)
 		end
 
 	    this.controlBack = function () 
-	    	_phone.setApplication(nil);
+	    	this.onClose(_phone);
 		end
 
 	    this.controlUp = function ()

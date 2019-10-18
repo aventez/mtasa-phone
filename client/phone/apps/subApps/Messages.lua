@@ -28,6 +28,7 @@ function phone.Messages.__constructor (...)
 	-- default attributes section end
 
 	-- variables section
+
 		local p = this.getLauncher();
 		
 		local messages = p.getAttribute('messengerMessages');
@@ -223,6 +224,7 @@ function phone.Messages.__constructor (...)
 			local strLength = string.len(content);
 
 			if strLength <= 0 then
+				outputChatBox('destroy');
 				p.setApplication(phone.Messenger, true);
 			else
 				content = string.sub(content, 1, strLength-1);
@@ -243,6 +245,24 @@ function phone.Messages.__constructor (...)
 		this.controlLetter = function (value)
 			if string.len(content) > 150 then
 				return;
+			end
+
+			if getKeyState("lshift") then
+				value = string.upper(value);
+			elseif getKeyState("lalt") then
+				if value == 'a' then
+					value = 'ą';
+				elseif value == 'e' then
+					value = 'ę';
+				elseif value == 'z' then
+					value = 'ż';
+				elseif value == 'x' then
+					value = 'ź';
+				elseif value == 'l' then
+					value = 'ł';
+				elseif value == 'o' then
+					value = 'ó'; 
+				end
 			end
 
 			playSound("files/tock.mp3");

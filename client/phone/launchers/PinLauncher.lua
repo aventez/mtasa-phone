@@ -53,7 +53,6 @@ function phone.PinLauncher.__constructor (...)
         end
 
         this.controlNumber = function (value)
-            outputDebugString(value);
             if string.len(pin) < 4 then
                 pin = pin .. value;
                 if pin == validPin then

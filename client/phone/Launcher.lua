@@ -20,9 +20,6 @@ function phone.Launcher.__constructor (phoneObject)
     local _phone = phoneObject;
     local _attributes = {};
     local _properties = {};
-    local _selected = 1;
-
-    local _selectedSize = 40;
 --variables section end
 
 --attributs section
@@ -43,25 +40,6 @@ function phone.Launcher.__constructor (phoneObject)
     this.controlUp = function () end;
     this.controlDown = function () end;
 --control section end
-
--- selected section
-    this.getSelected = function ()
-        return _selected;
-    end
-
-    this.setSelected = function (selected)
-        this.setSelectedSize(40);
-        _selected = selected;
-    end
-
-    this.setSelectedSize = function (size)
-        _selectedSize = size;
-    end
-
-    this.getSelectedSize = function ()
-        return _selectedSize;
-    end
--- selected section end
 
 --property section
     this.setProperty = function (name, value)

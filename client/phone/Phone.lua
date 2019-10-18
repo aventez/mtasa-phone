@@ -36,7 +36,10 @@ function phone.Phone.__constructor (parent, viewType)
     end
 
     this.closePhone = function ()
-        this.setApplication(nil);
+        if this.getApplication() then
+            this.getApplication().onClose(this);
+        end
+
         this.onClosePhone();
     end
     --interactoin section end
@@ -153,21 +156,6 @@ function phone.Phone.__constructor (parent, viewType)
             return this.getConfig('contacts');
         end
 
-        this.getMessengerContacts = function ()
-            local array = {};
-            
-            table.insert(array, {
-                id = 0,
-                name = 'Dodaj nowy kontakt'
-            });
-
-            for k, v in ipairs(this.getConfig('contacts')) do
-                table.insert(array, v);
-            end
-
-            return array;
-        end
-
         this.addContact = function (data)
             local contacts = this.getConfig('contacts');
 
@@ -194,7 +182,10 @@ function phone.Phone.__constructor (parent, viewType)
 
     -- messages section
         this.addMessage = function (topic, number, content)
+        end
 
+        this.addTopic = function (first, second)
+            triggerServerEvent('addNewTopic', resourceRoot, first, second);
         end
     -- messages section end
 
@@ -227,7 +218,7 @@ function phone.Phone.__constructor (parent, viewType)
             if this.getApplication() then
                 this.getApplication().controlEnter();
             else
-                this.runApplication(this.getLauncher().getSelected());
+                this.getLauncher().controlEnter();
             end
         end
 
@@ -235,7 +226,7 @@ function phone.Phone.__constructor (parent, viewType)
             if this.getApplication() then
                 this.getApplication().controlUp();
             else
-                this.changeSelected(-1);
+                this.getLauncher().controlUp();
             end
         end
 
@@ -243,22 +234,8 @@ function phone.Phone.__constructor (parent, viewType)
             if this.getApplication() then
                 this.getApplication().controlDown();
             else
-                this.changeSelected(1);
+                this.getLauncher().controlDown();
             end
-        end
-
-        this.changeSelected = function (value)
-            local new = this.getLauncher().getSelected() + value;
-
-            if this.getLauncher().getSelected() == 1 and value < 0 then
-                this.getLauncher().setSelected(#this.getApps());
-                return;
-            elseif new > #this.getApps() then
-                this.getLauncher().setSelected(1);
-                return;
-            end
-
-            this.getLauncher().setSelected(new);
         end
     -- control section end
 
@@ -297,16 +274,15 @@ function phone.Phone.__constructor (parent, viewType)
 
     --screen section
         this.invalidate = function ()
+            dxSetRenderTarget(_screenRenderTarget, true);
+
             if this.getApplication() then
-                dxSetRenderTarget(_screenRenderTarget, true);
                 this.getApplication().draw(_screenRenderTarget);
-                _launcher.draw(true, tocolor(255, 255, 255, 255)); -- draw just statusbar
-                dxSetRenderTarget();
             else
-                dxSetRenderTarget(_screenRenderTarget, true);
-                _launcher.draw();
-                dxSetRenderTarget();
+                this.getLauncher().draw();
             end
+
+            dxSetRenderTarget();
         end
 
         this.createScreenRenderTarget = function ()

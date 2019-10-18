@@ -51,14 +51,22 @@ end
 function getTopicMessages(topic)
 	local result = exports.rp_database:queryResult(string.format('SELECT * FROM messages WHERE topic = %d', topic));
 
-	outputDebugString(topic);
-
 	triggerClientEvent(client, 'onResponseTopicMessages', client, result);
 end
-
 addEvent('getTopicMessages', true);
 addEventHandler('getTopicMessages', resourceRoot, getTopicMessages);
 
+function addNewTopic(first, second)
+	local _, _, insertid = exports.rp_database:queryResult(string.format('INSERT INTO topics VALUES (null, %d, %d)', first, second));
+
+	triggerClientEvent(client, 'onResponseNewTopic', client, {
+		id = insertid,
+		first = first,
+		second = second
+	});
+end
+addEvent('addNewTopic', true);
+addEventHandler('addNewTopic', resourceRoot, addNewTopic);
 
 function savePhoneConfig(config)
 	-- save data to db

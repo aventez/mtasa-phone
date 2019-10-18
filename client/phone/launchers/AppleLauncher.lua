@@ -24,6 +24,8 @@ function phone.AppleLauncher.__constructor (...)
 
     local bgPadding = 3;
 
+    local _selected = 1;
+    local _selectedSize = 40;
 
     this.setAttribute('color', tocolor(0, 0, 0, 0.4));
     this.setAttribute('iconsMargin', 20);
@@ -76,6 +78,32 @@ function phone.AppleLauncher.__constructor (...)
         this.setSelectedSize(this.getSelectedSize() + progress);
     end
 
+    this.controlEnter = function ()
+        this.getPhone().runApplication(this.getSelected());
+    end
+
+    this.controlUp = function ()
+        this.changeSelected(-1);
+    end
+
+    this.controlDown = function ()
+        this.changeSelected(1);
+    end
+
+    this.changeSelected = function (value)
+        local new = this.getSelected() + value;
+
+        if this.getSelected() == 1 and value < 0 then
+            this.setSelected(#this.getPhone().getApps());
+            return;
+        elseif new > #this.getPhone().getApps() then
+            this.setSelected(1);
+            return;
+        end
+
+        this.setSelected(new);
+    end
+
     this.drawStatusBar = function (color)
         local time = getRealTime();
         dxDrawText(getStringRealTime(),
@@ -90,6 +118,25 @@ function phone.AppleLauncher.__constructor (...)
             true,                                           -- clip
             false);                                         -- wordBreak
     end
+
+    -- selected section
+        this.getSelected = function ()
+            return _selected;
+        end
+
+        this.setSelected = function (selected)
+            this.setSelectedSize(40);
+            _selected = selected;
+        end
+
+        this.setSelectedSize = function (size)
+            _selectedSize = size;
+        end
+
+        this.getSelectedSize = function ()
+            return _selectedSize;
+        end
+    -- selected section end
 
     this.draw = function (onlyStatus, color)
         onlyStatus = onlyStatus or false;

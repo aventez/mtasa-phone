@@ -79,6 +79,9 @@ function phoneAnimation()
 
 		if not animation.fadeIn then
 			removeEventHandler('onClientRender', root, drawPhone);
+	        if userphone.getApplication() then
+	            userphone.getApplication().onClose(userphone);
+	        end
 		end
 	end
 end
@@ -201,9 +204,6 @@ bindKey('end', 'up', changePhoneState);
 	function onResponsePhoneData(array)
 		if userphone then
 		    for k, v in pairs(array) do
-		    	if k == 'pin' then
-		    		outputChatBox('setting');
-		    	end
 				userphone.setConfig(k, v);
 		    end
 		end
@@ -211,6 +211,16 @@ bindKey('end', 'up', changePhoneState);
 	addEvent('onResponsePhoneData', true);
 	addEventHandler('onResponsePhoneData', getLocalPlayer(), onResponsePhoneData);
 
+	function onResponseNewTopic(data)
+		local array = userphone.getConfig('topics');
+		table.insert(array, data);
+
+		userphone.setConfig('topics', array);
+
+		userphone.setApplication(phone.Messenger);
+	end
+	addEvent('onResponseNewTopic', true);
+	addEventHandler('onResponseNewTopic', getLocalPlayer(), onResponseNewTopic);
 
 	function onResponseTopicMessages(array)
 		if userphone then
