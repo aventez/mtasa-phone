@@ -10,13 +10,6 @@ setmetatable(phone.Apple, {
 function phone.Apple.__constructor (...)
 	local this = phone.Phone(..., 'Apple');
 
-	local super = {};
-	for k, v in pairs(this) do
-		if type(v) == 'function' then
-			super[k] = v;
-		end
-    end
-
     this.setAttribute('wallpaper', './files/wallpapers/wallpaper.png');
     this.setAttribute('texture', './files/border.png');
 
@@ -25,8 +18,6 @@ function phone.Apple.__constructor (...)
     this.createScreenRenderTarget();
 
     this.onDraw = function ()
-        super.onDraw();
-
         local screenBox = this.getScreenBoundingBox();
         dxDrawImage(screenBox.x, screenBox.y, screenBox.width, screenBox.height, this.getScreenRenderTarget());
 

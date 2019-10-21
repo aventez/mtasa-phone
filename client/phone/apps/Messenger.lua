@@ -14,13 +14,6 @@ end
 function phone.Messenger.__constructor (...)
 	local this = phone.Application(...);
 
-	local super = {};
-	for k, v in pairs(this) do
-		if type(v) == 'function' then
-			super[k] = v;
-		end
-	end
-
 	-- variables section
 		this.setAttribute('headerHeight', 90);
 		this.setAttribute('optionSize', 72);

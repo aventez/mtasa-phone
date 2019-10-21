@@ -9,13 +9,6 @@ setmetatable(phone.AppleLauncher, {
 
 function phone.AppleLauncher.__constructor (...)
 	local this = phone.Launcher(...);
-
-	local super = {};
-	for k, v in pairs(this) do
-		if type(v) == 'function' then
-			super[k] = v;
-		end
-    end
     
     local appMargin = 5;
     local appPadding = 2;

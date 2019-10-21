@@ -11,13 +11,6 @@ setmetatable(phone.IntroLauncher, {
 
 function phone.IntroLauncher.__constructor (...)
 	local this = phone.Launcher(...);
-
-	local super = {};
-	for k, v in pairs(this) do
-		if type(v) == 'function' then
-			super[k] = v;
-		end
-    end
     
     this.draw = function ()
     	alpha = alpha + 2;

@@ -10,13 +10,6 @@ setmetatable(phone.NewTopic, {
 function phone.NewTopic.__constructor (...)
 	local this = phone.Application(...);
 
-	local super = {};
-	for k, v in pairs(this) do
-		if type(v) == 'function' then
-			super[k] = v;
-		end
-	end
-
 	-- default attributes section
 		this.setAttribute('headerHeight', 27);
 		this.setAttribute('contentMargin', 10);

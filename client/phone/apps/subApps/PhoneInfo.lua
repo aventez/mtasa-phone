@@ -14,13 +14,6 @@ end
 
 function phone.PhoneInfo.__constructor (...)
 	local this = phone.Application(...);
-
-	local super = {};
-	for k, v in pairs(this) do
-		if type(v) == 'function' then
-			super[k] = v;
-		end
-	end
 	
     -- default variables section
         local p = this.getLauncher().getPhone();

@@ -10,13 +10,6 @@ setmetatable(phone.PinLauncher, {
 function phone.PinLauncher.__constructor (...)
 	local this = phone.Launcher(...);
 
-	local super = {};
-	for k, v in pairs(this) do
-		if type(v) == 'function' then
-			super[k] = v;
-		end
-    end
-
     local validPin = this.getPhone().getConfig('pin');
     local pin = '';
     local animation = {

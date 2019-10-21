@@ -325,8 +325,6 @@ function phone.Phone.__constructor (parent, viewType)
     --dimension section end
 
     --drawing section
-        this.onDraw = function () end
-
         this.draw = function ()
             this.invalidate();
 
