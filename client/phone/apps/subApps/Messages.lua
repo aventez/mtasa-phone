@@ -30,8 +30,7 @@ function phone.Messages.__constructor (...)
 	-- variables section
 
 		local p = this.getLauncher();
-		
-		local messages = p.getAttribute('messengerMessages');
+
 		local contact = p.getAttribute('messengerContact');
 
 		if contact.first == p.getConfig('phoneNumber') then
@@ -52,6 +51,11 @@ function phone.Messages.__constructor (...)
 		local size = 0;
 
 		local content = '';
+
+		local delaySettings = {
+			delay = 3000,
+			lastMessage = 0,
+		};
 	-- variables section end
 
 	local getOptions = function ()
@@ -118,10 +122,11 @@ function phone.Messages.__constructor (...)
 			end
 
 			-- drawing messages
-	        this.drawContent(messages);
+	        this.drawContent();
 	    end
 
-	    this.drawContent = function (data)
+	    this.drawContent = function ()
+	    	local data = p.getAttribute('messengerMessages');
 			local height = p.getProperty('screen_height') or 0;
 			local marginBottom = this.getAttribute('marginBottom');
 
@@ -130,6 +135,7 @@ function phone.Messages.__constructor (...)
 
 			if data.messages then
 				for i = #data.messages, 1, -1 do
+					--outputChatBox(toJSON(data.messages[i]));
 					this.drawMessage(data.messages[i]);
 				end
 			end
@@ -229,6 +235,28 @@ function phone.Messages.__constructor (...)
 			else
 				content = string.sub(content, 1, strLength-1);
 				playSound("files/tock.mp3");
+			end
+		end
+
+		this.controlEnter = function ()
+			local strLength = string.len(content);
+
+			if strLength > 0 then
+				if getTickCount() > delaySettings.lastMessage + delaySettings.delay then
+					p.addMessage(contact.id, p.getConfig('phoneNumber'), content);
+
+					local new = p.getAttribute('messengerMessages');
+					table.insert(new.messages, {
+						number = p.getConfig('phoneNumber'),
+						content = content,
+						topic = contact.id,
+					});
+					p.setAttribute('messengerMessages', new);
+
+					delaySettings.lastMessage = getTickCount();
+
+					content = '';
+				end
 			end
 		end
 

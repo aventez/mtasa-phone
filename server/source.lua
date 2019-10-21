@@ -68,6 +68,12 @@ end
 addEvent('addNewTopic', true);
 addEventHandler('addNewTopic', resourceRoot, addNewTopic);
 
+function addNewMessage(topic, number, content)
+	local _, _, insertid = exports.rp_database:queryResult(string.format('INSERT INTO messages VALUES (null, %d, %d, "%s")', topic, number, content));
+end
+addEvent('addNewMessage', true);
+addEventHandler('addNewMessage', resourceRoot, addNewMessage);
+
 function savePhoneConfig(config)
 	-- save data to db
 	print(toJSON(config));
@@ -89,21 +95,3 @@ end
 
 addEvent('onClientAddContact', true);
 addEventHandler('onClientAddContact', resourceRoot, onClientAddContact);
-
-
-
-
-
---[[function createPhone(playerSource, commandName)
-	triggerClientEvent(playerSource, 'givePhone', playerSource, 'apple');
-end
-addCommandHandler('phone', createPhone);
-
-function removePhone(playerSource, commandName)
-	triggerClientEvent(playerSource, 'removePhone', playerSource);
-end
-addCommandHandler('rphone', removePhone);
-
-addEventHandler('onPlayerJoin', getRootElement(), function () 
-	createPhone(source, nil);
-end)]]

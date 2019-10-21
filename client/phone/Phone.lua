@@ -182,6 +182,8 @@ function phone.Phone.__constructor (parent, viewType)
 
     -- messages section
         this.addMessage = function (topic, number, content)
+            triggerServerEvent('addNewMessage', resourceRoot, topic, number, content);
+            --outputDebugString(string.format('Dodawanie kontaktu %d %d %s', topic, number, content));
         end
 
         this.addTopic = function (first, second)
