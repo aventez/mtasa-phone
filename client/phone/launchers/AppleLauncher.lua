@@ -25,6 +25,7 @@ function phone.AppleLauncher.__constructor (...)
 
     local getStringRealTime = function ()
         local time = getRealTime();
+
         return string.format('%d:%02d', time.hour, time.minute);
     end
 
@@ -71,16 +72,16 @@ function phone.AppleLauncher.__constructor (...)
         this.setSelectedSize(this.getSelectedSize() + progress);
     end
 
-    this.controlEnter = function ()
-        this.getPhone().runApplication(this.getSelected());
-    end
+    this.control = function (key)
+        local controlType = Controls.getControlType(key);
 
-    this.controlUp = function ()
-        this.changeSelected(-1);
-    end
-
-    this.controlDown = function ()
-        this.changeSelected(1);
+        if controlType == 'TYPE_ENTER' then
+            this.getPhone().runApplication(this.getSelected());
+        elseif controlType == 'TYPE_UP' then
+            this.changeSelected(-1);
+        elseif controlType == 'TYPE_DOWN' then
+            this.changeSelected(1);
+        end
     end
 
     this.changeSelected = function (value)

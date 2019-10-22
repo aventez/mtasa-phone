@@ -122,31 +122,28 @@ function phone.Settings.__constructor (...)
     -- drawing section end
 
     -- control section
-	    this.controlEnter = function () 
-	    	local option = this.getOptions()[selectedOption];
+    	this.control = function (value)
+    		local controlType = Controls.getControlType(value);
 
-	    	if option.type == 'switch' then
-		    	option.value = not option.value;
+    		if controlType == 'TYPE_ENTER' then
+		    	local option = this.getOptions()[selectedOption];
 
-	    		p.setConfig(option.id, option.value);
-		    	p.saveConfig();	    		
-		    elseif option.type == 'click' then
-		    	p.setApplication(option.value, true);
-		    	outputChatBox('opening');
-		    end
-		end
+		    	if option.type == 'switch' then
+			    	option.value = not option.value;
 
-	    this.controlBack = function () 
-	    	this.onClose(p);
-		end
-
-	    this.controlUp = function ()
-	    	this.switchSelected(-1);
-		end
-
-	    this.controlDown = function ()
-	    	this.switchSelected(1);
-		end
+		    		p.setConfig(option.id, option.value);
+			    	p.saveConfig();	    		
+			    elseif option.type == 'click' then
+			    	p.setApplication(option.value, true);
+			    end
+    		elseif controlType == 'TYPE_BACK' then
+    			this.onClose(p);
+    		elseif controlType == 'TYPE_UP' then
+    			this.switchSelected(-1);
+    		elseif controlType == 'TYPE_DOWN' then
+    			this.switchSelected(1);
+    		end
+    	end
 
 		this.switchSelected = function (value)
 			local new = selectedOption + value;

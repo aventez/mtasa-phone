@@ -33,20 +33,20 @@ function givePhone(model)
 		});
 
 		-- interaction section
-		userphone.onClosePhone = function ()
-			changePhoneState();
-		end
+			userphone.onClosePhone = function ()
+				changePhoneState();
+			end
 		-- interaction section end
 	end
 end
+
 addEvent('givePhone', true);
 addEventHandler('givePhone', getLocalPlayer(), givePhone);
 
-function removePhone()
-	userphone = nil;
-end
 addEvent('removePhone', true);
-addEventHandler('removePhone', getLocalPlayer(), removePhone);
+addEventHandler('removePhone', getLocalPlayer(), function ()
+	userphone = nil;
+end);
 -- end user phone section
 
 givePhone('apple'); -- debug
@@ -95,7 +95,6 @@ function changePhoneState()
 		animation.startTime = getTickCount();
 		animation.fadeIn = true;
 
-		bindControlKeys();
 		addEventHandler('onClientRender', root, drawPhone);
 
 		if userphone.getConfig('pin') and not userphone.getApplication() then
@@ -111,8 +110,6 @@ function changePhoneState()
 		animation.startTime = getTickCount();
 		animation.fadeIn = false;
 
-		unbindControlKeys();
-
 	    addEventHandler('onClientPreRender', root, phoneAnimation);
 
 	    toggleControl('fire', true);
@@ -122,107 +119,27 @@ function changePhoneState()
 end
 bindKey('end', 'up', changePhoneState);
 
---control section
-	function controlEnter()
-		if userphone then
-	    	userphone.controlEnter();
-	    end
-	end
-
-	function controlBack()
-		if userphone then
-	    	userphone.controlBack();
-		end
-	end
-
-	function controlUp()
-		if userphone then
-			userphone.controlUp();
-		end
-	end
-
-	function controlDown()
-		if userphone then
-			userphone.controlDown();
-		end
-	end
-
-	function controlNumber(value)
-		if userphone then
-			userphone.controlNumber(value);
-		end
-	end
-
-	function controlLetter(value)
-		if userphone then
-			if value == 'space' then
-				value = ' ';
-			end
-
-			userphone.controlLetter(value);
-		end
-	end
-
-	function bindControlKeys()
-		bindKey('mouse_wheel_up', 'down', controlUp);
-		bindKey('mouse_wheel_down', 'down', controlDown);
-		bindKey('mouse1', 'up', controlEnter);
-		bindKey('mouse2', 'up', controlBack);
-		bindKey('backspace', 'up', controlBack);
-
-		for k, v in pairs(letters) do
-			bindKey(letters[k], 'up', controlLetter);
-		end
-
-		for i = 0, 9 do
-			bindKey(i, 'up', controlNumber);
-		end
-
-		-- bind letters
-	end
-
-	function unbindControlKeys()
-		unbindKey('mouse_wheel_up', 'down', controlUp);
-		unbindKey('mouse_wheel_down', 'down', controlDown);
-		unbindKey('mouse1', 'up', controlEnter);
-		unbindKey('mouse2', 'up', controlBack);
-		unbindKey('backspace', 'up', controlBack);
-
-		for k, v in pairs(letters) do
-			unbindKey(letters[k], 'up', controlLetter);
-		end
-
-		for i=0,9 do
-			unbindKey(i, 'up', controlNumber);
-		end
-
-		-- bind letters
-	end
---control section end
-
 --server section
-	function onResponsePhoneData(array)
+	addEvent('onResponsePhoneData', true);
+	addEventHandler('onResponsePhoneData', getLocalPlayer(), function (array)
 		if userphone then
 		    for k, v in pairs(array) do
 				userphone.setConfig(k, v);
 		    end
-		end
-	end
-	addEvent('onResponsePhoneData', true);
-	addEventHandler('onResponsePhoneData', getLocalPlayer(), onResponsePhoneData);
+		end		
+	end);
 
-	function onResponseNewTopic(data)
+	addEvent('onResponseNewTopic', true);
+	addEventHandler('onResponseNewTopic', getLocalPlayer(), function (data)
 		local array = userphone.getConfig('topics');
 		table.insert(array, data);
 
 		userphone.setConfig('topics', array);
-
 		userphone.setApplication(phone.Messenger);
-	end
-	addEvent('onResponseNewTopic', true);
-	addEventHandler('onResponseNewTopic', getLocalPlayer(), onResponseNewTopic);
+	end);
 
-	function onResponseTopicMessages(array)
+	addEvent('onResponseTopicMessages', true);
+	addEventHandler('onResponseTopicMessages', getLocalPlayer(), function (array)
 		if userphone then
 			userphone.setAttribute('messengerMessages', {
 				messages = array
@@ -230,7 +147,11 @@ bindKey('end', 'up', changePhoneState);
 
 			userphone.setApplication(phone.Messages);
 		end
-	end
-	addEvent('onResponseTopicMessages', true);
-	addEventHandler('onResponseTopicMessages', getLocalPlayer(), onResponseTopicMessages);
+	end);
 --server section end
+
+addEventHandler('onClientKey', root, function (button, state)
+	if userphone and state then
+		userphone.control(button);
+	end
+end);

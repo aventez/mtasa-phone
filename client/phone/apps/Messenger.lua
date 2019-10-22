@@ -24,7 +24,6 @@ function phone.Messenger.__constructor (...)
 		local _phone = this.getLauncher().getPhone();
 
 		local topics = _phone.getConfig('topics');
-
 		_phone.setAttribute('messengerContact', topics[1]);
 
 		local selected = 1;
@@ -97,17 +96,6 @@ function phone.Messenger.__constructor (...)
 				'left',
 				'top');
 
-			dxDrawText('12:31',
-				0, 
-				height + 20, 
-				width - 20, 
-				height+optSize, 
-				0xFFFFFFFF, 
-				1,
-				Fonts.getFont('ProximaNova-Regular', 10) or 'default',
-				'right',
-				'top');
-
 			dxDrawText(data.content,
 				marginLeft, 
 				height + 43, 
@@ -122,26 +110,20 @@ function phone.Messenger.__constructor (...)
 	-- drawing section end
 
 	-- control section
-	    this.controlEnter = function () 
-	    	local index = (section.first + selected) - 1;
+		this.control = function (value)
+			local controlType = Controls.getControlType(value);
 
-	    	triggerServerEvent('getTopicMessages', resourceRoot, topics[index].id);
-		end
+			if controlType == 'TYPE_ENTER' then
+		    	local index = (section.first + selected) - 1;
 
-	    this.controlBack = function () 
-	    	this.onClose(_phone);
-		end
-
-	    this.controlUp = function ()
-	    	this.switchSelected(-1);
-		end
-
-	    this.controlDown = function ()
-	    	this.switchSelected(1);
-		end
-
-		this.controlLetter = function (value)
-			if value == ' ' then
+		    	triggerServerEvent('getTopicMessages', resourceRoot, topics[index].id);
+			elseif controlType == 'TYPE_BACK' then
+				this.onClose(_phone);
+			elseif controlType == 'TYPE_UP' then
+				this.switchSelected(-1);
+			elseif controlType == 'TYPE_DOWN' then
+				this.switchSelected(1);
+			elseif controlType == 'TYPE_SPACE' then
 				_phone.setApplication(phone.NewTopic);
 			end
 		end

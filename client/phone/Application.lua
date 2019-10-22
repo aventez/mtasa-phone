@@ -30,12 +30,7 @@ function phone.Application.__constructor (launcher)
     --attributs section end
 
     --control section
-    this.controlEnter = function () end;
-    this.controlBack = function () end;
-    this.controlNumber = function (value) end;
-    this.controlLetter = function (value) end;
-    this.controlUp = function () end;
-    this.controlDown = function () end;
+    this.control = function (key) end;
     --control section end
 
     this.getLauncher = function ()
@@ -51,7 +46,7 @@ function phone.Application.__constructor (launcher)
 		local width = p.getProperty('screen_width') or 0;
 		local height = p.getProperty('screen_height') or 0;
 
-        dxDrawText('Not implemented yet.', 
+        dxDrawText('An error occured.', 
             0, 
             0, 
             width, 

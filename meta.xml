@@ -5,6 +5,7 @@
 	<script src="client/phone/namespace.lua" type="client" />
 	<script src="client/phone/Phone.lua" type="client" />
 	<script src="client/phone/Launcher.lua" type="client" />  
+	<script src="client/phone/Controls.lua" type="client" />  
 	<script src="client/phone/Application.lua" type="client" />  
 	<script src="client/phone/Fonts.lua" type="client" />
 

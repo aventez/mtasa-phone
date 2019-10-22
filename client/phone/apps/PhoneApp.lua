@@ -65,37 +65,37 @@ function phone.PhoneApp.__constructor (...)
     -- drawing section end
 
     -- control section
-    	this.controlNumber = function (value)
-    		if data.number then
-    			if string.len(data.number) > 10 then
-    				return;
-    			end
-    		end
-    		
-    		data.number = string.format('%s%s', data.number or '', value);
+        this.control = function (value)
+            local controlType = Controls.getControlType(value);
 
-            playSound("files/button.mp3");
-    	end
+            if controlType == 'TYPE_BACK' then
+                local strLength = string.len(data.number);
 
-    	this.controlBack = function (value)
-			local strLength = string.len(data.number);
-
-			if strLength <= 0 then
-                this.onClose(p);
-			else
-				data.number = string.sub(data.number, 1, strLength-1);
-                playSound("files/tock.mp3");
-			end
-    	end
-
-    	this.controlEnter = function ()
-    		if data.number then
-                if string.len(data.number) > 0 then 
-                    p.phoneCall(data.number);
-    			    p.closePhone();
+                if strLength <= 0 then
+                    this.onClose(p);
+                else
+                    data.number = string.sub(data.number, 1, strLength-1);
+                    playSound("files/tock.mp3");
                 end
+            elseif controlType == 'TYPE_NUMBER' then
+                if data.number then
+                    if string.len(data.number) > 10 then
+                        return;
+                    end
+                end
+                
+                data.number = string.format('%s%s', data.number or '', value);
+
+                playSound("files/button.mp3");               
+            elseif controlType == 'TYPE_ENTER' then
+                if data.number then
+                    if string.len(data.number) > 0 then 
+                        p.phoneCall(data.number);
+                        p.closePhone();
+                    end
+                end                
             end
-    	end
+        end
     -- control section end
 
     return this;

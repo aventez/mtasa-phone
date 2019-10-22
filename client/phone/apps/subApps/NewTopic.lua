@@ -65,30 +65,29 @@ function phone.NewTopic.__constructor (...)
 	end
 
     -- control section
-	    this.controlEnter = function () 
-	    	if string.len(content) > 0 then
-	    		p.addTopic(p.getConfig('phoneNumber'), content);
-	    	end
-	    	-- insert
-		end
+    	this.control = function (value)
+    		local controlType = Controls.getControlType(value);
 
-    	this.controlBack = function (value)
-			local strLength = string.len(content);
+    		if controlType == 'TYPE_ENTER' then
+		    	if string.len(content) > 0 then
+		    		p.addTopic(p.getConfig('phoneNumber'), content);
+		    	end
+    		elseif controlType == 'TYPE_BACK' then
+	   			local strLength = string.len(content);
 
-			if strLength <= 0 then
-				p.setApplication(phone.Messenger, true);
-			else
-				content = string.sub(content, 1, strLength-1);
-			end
+				if strLength <= 0 then
+					p.setApplication(phone.Messenger, true);
+				else
+					content = string.sub(content, 1, strLength-1);
+				end
+    		elseif controlType == 'TYPE_NUMBER' then
+				if string.len(content) > 10 then
+					return;
+				end
+
+				content = string.format('%s%s', content, value);
+    		end
     	end
-
-		this.controlNumber = function (value)
-			if string.len(content) > 10 then
-				return;
-			end
-
-			content = string.format('%s%s', content, value);
-		end
     -- control section end
 
     return this;

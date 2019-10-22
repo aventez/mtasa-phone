@@ -135,21 +135,19 @@ function phone.Contact.__constructor (...)
 	-- drawing section end
 
     -- control section
-	    this.controlEnter = function () 
-	    	_options[_selected + 1].action();
-		end
+    	this.control = function (value)
+    		local controlType = Controls.getControlType(value);
 
-	    this.controlBack = function ()
-	    	p.setApplication(phone.Contacts, true);
-		end
-
-	    this.controlUp = function ()
-	    	this.switchSelected(-1);
-		end
-
-	    this.controlDown = function ()
-	    	this.switchSelected(1);
-		end
+    		if controlType == 'TYPE_ENTER' then
+    			_options[_selected + 1].action();
+    		elseif controlType == 'TYPE_UP' then
+    			this.switchSelected(-1);
+    		elseif controlType == 'TYPE_DOWN' then
+    			this.switchSelected(1);
+    		elseif controlType == 'TYPE_BACK' then
+    			p.setApplication(phone.Contacts, true);
+    		end
+    	end
 
 		this.switchSelected = function (value)
 			local new = _selected + value;

@@ -192,51 +192,12 @@ function phone.Phone.__constructor (parent, viewType)
     -- messages section end
 
     -- control section
-        this.controlNumber = function (value)
+        this.control = function (key)
+            outputChatBox('control'..key);
             if this.getApplication() then
-                this.getApplication().controlNumber(value);
-            else
-                this.getLauncher().controlNumber(value);
-            end
-        end
-
-        this.controlLetter = function (value)
-            if this.getApplication() then
-                this.getApplication().controlLetter(value);
-            else
-                this.getLauncher().controlLetter(value);
-            end
-        end
-
-        this.controlBack = function ()
-            if this.getApplication() then
-                this.getApplication().controlBack();
-            else
-                this.getLauncher().controlBack();
-            end
-        end
-
-        this.controlEnter = function ()
-            if this.getApplication() then
-                this.getApplication().controlEnter();
-            else
-                this.getLauncher().controlEnter();
-            end
-        end
-
-        this.controlUp = function ()
-            if this.getApplication() then
-                this.getApplication().controlUp();
-            else
-                this.getLauncher().controlUp();
-            end
-        end
-
-        this.controlDown = function ()
-            if this.getApplication() then
-                this.getApplication().controlDown();
-            else
-                this.getLauncher().controlDown();
+                this.getApplication().control(key);
+            elseif this.getLauncher() then
+                this.getLauncher().control(key);
             end
         end
     -- control section end

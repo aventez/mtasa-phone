@@ -109,27 +109,21 @@ function phone.Contacts.__constructor (...)
 	-- drawing section end
 
 	-- control section
-	    this.controlEnter = function () 
-	    	local index = (section.first + selected) - 1;
+		this.control = function (value)
+			local controlType = Controls.getControlType(value);
 
-	    	if index == 1 then
-	    		_phone.setApplication(phone.NewContact);
-	    	else
-				_phone.setAttribute('contactData', contacts[index]);
+			if controlType == 'TYPE_ENTER' then
+				_phone.setAttribute('contactData', contacts[(section.first + selected) - 1]);
 				_phone.setApplication(phone.Contact);
+			elseif controlType == 'TYPE_BACK' then
+				this.onClose(_phone);
+			elseif controlType == 'TYPE_UP' then
+				this.switchSelected(-1);
+			elseif controlType == 'TYPE_DOWN' then
+				this.switchSelected(1);
+			elseif controlType == 'TYPE_SPACE' then
+				_phone.setApplication(phone.NewContact);
 			end
-		end
-
-	    this.controlBack = function () 
-	    	this.onClose(_phone);
-		end
-
-	    this.controlUp = function ()
-	    	this.switchSelected(-1);
-		end
-
-	    this.controlDown = function ()
-	    	this.switchSelected(1);
 		end
 
 		this.switchSelected = function (value)

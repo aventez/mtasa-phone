@@ -58,8 +58,12 @@ function phone.Weather.__constructor (...)
     -- drawing section end
 
     -- control section
-    	this.controlBack = function (value)
-    		this.onClose(p);
+    	this.control = function (value)
+            local controlType = Controls.getControlType(value);
+
+            if controlType == 'TYPE_BACK' then
+    	       this.onClose(p);
+            end
     	end
     -- control section end
 

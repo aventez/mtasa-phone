@@ -92,9 +92,13 @@ function phone.PhoneInfo.__constructor (...)
     -- drawing section end
 
     -- control section
-    	this.controlBack = function (value)
-    		p.setApplication(phone.Settings, true);
-    	end
+        this.control = function (value)
+            local controlType = Controls.getControlType(value);
+
+            if controlType == 'TYPE_BACK' then
+                p.setApplication(phone.Settings, true);
+            end
+        end
     -- control section end
 
     return this;

@@ -39,18 +39,20 @@ function phone.PinLauncher.__constructor (...)
     end
 
     --control section
-        this.controlBack = function () 
-            local strLength = string.len(pin);
+        this.control = function (value)
+            local controlType = Controls.getControlType(value);
 
-            pin = string.sub(pin, 1, strLength-1);
-        end
+            if controlType == 'TYPE_BACK' then
+                local strLength = string.len(pin);
 
-        this.controlNumber = function (value)
-            if string.len(pin) < 4 then
-                pin = pin .. value;
-                if pin == validPin then
-                    animation.startTime = getTickCount();
-                end
+                pin = string.sub(pin, 1, strLength-1);
+            elseif controlType == 'TYPE_NUMBER' then
+                if string.len(pin) < 4 then
+                    pin = pin .. value;
+                    if pin == validPin then
+                        animation.startTime = getTickCount();
+                    end
+                end              
             end
         end
     --control section end

@@ -102,65 +102,59 @@ function phone.NewContact.__constructor (...)
 	end
 
     -- control section
-	    this.controlEnter = function () 
-	    	for k, v in pairs(options) do
-	    		if not v.value or string.len(v.value or '') <= 0 then
-	    			return;
+    	this.control = function (value)
+    		local controlType = Controls.getControlType(value);
+
+    		if controlType == 'TYPE_ENTER' then
+		    	for k, v in pairs(options) do
+		    		if not v.value or string.len(v.value or '') <= 0 then
+		    			return;
+		    		end
+		    	end
+
+		    	p.addContact({
+	           		name = options[1].value,
+	           		number = options[2].value
+		    	});
+		    	p.setApplication(phone.Contacts, true);
+    		elseif controlType == 'TYPE_BACK' then
+	    		if options[selected].value then
+	    			local strLength = string.len(options[selected].value);
+
+	    			if strLength <= 0 then
+	    				p.setApplication(phone.Contacts, true);
+	    			else
+	    				options[selected].value = string.sub(options[selected].value, 1, strLength-1);
+	    			end
+	    		else
+	    			p.setApplication(phone.Contacts, true);
 	    		end
-	    	end
+    		elseif controlType == 'TYPE_UP' then
+    			this.switchSelected(-1);
+    		elseif controlType == 'TYPE_DOWN' then
+    			this.switchSelected(1);
+    		elseif controlType == 'TYPE_NUMBER' then
+	    		if options[selected].value then
+	    			if string.len(options[selected].value) > 10 then
+	    				return;
+	    			end
+	    		end
 
-	    	p.addContact({
-           		name = options[1].value,
-           		number = options[2].value
-	    	});
-	    	p.setApplication(phone.Contacts, true);
-		end
+				options[selected].value = string.format('%s%s', options[selected].value or '', value);
+    		elseif controlType == 'TYPE_LETTER' then
+				if options[selected].type == 'numbers' then
+					return;
+				end
 
-    	this.controlBack = function (value)
-    		if options[selected].value then
-    			local strLength = string.len(options[selected].value);
+	    		if options[selected].value then
+	    			if string.len(options[selected].value) > 10 then
+	    				return;
+	    			end
+	    		end
 
-    			if strLength <= 0 then
-    				p.setApplication(phone.Contacts, true);
-    			else
-    				options[selected].value = string.sub(options[selected].value, 1, strLength-1);
-    			end
-    		else
-    			p.setApplication(phone.Contacts, true);
+				options[selected].value = string.format('%s%s', options[selected].value or '', value);
     		end
     	end
-
-	    this.controlUp = function ()
-	    	this.switchSelected(-1);
-		end
-
-	    this.controlDown = function ()
-	    	this.switchSelected(1);
-		end
-
-		this.controlNumber = function (value)
-    		if options[selected].value then
-    			if string.len(options[selected].value) > 10 then
-    				return;
-    			end
-    		end
-
-			options[selected].value = string.format('%s%s', options[selected].value or '', value);
-		end
-
-		this.controlLetter = function (value)
-			if options[selected].type == 'numbers' then
-				return;
-			end
-
-    		if options[selected].value then
-    			if string.len(options[selected].value) > 10 then
-    				return;
-    			end
-    		end
-
-			options[selected].value = string.format('%s%s', options[selected].value or '', value);		
-		end
 
 		this.switchSelected = function (value)
 			local new = selected + value;
