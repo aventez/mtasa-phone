@@ -46,13 +46,17 @@ function phone.PinLauncher.__constructor (...)
                 local strLength = string.len(pin);
 
                 pin = string.sub(pin, 1, strLength-1);
-            elseif controlType == 'TYPE_NUMBER' then
+            end
+        end
+
+        this.controlCharacter = function (value)
+            if Controls.isNumeric(value) then
                 if string.len(pin) < 4 then
                     pin = pin .. value;
                     if pin == validPin then
                         animation.startTime = getTickCount();
                     end
-                end              
+                end
             end
         end
     --control section end

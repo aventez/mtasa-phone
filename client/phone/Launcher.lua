@@ -34,6 +34,7 @@ function phone.Launcher.__constructor (phoneObject)
 
 --control section
     this.control = function (key) end;
+    this.controlCharacter = function (key) end;
 --control section end
 
 --property section

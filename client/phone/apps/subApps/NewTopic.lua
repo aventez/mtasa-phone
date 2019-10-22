@@ -80,13 +80,17 @@ function phone.NewTopic.__constructor (...)
 				else
 					content = string.sub(content, 1, strLength-1);
 				end
-    		elseif controlType == 'TYPE_NUMBER' then
-				if string.len(content) > 10 then
+    		end
+    	end
+
+    	this.controlCharacter = function (value)
+    		if Controls.isNumeric(value) then
+	   			if string.len(content) > 10 then
 					return;
 				end
 
-				content = string.format('%s%s', content, value);
-    		end
+				content = string.format('%s%s', content, value);  
+    		end  		
     	end
     -- control section end
 

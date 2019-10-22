@@ -76,8 +76,19 @@ function phone.PhoneApp.__constructor (...)
                 else
                     data.number = string.sub(data.number, 1, strLength-1);
                     playSound("files/tock.mp3");
-                end
-            elseif controlType == 'TYPE_NUMBER' then
+                end            
+            elseif controlType == 'TYPE_ENTER' then
+                if data.number then
+                    if string.len(data.number) > 0 then 
+                        p.phoneCall(data.number);
+                        p.closePhone();
+                    end
+                end                
+            end
+        end
+
+        this.controlCharacter = function (value)
+            if Controls.isNumeric(value) then
                 if data.number then
                     if string.len(data.number) > 10 then
                         return;
@@ -86,14 +97,7 @@ function phone.PhoneApp.__constructor (...)
                 
                 data.number = string.format('%s%s', data.number or '', value);
 
-                playSound("files/button.mp3");               
-            elseif controlType == 'TYPE_ENTER' then
-                if data.number then
-                    if string.len(data.number) > 0 then 
-                        p.phoneCall(data.number);
-                        p.closePhone();
-                    end
-                end                
+                playSound("files/button.mp3");
             end
         end
     -- control section end

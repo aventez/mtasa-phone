@@ -114,9 +114,7 @@ function phone.Messenger.__constructor (...)
 			local controlType = Controls.getControlType(value);
 
 			if controlType == 'TYPE_ENTER' then
-		    	local index = (section.first + selected) - 1;
-
-		    	triggerServerEvent('getTopicMessages', resourceRoot, topics[index].id);
+		    	triggerServerEvent('getTopicMessages', resourceRoot, topics[(section.first + selected) - 1].id);
 			elseif controlType == 'TYPE_BACK' then
 				this.onClose(_phone);
 			elseif controlType == 'TYPE_UP' then

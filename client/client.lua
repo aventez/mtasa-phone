@@ -152,3 +152,9 @@ addEventHandler('onClientKey', root, function (button, state)
 		userphone.control(button);
 	end
 end);
+
+addEventHandler("onClientCharacter", getRootElement(), function (character)
+	if userphone then
+		userphone.controlCharacter(character);
+	end	
+end)

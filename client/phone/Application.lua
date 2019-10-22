@@ -31,6 +31,7 @@ function phone.Application.__constructor (launcher)
 
     --control section
     this.control = function (key) end;
+    this.controlCharacter = function (key) end;
     --control section end
 
     this.getLauncher = function ()

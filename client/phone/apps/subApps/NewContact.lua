@@ -133,26 +133,22 @@ function phone.NewContact.__constructor (...)
     			this.switchSelected(-1);
     		elseif controlType == 'TYPE_DOWN' then
     			this.switchSelected(1);
-    		elseif controlType == 'TYPE_NUMBER' then
-	    		if options[selected].value then
-	    			if string.len(options[selected].value) > 10 then
-	    				return;
-	    			end
-	    		end
+    		end
+    	end
 
-				options[selected].value = string.format('%s%s', options[selected].value or '', value);
-    		elseif controlType == 'TYPE_LETTER' then
-				if options[selected].type == 'numbers' then
-					return;
-				end
+    	this.controlCharacter = function (value)
+    		if options[selected].value then
+    			if string.len(options[selected].value) > 10 then
+    				return;
+    			end
+    		end
 
-	    		if options[selected].value then
-	    			if string.len(options[selected].value) > 10 then
-	    				return;
-	    			end
-	    		end
-
-				options[selected].value = string.format('%s%s', options[selected].value or '', value);
+    		if options[selected].type == 'numbers' then
+    			if Controls.isNumeric(value) then
+    				options[selected].value = string.format('%s%s', options[selected].value or '', value);
+    			end
+    		else
+    			options[selected].value = string.format('%s%s', options[selected].value or '', value);
     		end
     	end
 
@@ -162,7 +158,7 @@ function phone.NewContact.__constructor (...)
 			if new > #options then
 				new = 1;
 			elseif new <= 0 then
-				new = #options;
+				new = #options;  
 			end
 
 			selected = new;

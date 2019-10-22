@@ -192,8 +192,14 @@ function phone.Phone.__constructor (parent, viewType)
     -- messages section end
 
     -- control section
+        this.controlCharacter = function (key)
+            if this.getApplication() then
+                this.getApplication().controlCharacter(key);
+            elseif this.getLauncher() then
+                this.getLauncher().controlCharacter(key);
+            end
+        end
         this.control = function (key)
-            outputChatBox('control'..key);
             if this.getApplication() then
                 this.getApplication().control(key);
             elseif this.getLauncher() then

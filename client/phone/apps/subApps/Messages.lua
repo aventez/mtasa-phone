@@ -219,6 +219,16 @@ function phone.Messages.__constructor (...)
 	-- drawing section end
 
     -- control section
+    	this.controlCharacter = function (value)
+				if string.len(content) > 150 then
+				return;
+			end
+
+			playSound("files/tock.mp3");
+
+			content = string.format('%s%s', content, value);   		
+    	end
+
     	this.control = function (value)
     		local controlType = Controls.getControlType(value);
 
@@ -251,14 +261,6 @@ function phone.Messages.__constructor (...)
 						content = '';
 					end
 				end
-    		elseif controlType == 'TYPE_NUMBER' or controlType == 'TYPE_LETTER' then
-				if string.len(content) > 150 then
-					return;
-				end
-
-				playSound("files/tock.mp3");
-
-				content = string.format('%s%s', content, value);
     		end
     	end
     -- control section end
