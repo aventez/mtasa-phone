@@ -220,7 +220,7 @@ function phone.Messages.__constructor (...)
 
     -- control section
     	this.controlCharacter = function (value)
-				if string.len(content) > 150 then
+			if string.len(content) > 150 then
 				return;
 			end
 

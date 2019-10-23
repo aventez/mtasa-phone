@@ -23,13 +23,13 @@ function phone.NewContact.__constructor (...)
 		local options = {
 			{
 				id = 1,
-				value = nil,
+				value = '',
 				text = 'Wprowadź nazwę',
 				type = 'all'
 			},
 			{
 				id = 2,
-				value = nil,
+				value = '',
 				text = 'Wprowadź numer',
 				type = 'numbers'
 			}
@@ -77,7 +77,7 @@ function phone.NewContact.__constructor (...)
 				dxDrawRectangle(marginContent, marginTop + (index * optSize), width - (marginContent * 2), optSize, 0x33000000);
 			end
 
-			if v.value and string.len(v.value or '') > 0 then
+			if string.len(v.value) > 0 then
 				dxDrawText(v.value,
 					marginContent,
 					((marginTop) + (index*optSize) + (optSize*0.25)),
@@ -107,7 +107,7 @@ function phone.NewContact.__constructor (...)
 
     		if controlType == 'TYPE_ENTER' then
 		    	for k, v in pairs(options) do
-		    		if not v.value or string.len(v.value or '') <= 0 then
+		    		if string.len(v.value) == 0 then
 		    			return;
 		    		end
 		    	end
@@ -118,17 +118,12 @@ function phone.NewContact.__constructor (...)
 		    	});
 		    	p.setApplication(phone.Contacts, true);
     		elseif controlType == 'TYPE_BACK' then
-	    		if options[selected].value then
-	    			local strLength = string.len(options[selected].value);
-
-	    			if strLength <= 0 then
-	    				p.setApplication(phone.Contacts, true);
-	    			else
-	    				options[selected].value = string.sub(options[selected].value, 1, strLength-1);
-	    			end
-	    		else
-	    			p.setApplication(phone.Contacts, true);
-	    		end
+    			local strLength = string.len(options[selected].value);
+    			if strLength <= 0 then
+    				p.setApplication(phone.Contacts, true);
+    			else
+    				options[selected].value = string.sub(options[selected].value, 1, strLength-1);
+    			end
     		elseif controlType == 'TYPE_UP' then
     			this.switchSelected(-1);
     		elseif controlType == 'TYPE_DOWN' then
@@ -145,10 +140,10 @@ function phone.NewContact.__constructor (...)
 
     		if options[selected].type == 'numbers' then
     			if Controls.isNumeric(value) then
-    				options[selected].value = string.format('%s%s', options[selected].value or '', value);
+    				options[selected].value = string.format('%s%s', options[selected].value, value);
     			end
     		else
-    			options[selected].value = string.format('%s%s', options[selected].value or '', value);
+    			options[selected].value = string.format('%s%s', options[selected].value, value);
     		end
     	end
 

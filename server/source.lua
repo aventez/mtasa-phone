@@ -89,9 +89,10 @@ end
 addEvent('onClientPhoneCall', true);
 addEventHandler('onClientPhoneCall', resourceRoot, onClientPhoneCall);
 
-function onClientAddContact(phone, data)
+
+
+function onClientAddContact(data)
 	print(toJSON(data));
 end
-
 addEvent('onClientAddContact', true);
 addEventHandler('onClientAddContact', resourceRoot, onClientAddContact);
