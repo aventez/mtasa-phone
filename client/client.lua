@@ -148,13 +148,13 @@ bindKey('end', 'up', changePhoneState);
 --server section end
 
 addEventHandler('onClientKey', root, function (button, state)
-	if userphone and state then
+	if userphone and state and show then
 		userphone.control(button);
 	end
 end);
 
 addEventHandler("onClientCharacter", getRootElement(), function (character)
-	if userphone then
+	if userphone and show then
 		userphone.controlCharacter(character);
 	end	
 end)

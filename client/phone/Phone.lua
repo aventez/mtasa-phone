@@ -247,6 +247,7 @@ function phone.Phone.__constructor (parent, viewType)
 
             if this.getApplication() then
                 this.getApplication().draw(_screenRenderTarget);
+                this.getLauncher().draw(true, tocolor(255, 255, 255, 255));
             else
                 this.getLauncher().draw();
             end
