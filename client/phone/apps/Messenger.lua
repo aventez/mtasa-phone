@@ -24,7 +24,22 @@ function phone.Messenger.__constructor (...)
 		local _phone = this.getLauncher().getPhone();
 
 		local topics = _phone.getConfig('topics');
-		_phone.setAttribute('messengerContact', topics[1]);
+		if topics then
+			_phone.setAttribute('messengerContact', topics[1]);
+
+			for k, v in pairs(topics) do
+				if v.first == _phone.getConfig('phoneNumber') then
+					v.realName = v.second;
+				else
+					v.realName = v.first;
+				end
+
+				local contact = _phone.findContact(v.realName);
+				if contact then
+					v.realName = contact.name;
+				end
+			end
+		end
 
 		local selected = 1;
 		local maxContacts = 4;
@@ -47,11 +62,13 @@ function phone.Messenger.__constructor (...)
 	    end
 
 		this.drawContent = function ()
-			for i = 1, 4 do
-				newIndex = (section.first + i) - 1;
+			if topics then
+				for i = 1, 4 do
+					newIndex = (section.first + i) - 1;
 
-				if topics[newIndex] then
-					this.drawContact(i, topics[newIndex]);
+					if topics[newIndex] then
+						this.drawContact(i, topics[newIndex]);
+					end
 				end
 			end
 		end
@@ -66,46 +83,22 @@ function phone.Messenger.__constructor (...)
 
 			local height = marginTop + ((index-1)*optSize) + (index-1)*20;
 
-			local number = nil;
-
 			if index == selected then
 				dxDrawImage(20, height, 239, optSize, 'files/topics/row.png');
 			else
 				dxDrawImage(20, height, 239, optSize, 'files/topics/row.png', 0, 0, 0, tocolor(255, 255, 255, 99));
 			end
 
-			if data.first == _phone.getConfig('phoneNumber') then
-				number = data.second;
-			else
-				number = data.first;			
-			end
-
-			local contact = _phone.findContact(number);
-			if contact then
-				number = contact.name;
-			end
-
-			dxDrawText(number,
+			dxDrawText(data.realName,
 				marginLeft, 
-				height + 20, 
+				height, 
 				width, 
 				height+optSize, 
 				0xFFFFFFFF, 
 				1,
 				Fonts.getFont('ProximaNova-Regular', 11) or 'default',
 				'left',
-				'top');
-
-			dxDrawText(data.content,
-				marginLeft, 
-				height + 43, 
-				width, 
-				height+optSize, 
-				0xFFFFFFFF, 
-				1,
-				Fonts.getFont('ProximaNova-Regular', 7) or 'default',
-				'left',
-				'top');
+				'center');
 		end
 	-- drawing section end
 
@@ -114,7 +107,7 @@ function phone.Messenger.__constructor (...)
 			local controlType = Controls.getControlType(value);
 
 			if controlType == 'TYPE_ENTER' then
-		    	triggerServerEvent('getTopicMessages', resourceRoot, topics[(section.first + selected) - 1].id);
+				_phone.openConversation(topics[(section.first + selected) - 1].id);
 			elseif controlType == 'TYPE_BACK' then
 				this.onClose(_phone);
 			elseif controlType == 'TYPE_UP' then

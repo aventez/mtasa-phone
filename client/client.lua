@@ -6,47 +6,13 @@ local animation = {
 		off = screenY
 	},
 	fadeIn = false,
-	duration = 200,
+	duration = 250,
 	startTime = 0,
 	progress = 0
 };
 
 local userphone = nil;
 
-function givePhone(model)
-	if model == 'apple' then
-		userphone = phone.Apple();
-
-		-- default values
-		userphone.setX(screenX-screenX/6);
-		userphone.setY(animation.positions.off);
-		userphone.loadConfig();
-		userphone.setApps({
-			phone.PhoneApp,
-			phone.Messenger,
-			phone.Contacts,
-			phone.Weather,
-			phone.Settings
-		});
-
-		-- interaction section
-			userphone.onClosePhone = function ()
-				changePhoneState();
-			end
-		-- interaction section end
-	end
-end
-
-addEvent('givePhone', true);
-addEventHandler('givePhone', getLocalPlayer(), givePhone);
-
-addEvent('removePhone', true);
-addEventHandler('removePhone', getLocalPlayer(), function ()
-	userphone = nil;
-end);
--- end user phone section
-
-givePhone('apple'); -- debug
 
 function drawPhone()
 	if userphone == nil then return end
@@ -117,22 +83,47 @@ end
 bindKey('end', 'up', changePhoneState);
 
 --server section
+	addEvent('onRemovePhone', true);
+	addEventHandler('onRemovePhone', getLocalPlayer(), function ()
+		userphone = nil;
+	end);
+
 	addEvent('onResponsePhoneData', true);
 	addEventHandler('onResponsePhoneData', getLocalPlayer(), function (array)
-		if userphone then
-		    for k, v in pairs(array) do
-				userphone.setConfig(k, v);
-		    end
-		end		
+		userphone = phone.Apple();
+
+		userphone.setX(screenX-screenX/6);
+		userphone.setY(animation.positions.off);
+		userphone.setApps({
+			phone.PhoneApp,
+			phone.Messenger,
+			phone.Contacts,
+			phone.Weather,
+			phone.Settings
+		});
+
+		userphone.onClosePhone = function ()
+			changePhoneState();
+		end
+
+	    for k, v in pairs(array) do
+			userphone.setConfig(k, v);
+	    end	
 	end);
 
 	addEvent('onResponseNewTopic', true);
 	addEventHandler('onResponseNewTopic', getLocalPlayer(), function (data)
 		local array = userphone.getConfig('topics');
-		table.insert(array, data);
+		if array then
+			table.insert(array, data);
+		else
+			array = {
+				data
+			};	
+		end
 
 		userphone.setConfig('topics', array);
-		userphone.setApplication(phone.Messenger);
+		userphone.getApplication().onClose(userphone);
 	end);
 
 	addEvent('onResponseTopicMessages', true);
@@ -144,6 +135,20 @@ bindKey('end', 'up', changePhoneState);
 
 			userphone.setApplication(phone.Messages);
 		end
+	end);
+
+	addEvent('onClientReceivesError', true);
+	addEventHandler('onClientReceivesError', root, function (message)
+		if message then
+			outputChatBox('an error occured: '..message);
+		end
+	end);
+
+	addEvent('onIncomingCall', true);
+	addEventHandler('onIncomingCall', root, function (number)
+		userphone.setAttribute('incomingCallNumber', number);
+		userphone.setApplication(phone.IncomingCall);
+		outputChatBox('dzwoni'..number);
 	end);
 --server section end
 
@@ -157,4 +162,4 @@ addEventHandler("onClientCharacter", getRootElement(), function (character)
 	if userphone and show then
 		userphone.controlCharacter(character);
 	end	
-end)
+end);

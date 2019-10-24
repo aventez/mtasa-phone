@@ -44,12 +44,16 @@ function phone.Contacts.__constructor (...)
 	    end
 
 		this.drawContent = function ()
-			for i = 1, maxContacts do
-				newIndex = (section.first + i) - 1;
+			if contacts then
+				for i = 1, maxContacts do
+					newIndex = (section.first + i) - 1;
 
-				if contacts[newIndex] then
-					this.drawContact(i, contacts[newIndex]);
+					if contacts[newIndex] then
+						this.drawContact(i, contacts[newIndex]);
+					end
 				end
+			else
+				dxDrawText('Brak kontaktów', 0, 0, _phone.getProperty('screen_width') or 0, _phone.getProperty('screen_height') or 0, tocolor(0, 0, 0, 255), 1, Fonts.font, 'center', 'center');
 			end
 		end
 

@@ -22,6 +22,9 @@ function phone.Contact.__constructor (...)
 
 		local _selected = 0;
 		local _data = nil;
+		local contactData = p.getAttribute('contactData');
+
+		outputChatBox(toJSON(contactData));
 
 		local width = p.getProperty('screen_width') or 0;
 		local height = p.getProperty('screen_height') or 0;
@@ -29,10 +32,12 @@ function phone.Contact.__constructor (...)
 		local events = {
 			callEvent = function () 
 				p.phoneCall(_data);
-				p.closePhone();
 			end,
 			messageEvent = function () end,
-			deleteEvent = function () end
+			deleteEvent = function ()
+				p.removeContact(contactData.number);
+				p.setApplication(phone.Contacts, true);
+			end
 		};
 
 		local _options = {
@@ -67,7 +72,7 @@ function phone.Contact.__constructor (...)
 	        dxDrawRectangle(0, 0, width, height, (0xFFE3E3E6));
 
 	        -- draw app content
-	        this.drawContent(p.getAttribute('contactData'));
+	        this.drawContent(contactData);
 	    end
 
 	    this.drawContent = function (data)

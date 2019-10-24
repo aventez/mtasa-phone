@@ -123,14 +123,6 @@ function phone.Phone.__constructor (parent, viewType)
     --config section
         local _config = {};
 
-        this.loadConfig = function ()
-            triggerServerEvent("getPhoneConfig", resourceRoot);
-        end
-
-        this.saveConfig = function ()
-            triggerServerEvent("savePhoneConfig", resourceRoot, _config);
-        end
-
         this.setConfig = function (name, value)
             _config[name] = value;
         end
@@ -139,15 +131,30 @@ function phone.Phone.__constructor (parent, viewType)
             return _config[name];
         end
 
+        this.getPhoneNumber = function ()
+            return this.getConfig('phoneNumber');
+        end
+
     --config section end
+
+    this.openConversation = function (id)
+        triggerServerEvent('getTopicMessages', resourceRoot, id);
+    end
 
     -- server section
         this.phoneCall = function (data)
+            -- phone call
             triggerServerEvent('onClientPhoneCall', resourceRoot, data);
         end
 
-        this.addContactServer = function (data)
-            triggerServerEvent('onClientAddContact', resourceRoot, data);
+        this.addMessage = function (topic, number, content)
+            -- add new message
+            triggerServerEvent('addNewMessage', resourceRoot, topic, number, content);
+        end
+
+        this.addTopic = function (first, second)
+            -- add new topic
+            triggerServerEvent('addNewTopic', resourceRoot, first, second);
         end
     -- server section end
 
@@ -159,8 +166,34 @@ function phone.Phone.__constructor (parent, viewType)
         this.addContact = function (data)
             local contacts = this.getConfig('contacts');
 
-            this.addContactServer(data);
-            table.insert(contacts, data);
+            if contacts then
+                table.insert(contacts, data);
+            else
+                contacts = {
+                    data
+                };
+            end
+
+            this.setConfig('contacts', contacts);
+            this.getApplication().onClose(this);
+
+            -- add contact server-side             
+            triggerServerEvent('onClientAddContact', resourceRoot, data.name, data.number, this.getConfig('phoneId'));
+        end
+
+        this.removeContact = function (number)
+            local contacts = this.getConfig('contacts');
+
+            if contacts then
+                for k, v in pairs(contacts) do
+                    if v.number == number then
+                        table.remove(contacts, k);
+                        triggerServerEvent('onClientRemoveContact', resourceRoot, data.id);
+                    end
+                end
+
+                return false;
+            end
 
             this.setConfig('contacts', contacts);
         end
@@ -180,17 +213,6 @@ function phone.Phone.__constructor (parent, viewType)
         end
     -- contacts section end
 
-    -- messages section
-        this.addMessage = function (topic, number, content)
-            triggerServerEvent('addNewMessage', resourceRoot, topic, number, content);
-            --outputDebugString(string.format('Dodawanie kontaktu %d %d %s', topic, number, content));
-        end
-
-        this.addTopic = function (first, second)
-            triggerServerEvent('addNewTopic', resourceRoot, first, second);
-        end
-    -- messages section end
-
     -- control section
         this.controlCharacter = function (key)
             if this.getApplication() then
@@ -199,6 +221,7 @@ function phone.Phone.__constructor (parent, viewType)
                 this.getLauncher().controlCharacter(key);
             end
         end
+
         this.control = function (key)
             if this.getApplication() then
                 this.getApplication().control(key);

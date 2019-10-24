@@ -249,11 +249,21 @@ function phone.Messages.__constructor (...)
 						p.addMessage(contact.id, p.getConfig('phoneNumber'), content);
 
 						local new = p.getAttribute('messengerMessages');
-						table.insert(new.messages, {
-							number = p.getConfig('phoneNumber'),
-							content = content,
-							topic = contact.id,
-						});
+						if new.messages then
+							table.insert(new.messages, {
+								number = p.getConfig('phoneNumber'),
+								content = content,
+								topic = contact.id,
+							});
+						else
+							new.messages = {
+								{
+									number = p.getConfig('phoneNumber'),
+									content = content,
+									topic = contact.id,									
+								}
+							}
+						end
 						p.setAttribute('messengerMessages', new);
 
 						delaySettings.lastMessage = getTickCount();

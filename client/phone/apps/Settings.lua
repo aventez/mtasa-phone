@@ -131,8 +131,7 @@ function phone.Settings.__constructor (...)
 		    	if option.type == 'switch' then
 			    	option.value = not option.value;
 
-		    		p.setConfig(option.id, option.value);
-			    	p.saveConfig();	    		
+		    		p.setConfig(option.id, option.value); 		
 			    elseif option.type == 'click' then
 			    	p.setApplication(option.value, true);
 			    end

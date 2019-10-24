@@ -81,7 +81,7 @@ function phone.PhoneApp.__constructor (...)
                 if data.number then
                     if string.len(data.number) > 0 then 
                         p.phoneCall(data.number);
-                        p.closePhone();
+                        --p.closePhone();
                     end
                 end                
             end

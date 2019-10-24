@@ -20,6 +20,7 @@
 	<script src="client/phone/apps/Weather.lua" type="client" />
 	<script src="client/phone/apps/PhoneApp.lua" type="client" />
 	<script src="client/phone/apps/Messenger.lua" type="client" />
+	<script src="client/phone/apps/IncomingCall.lua" type="client" />
 
 	<!-- subApps -->
 	<script src="client/phone/apps/subApps/Contact.lua" type="client" />
@@ -49,6 +50,9 @@
 
 		<!-- messenger -->
 		<file src="files/messenger/background.png" />
+
+		<!-- incoming call -->
+		<file src="files/incomingCall/background.png" />
 
 		<!-- wallpapers -->
 		<file src="files/wallpapers/wallpaper.png" />

@@ -70,7 +70,8 @@ function phone.NewTopic.__constructor (...)
 
     		if controlType == 'TYPE_ENTER' then
 		    	if string.len(content) > 0 then
-		    		p.addTopic(p.getConfig('phoneNumber'), content);
+		    		local number = p.getPhoneNumber();
+		    		p.addTopic(number, content);
 		    	end
     		elseif controlType == 'TYPE_BACK' then
 	   			local strLength = string.len(content);
